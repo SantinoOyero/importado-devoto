@@ -46,7 +46,19 @@
       opacity: 0.2;
       font-size: 2rem;
     }
-
+   .producto-card::after {
+  content: "🎅";
+  position: absolute;
+  top: -12px;
+  left: -10px;
+  font-size: 2.2rem;
+  transform: rotate(-20deg);
+}
+.producto-card:hover {
+  box-shadow: 0 0 25px rgba(22, 163, 74, 0.6);
+  transform: translateY(-4px) scale(1.02);
+  transition: all 0.3s ease;
+}
     /* 🎁 BOTONES NAVIDAD */
     .btn-navidad {
       background: linear-gradient(90deg, #15803d, #166534);
@@ -373,7 +385,7 @@
 </footer>
 
 
-<script>
+<>
    const menuBtn = document.getElementById('menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
 
@@ -813,12 +825,34 @@ Consultar por WhatsApp</a>
 
 <!-- JavaScript para abrir/cerrar modales -->
 <script>
-  function abrirModal(id) {
+   function abrirModal(id) {
     document.getElementById(id).classList.remove('hidden')
   }
   function cerrarModal(id) {
     document.getElementById(id).classList.add('hidden')
   }
+
+  /* ❄ GENERADOR DE NIEVE */
+  const snowContainer = document.body;
+
+  function createSnowflake() {
+    const snowflake = document.createElement("div");
+    snowflake.classList.add("snowflake");
+    snowflake.innerHTML = "❄";
+
+    snowflake.style.left = Math.random() * window.innerWidth + "px";
+    snowflake.style.fontSize = Math.random() * 10 + 10 + "px";
+    snowflake.style.animationDuration = Math.random() * 5 + 5 + "s";
+    snowflake.style.opacity = Math.random();
+
+    snowContainer.appendChild(snowflake);
+
+    setTimeout(() => {
+      snowflake.remove();
+    }, 10000);
+  }
+
+  setInterval(createSnowflake, 300);
 </script>
  </body>
 </html>
