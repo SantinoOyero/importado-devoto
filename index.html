@@ -14,6 +14,57 @@
       font-family: 'Montserrat', sans-serif;
     }
   </style>
+  <style>
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(to bottom, #ffffff, #f0fdf4);
+  }
+
+  /* Títulos navideños */
+  .navidad-title {
+    position: relative;
+  }
+
+  .navidad-title::after {
+    content: "🎄";
+    position: absolute;
+    right: -40px;
+    top: 0;
+    font-size: 1.5rem;
+  }
+
+  /* Cards con efecto navidad */
+  .producto-card {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .producto-card::before {
+    content: "❄";
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    opacity: 0.2;
+    font-size: 2rem;
+  }
+
+  /* Botones más festivos */
+  .btn-navidad {
+    background: linear-gradient(90deg, #15803d, #166534);
+    box-shadow: 0 4px 10px rgba(22, 163, 74, 0.4);
+  }
+
+  .btn-navidad:hover {
+    background: linear-gradient(90deg, #b91c1c, #991b1b);
+  }
+
+  /* Banner navideño */
+  .banner-navidad {
+    background: linear-gradient(90deg, #15803d, #b91c1c);
+    color: white;
+  }
+</style>
+
  </head>
  <body class="bg-white text-gray-800">
   <header class="bg-white shadow-md sticky top-0 z-50 border-b border-green-700">
