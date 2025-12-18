@@ -13,61 +13,64 @@
    body {
       font-family: 'Montserrat', sans-serif;
     }
-  </style>
+ 
   <style>
   body {
     font-family: 'Montserrat', sans-serif;
-    background: linear-gradient(to bottom, #ffffff, #f0fdf4);
-  }
+   body {
+      background: linear-gradient(to bottom, #ffffff, #f0fdf4);
+    }
 
-  /* Títulos navideños */
-  .navidad-title {
-    position: relative;
-  }
+    /* 🎄 TITULOS NAVIDEÑOS */
+    .navidad-title {
+      position: relative;
+    }
 
-  .navidad-title::after {
-    content: "🎄";
-    position: absolute;
-    right: -40px;
-    top: 0;
-    font-size: 1.5rem;
-  }
+    .navidad-title::after {
+      content: "🎄";
+      position: absolute;
+      right: -40px;
+      top: 0;
+      font-size: 1.5rem;
+    }
 
-  /* Cards con efecto navidad */
-  .producto-card {
-    position: relative;
-    overflow: hidden;
-  }
+    /* ❄ CARDS NAVIDEÑAS */
+    .producto-card {
+      position: relative;
+      overflow: hidden;
+    }
 
-  .producto-card::before {
-    content: "❄";
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    opacity: 0.2;
-    font-size: 2rem;
-  }
+    .producto-card::before {
+      content: "❄";
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      opacity: 0.2;
+      font-size: 2rem;
+    }
 
-  /* Botones más festivos */
-  .btn-navidad {
-    background: linear-gradient(90deg, #15803d, #166534);
-    box-shadow: 0 4px 10px rgba(22, 163, 74, 0.4);
-  }
+    /* 🎁 BOTONES NAVIDAD */
+    .btn-navidad {
+      background: linear-gradient(90deg, #15803d, #166534);
+      box-shadow: 0 4px 10px rgba(22, 163, 74, 0.4);
+    }
 
-  .btn-navidad:hover {
-    background: linear-gradient(90deg, #b91c1c, #991b1b);
-  }
+    .btn-navidad:hover {
+      background: linear-gradient(90deg, #b91c1c, #991b1b);
+    }
 
-  /* Banner navideño */
-  .banner-navidad {
-    background: linear-gradient(90deg, #15803d, #b91c1c);
-    color: white;
-  }
+    /* 🎄 BANNER NAVIDAD */
+    .banner-navidad {
+      background: linear-gradient(90deg, #15803d, #b91c1c);
+      color: white;
+    }
 </style>
 
  </head>
  <body class="bg-white text-gray-800">
-  <header class="bg-white shadow-md sticky top-0 z-50 border-b border-green-700">
+  <div class="banner-navidad text-center py-2 text-sm font-semibold">
+    🎄 Especial Navidad — Stock limitado · Envíos en Buenos Aires 🎁
+  </div>  <header class="bg-white shadow-md sticky top-0 z-50 border-b border-green-700">
    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
     <a class="text-2xl font-bold text-green-700" href="#">
      Importado Devoto
@@ -102,7 +105,7 @@
   </header>
   <main class="container mx-auto px-6 py-10">
    <section class="text-center mb-8">
-    <h1 class="text-4xl md:text-5xl font-extrabold text-green-700 mb-2">
+<h1 class="text-4xl md:text-5xl font-extrabold text-green-700 mb-2 navidad-title">
      La mejor calidad, al mejor precio
     </h1>
     <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-6">
@@ -113,16 +116,16 @@
     </div>
    </section>
    <section class="mb-20" id="buzos">
-  <h2 class="text-3xl font-bold text-green-700 mb-8 text-center">Buzos</h2>
+<h2 class="text-3xl font-bold text-green-700 mb-8 text-center navidad-title">Buzos</h2>
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
 
     <!-- Buzo Hoodie Crema -->
-    <article onclick="abrirModal('modalBuzoCrema')" class="cursor-pointer bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition border border-green-200">
+<article onclick="abrirModal('modalBuzoCrema')" class="producto-card cursor-pointer bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition border border-green-200">
       <img src="https://i.imgur.com/SqNxpHu.png" alt="Buzo Hoodie Crema" class="w-full h-64 object-cover" />
       <div class="p-4">
         <h3 class="text-xl font-semibold mb-2 text-green-800">Buzo Hoodie Crema</h3>
         <p class="text-gray-600 mb-4"></p>
-        <p class="text-green-700 font-bold text-lg">$50,000 ARS</p>
+        <p class="text-green-700 font-bold text-lg">$40,000 ARS</p>
         <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong></p>
       </div>
     </article>
@@ -134,7 +137,7 @@
       <div class="p-4">
         <h3 class="text-xl font-semibold mb-2 text-green-800">Buzo Hoodie Gris</h3>
         <p class="text-gray-600 mb-4"></p>
-        <p class="text-green-700 font-bold text-lg">$50,000 ARS</p>
+        <p class="text-green-700 font-bold text-lg">$40,000 ARS</p>
         <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> XL (1)</p>
       </div>
     </article>
@@ -145,7 +148,7 @@
       <div class="p-4">
         <h3 class="text-xl font-semibold mb-2 text-green-800">Buzo Organic Marrón</h3>
         <p class="text-gray-600 mb-4"></p>
-        <p class="text-green-700 font-bold text-lg">$45,000 ARS</p>
+        <p class="text-green-700 font-bold text-lg">$35,000 ARS</p>
         <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> XL (1)</p>
       </div>
     </article>
@@ -156,7 +159,7 @@
       <div class="p-4">
         <h3 class="text-xl font-semibold mb-2 text-green-800">Buzo Gris Jack & Jones</h3>
         <p class="text-gray-600 mb-4"></p>
-        <p class="text-green-700 font-bold text-lg">$50,000 ARS</p>
+        <p class="text-green-700 font-bold text-lg">$40,000 ARS</p>
         <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> L (1)</p>
       </div>
     </article>
@@ -167,7 +170,7 @@
   <div class="p-4">
     <h3 class="text-xl font-semibold mb-2 text-green-800">Buzo Polo H&amp;M Negro</h3>
     <p class="text-gray-600 mb-4"></p>
-    <p class="text-green-700 font-bold text-lg">$45,000 ARS</p>
+    <p class="text-green-700 font-bold text-lg">$35,000 ARS</p>
     <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> L (2), S (1)</p>
   </div>
 </article>
@@ -178,7 +181,7 @@
   <div class="p-4">
     <h3 class="text-xl font-semibold mb-2 text-green-800">Sweater H&amp;M Polo Gris</h3>
     <p class="text-gray-600 mb-4"></p>
-    <p class="text-green-700 font-bold text-lg">$45,000 ARS</p>
+    <p class="text-green-700 font-bold text-lg">$35,000 ARS</p>
     <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> XXL (1), S (2)</p>
   </div>
 </article>
@@ -189,7 +192,7 @@
   <div class="p-4">
     <h3 class="text-xl font-semibold mb-2 text-green-800">Buzo H&M Verde</h3>
     <p class="text-gray-600 mb-4"></p>
-    <p class="text-green-700 font-bold text-lg">$40,000 ARS</p>
+    <p class="text-green-700 font-bold text-lg">$30,000 ARS</p>
     <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> XL (1), M (1)</p>
   </div>
 </article>
@@ -197,7 +200,7 @@
   </div>
 </section>
    <section class="mb-20" id="remeras">
-  <h2 class="text-3xl font-bold text-green-700 mb-8 text-center">
+<h2 class="text-3xl font-bold text-green-700 mb-8 text-center navidad-title">
     Remeras Relaxed Fit H&amp;M
   </h2>
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
@@ -207,7 +210,7 @@
   <div class="p-4">
     <h3 class="text-xl font-semibold mb-2 text-green-800">Remera Negra</h3>
     <p class="text-gray-600 mb-4"></p>
-    <p class="text-green-700 font-bold text-lg">$30,000 ARS</p>
+    <p class="text-green-700 font-bold text-lg">$20,000 ARS</p>
 <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> XL (1)</p>
   </div>
 </article>
@@ -218,7 +221,7 @@
   <div class="p-4">
     <h3 class="text-xl font-semibold mb-2 text-green-800">Remera Rosa</h3>
     <p class="text-gray-600 mb-4"></p>
-  <p class="text-green-700 font-bold text-lg">$30,000 ARS</p>
+  <p class="text-green-700 font-bold text-lg">$20,000 ARS</p>
     <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> M (1), L (1)</p>
   </div>
 </article>
@@ -229,7 +232,7 @@
   <div class="p-4">
     <h3 class="text-xl font-semibold mb-2 text-green-800">Remera Marrón</h3>
     <p class="text-gray-600 mb-4"></p>
-      <p class="text-green-700 font-bold text-lg">$30,000 ARS</p>
+      <p class="text-green-700 font-bold text-lg">$20,000 ARS</p>
     <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> L (2), S (1)</p>
   </div>
 </article>
@@ -240,7 +243,7 @@
   <div class="p-4">
     <h3 class="text-xl font-semibold mb-2 text-green-800">Remera Crema</h3>
     <p class="text-gray-600 mb-4"></p>
-     <p class="text-green-700 font-bold text-lg">$30,000 ARS</p>
+     <p class="text-green-700 font-bold text-lg">$20,000 ARS</p>
     <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> L (1), XL (1)</p>
   </div>
 </article>
@@ -251,7 +254,7 @@
   <div class="p-4">
     <h3 class="text-xl font-semibold mb-2 text-green-800">Remera Marrón Manga Larga</h3>
     <p class="text-gray-600 mb-4"></p>
-    <p class="text-green-700 font-bold text-lg">$30,000 ARS</p>
+    <p class="text-green-700 font-bold text-lg">25,000 ARS</p>
     <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> XL (1), L (1), M (1)</p>
   </div>
 </article>
@@ -262,7 +265,7 @@
   <div class="p-4">
     <h3 class="text-xl font-semibold mb-2 text-green-800">Remera Manga Larga Wednesday</h3>
     <p class="text-gray-600 mb-4"></p>
-    <p class="text-green-700 font-bold text-lg">$30,000 ARS</p>
+    <p class="text-green-700 font-bold text-lg">$20,000 ARS</p>
     <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> XS (2)</p>
   </div>
 </article>
@@ -375,7 +378,7 @@
       <div>
         <h2 class="text-2xl font-bold text-green-700 mb-4">Buzo Hoodie Crema</h2>
         <p class="text-gray-700 mb-4">Buzo de H&amp;M con capucha. Suave, abrigado y con estilo relajado.</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$50,000 ARS</p>
+        <p class="text-xl font-bold text-green-700 mb-2">$40,000 ARS</p>
         <div class="mt-4">
           <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
           <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
@@ -389,7 +392,8 @@
         </div>
 <a href="https://wa.me/541164890594?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20el%20buzo%20hoodie%20crema%20en%20talle%20___." 
   target="_blank" 
-   class="inline-block mt-6 bg-green-700 text-white px-6 py-3 rounded hover:bg-green-800 transition font-semibold">
+   class="inline-block mt-6 btn-navidad text-white px-6 py-3 rounded transition font-semibold"
+>
 Consultar por WhatsApp</a>
       </div>
     </div>
@@ -410,7 +414,7 @@ Consultar por WhatsApp</a>
       <div>
         <h2 class="text-2xl font-bold text-green-700 mb-4">Buzo Hoodie Gris</h2>
         <p class="text-gray-700 mb-4">Buzo de H&amp;M. Suave, abrigado y con estilo relajado.</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$50,000 ARS</p>
+        <p class="text-xl font-bold text-green-700 mb-2">$40,000 ARS</p>
         <div class="mt-4">
           <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
           <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
@@ -444,7 +448,7 @@ Consultar por WhatsApp</a>
       <div>
         <h2 class="text-2xl font-bold text-green-700 mb-4">Buzo Organic Marrón</h2>
         <p class="text-gray-700 mb-4">Buzo de H&amp;M, diseño cómodo y abrigado</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$45,000 ARS</p>
+        <p class="text-xl font-bold text-green-700 mb-2">$35,000 ARS</p>
         <div class="mt-4">
           <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
           <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
@@ -478,7 +482,7 @@ Consultar por WhatsApp</a>
       <div>
         <h2 class="text-2xl font-bold text-green-700 mb-4">Buzo Gris Jack & Jones</h2>
         <p class="text-gray-700 mb-4">Buzo de Jack & Jones. Diseño moderno, abrigado</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$50,000 ARS</p>
+        <p class="text-xl font-bold text-green-700 mb-2">$40,000 ARS</p>
         <div class="mt-4">
           <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
           <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
@@ -512,7 +516,7 @@ Consultar por WhatsApp</a>
       <div>
         <h2 class="text-2xl font-bold text-green-700 mb-4">Buzo Polo H&amp;M Negro</h2>
         <p class="text-gray-700 mb-4">Loose fit. Diseño cómodo y moderno. .</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$45,000 ARS</p>
+        <p class="text-xl font-bold text-green-700 mb-2">$35,000 ARS</p>
         <div class="mt-4">
           <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
           <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
@@ -547,7 +551,7 @@ Consultar por WhatsApp</a>
       <div>
         <h2 class="text-2xl font-bold text-green-700 mb-4">Sweater H&amp;M Polo Gris</h2>
         <p class="text-gray-700 mb-4">Slim fit. Diseño elegante, ideal para media estación o eventos casuales.</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$45,000 ARS</p>
+        <p class="text-xl font-bold text-green-700 mb-2">$35,000 ARS</p>
         <div class="mt-4">
           <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
           <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
@@ -581,7 +585,7 @@ Consultar por WhatsApp</a>
       <div>
         <h2 class="text-2xl font-bold text-green-700 mb-4">Buzo H&amp;M Verde</h2>
         <p class="text-gray-700 mb-4">Loose fit. Estilo relajado, ideal para todo el día.</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$40,000 ARS</p>
+        <p class="text-xl font-bold text-green-700 mb-2">$30,000 ARS</p>
         <div class="mt-4">
           <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
           <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
@@ -616,7 +620,7 @@ Consultar por WhatsApp</a>
       <div>
         <h2 class="text-2xl font-bold text-green-700 mb-4">Remera Negra</h2>
         <p class="text-gray-700 mb-4">Remera relaxed fit de H&amp;M. Moderna, cómoda y de alta calidad.</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$30,000 ARS</p>
+        <p class="text-xl font-bold text-green-700 mb-2">$20,000 ARS</p>
         <div class="mt-4">
           <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
           <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
@@ -646,7 +650,7 @@ Consultar por WhatsApp</a>
       <div>
         <h2 class="text-2xl font-bold text-green-700 mb-4">Remera Rosa</h2>
         <p class="text-gray-700 mb-4">Remera relaxed fit de H&amp;M. Moderna, cómoda y de alta calidad.</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$30,000 ARS</p>
+        <p class="text-xl font-bold text-green-700 mb-2">$20,000 ARS</p>
         <div class="mt-4">
           <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
           <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
@@ -677,7 +681,7 @@ Consultar por WhatsApp</a>
       <div>
         <h2 class="text-2xl font-bold text-green-700 mb-4">Remera Marrón</h2>
         <p class="text-gray-700 mb-4">Remera relaxed fit de H&amp;M. Moderna, cómoda y de alta calidad.</p>
-      <p class="text-xl font-bold text-green-700 mb-2">$30,000 ARS</p>
+      <p class="text-xl font-bold text-green-700 mb-2">$20,000 ARS</p>
         <div class="mt-4">
           <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
           <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
@@ -707,7 +711,7 @@ Consultar por WhatsApp</a>
       <div>
         <h2 class="text-2xl font-bold text-green-700 mb-4">Remera Crema</h2>
         <p class="text-gray-700 mb-4">Remera relaxed fit de H&amp;M. Moderna, cómoda y de alta calidad.</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$30,000 ARS</p>
+        <p class="text-xl font-bold text-green-700 mb-2">$20,000 ARS</p>
         <div class="mt-4">
           <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
           <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
@@ -739,7 +743,7 @@ Consultar por WhatsApp</a>
       <div>
         <h2 class="text-2xl font-bold text-green-700 mb-4">Remera Marrón Manga Larga</h2>
         <p class="text-gray-700 mb-4">Loose fit. Moderna y cómoda para media estación.</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$30,000 ARS</p>
+        <p class="text-xl font-bold text-green-700 mb-2">$25,000 ARS</p>
         <div class="mt-4">
           <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
           <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
@@ -771,7 +775,7 @@ Consultar por WhatsApp</a>
       <div>
         <h2 class="text-2xl font-bold text-green-700 mb-4">Remera Manga Larga Wednesday</h2>
         <p class="text-gray-700 mb-4">Regular fit. Diseño exclusivo y estilo original inspirado en Wednesday.</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$30,000 ARS</p>
+        <p class="text-xl font-bold text-green-700 mb-2">$20,000 ARS</p>
         <div class="mt-4">
           <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
           <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
