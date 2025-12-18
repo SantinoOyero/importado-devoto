@@ -13,8 +13,6 @@
    body {
       font-family: 'Montserrat', sans-serif;
     }
- 
-  <style>
   body {
     font-family: 'Montserrat', sans-serif;
    body {
@@ -64,6 +62,24 @@
       background: linear-gradient(90deg, #15803d, #b91c1c);
       color: white;
     }
+     /* ❄ NIEVE ANIMADA */
+  .snowflake {
+    position: fixed;
+    top: -10px;
+    color: white;
+    font-size: 1em;
+    user-select: none;
+    pointer-events: none;
+    animation-name: fall;
+    animation-timing-function: linear;
+    z-index: 9999;
+  }
+
+  @keyframes fall {
+    to {
+      transform: translateY(110vh);
+    }
+  }
 </style>
 
  </head>
