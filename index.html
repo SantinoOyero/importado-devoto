@@ -1,753 +1,1980 @@
+<!DOCTYPE html>
 <html lang="es">
- <head>
+<head>
   <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
-   Importado Devoto - Venta de Ropa Importada
-  </title>
-  <script src="https://cdn.tailwindcss.com">
-  </script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&amp;display=swap" rel="stylesheet"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Importado Devoto — Ropa Importada</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
   <style>
-   body {
-      font-family: 'Montserrat', sans-serif;
+    :root {
+      --bg:     #F7F4EF;
+      --dark:   #141414;
+      --green:  #2A6044;
+      --green2: #4BAE7F;
+      --amber:  #E8A030;
+      --rust:   #D95F2B;
+      --border: rgba(0,0,0,0.08);
+      --card:   #FFFFFF;
+      --muted:  #777;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);overflow-x:hidden;}
+    ::-webkit-scrollbar{width:5px;}
+    ::-webkit-scrollbar-track{background:var(--bg);}
+    ::-webkit-scrollbar-thumb{background:var(--green2);border-radius:10px;}
+
+    /* NOISE */
+    body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:998;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.45;}
+
+    /* ══ HEADER ══ */
+    header{position:sticky;top:0;z-index:600;background:rgba(247,244,239,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:box-shadow .3s;}
+    header.scrolled{box-shadow:0 4px 24px rgba(0,0,0,.07);}
+    .nav-wrap{max-width:1380px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:68px;}
+    .logo{font-family:'Bebas Neue',sans-serif;font-size:1.75rem;letter-spacing:.05em;color:var(--dark);text-decoration:none;display:flex;align-items:center;gap:.45rem;}
+    .logo-pip{width:10px;height:10px;border-radius:50%;background:var(--amber);animation:pip 2.2s ease-in-out infinite;}
+    @keyframes pip{0%,100%{transform:scale(1)}50%{transform:scale(1.7);background:var(--green2);}}
+    .desktop-nav{display:flex;align-items:center;gap:2rem;}
+    .desktop-nav a{font-size:.8rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;position:relative;}
+    .desktop-nav a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;background:var(--amber);border-radius:2px;transition:width .25s;}
+    .desktop-nav a:hover{color:var(--dark);}
+    .desktop-nav a:hover::after{width:100%;}
+    .nav-wa{background:var(--green);color:#fff !important;padding:.46rem 1.2rem;border-radius:100px;font-size:.77rem !important;transition:background .2s,transform .2s !important;}
+    .nav-wa::after{display:none !important;}
+    .nav-wa:hover{background:var(--green2) !important;transform:scale(1.04);}
+    #mob-btn{display:none;background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--dark);}
+    #mob-menu{display:none;flex-direction:column;padding:1rem 2rem;gap:.3rem;border-top:1px solid var(--border);background:var(--bg);}
+    #mob-menu a{font-weight:600;font-size:.95rem;color:var(--dark);text-decoration:none;padding:.55rem 0;border-bottom:1px solid var(--border);}
+
+    /* ══ TICKER ══ */
+    .ticker{background:var(--dark);overflow:hidden;height:36px;display:flex;align-items:center;}
+    .ticker-track{display:flex;animation:ticker 28s linear infinite;white-space:nowrap;}
+    .ticker-track:hover{animation-play-state:paused;}
+    @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .ticker-item{display:inline-flex;align-items:center;gap:.6rem;padding:0 2.5rem;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.7);}
+    .ticker-item i{color:var(--amber);font-size:.65rem;}
+
+    /* ══ HERO ══ */
+    .hero{max-width:1380px;margin:0 auto;padding:5rem 2rem 5rem;display:grid;grid-template-columns:1.1fr 1fr;gap:4rem;align-items:center;min-height:86vh;}
+    .hero-left{animation:fadeUp .8s ease both;}
+    .hero-chip{display:inline-flex;align-items:center;gap:.45rem;background:var(--green2);color:#fff;font-weight:700;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;padding:.38rem 1rem;border-radius:100px;margin-bottom:1.6rem;}
+    .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.8rem,7.5vw,7rem);line-height:.95;letter-spacing:.02em;color:var(--dark);margin-bottom:1.4rem;}
+    .hero-title .outline{-webkit-text-stroke:2.5px var(--green);color:transparent;}
+    .hero-sub{font-size:1rem;color:var(--muted);line-height:1.78;max-width:440px;margin-bottom:2.4rem;}
+    .hero-btns{display:flex;gap:.9rem;flex-wrap:wrap;}
+    .btn-dark{display:inline-flex;align-items:center;gap:.6rem;background:var(--dark);color:#fff;font-weight:700;font-size:.88rem;padding:.85rem 2rem;border-radius:100px;text-decoration:none;transition:background .25s,transform .2s,box-shadow .25s;box-shadow:0 4px 18px rgba(20,20,20,.18);}
+    .btn-dark:hover{background:var(--green);transform:translateY(-2px);box-shadow:0 8px 28px rgba(42,96,68,.3);}
+    .btn-outline{display:inline-flex;align-items:center;gap:.6rem;background:transparent;color:var(--dark);font-weight:700;font-size:.88rem;padding:.85rem 2rem;border-radius:100px;border:2px solid var(--dark);text-decoration:none;transition:all .25s;}
+    .btn-outline:hover{background:var(--dark);color:#fff;transform:translateY(-2px);}
+    .hero-right{position:relative;animation:fadeUp .8s .18s ease both;}
+    .hero-logo-frame{background:var(--card);border-radius:32px;box-shadow:0 28px 70px rgba(0,0,0,.1),0 2px 8px rgba(0,0,0,.05);aspect-ratio:1;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
+    .hero-logo-frame::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,rgba(75,174,127,.1) 0%,transparent 60%),radial-gradient(circle at 30% 80%,rgba(232,160,48,.08) 0%,transparent 50%);}
+    .hero-logo-frame img{width:78%;object-fit:contain;position:relative;z-index:1;}
+    .pill{position:absolute;background:var(--card);border-radius:100px;padding:.4rem 1rem;font-weight:700;font-size:.72rem;display:flex;align-items:center;gap:.4rem;box-shadow:0 6px 20px rgba(0,0,0,.1);}
+    .pill-1{top:1.2rem;right:-1rem;color:var(--amber);animation:bob1 3s ease-in-out infinite;}
+    .pill-2{bottom:3rem;left:-1.5rem;color:var(--green2);animation:bob2 3.4s ease-in-out infinite;}
+    @keyframes bob1{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+    @keyframes bob2{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+    .hero-stats{position:absolute;bottom:-2rem;left:50%;transform:translateX(-50%);display:flex;gap:1.2rem;background:var(--card);padding:.9rem 2rem;border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,.1);white-space:nowrap;}
+    .stat-n{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--dark);line-height:1;}
+    .stat-l{font-size:.63rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-top:.1rem;}
+    .sdiv{width:1px;background:var(--border);align-self:stretch;}
+
+    /* ══ BRAND LOGOS STRIP ══ */
+    .brand-strip{max-width:1380px;margin:6rem auto 0;padding:0 2rem;}
+    .brand-strip-inner{border:1px solid var(--border);border-radius:20px;padding:1.6rem 3rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;background:var(--card);}
+    .brand-label{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);flex-shrink:0;}
+    .brand-names{display:flex;align-items:center;gap:2.5rem;flex-wrap:wrap;}
+    .brand-name{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.06em;color:rgba(0,0,0,.18);transition:color .3s;}
+    .brand-name:hover{color:var(--green);}
+
+    /* ══ SECTION HEADER ══ */
+    .sec-wrap{max-width:1380px;margin:0 auto;padding:5rem 2rem 2rem;}
+    .sec-top{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+    .sec-label{font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--green2);display:block;margin-bottom:.4rem;}
+    .sec-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.4rem,4.5vw,3.8rem);letter-spacing:.03em;color:var(--dark);line-height:1;}
+    .sec-count{font-weight:700;font-size:.8rem;color:var(--muted);background:rgba(0,0,0,.05);padding:.38rem 1rem;border-radius:100px;}
+
+    /* SIZE FILTER */
+    .filter-bar{max-width:1380px;margin:0 auto;padding:.5rem 2rem 0;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;}
+    .filter-label{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:.2rem;}
+    .filter-btn{background:var(--card);border:1.5px solid var(--border);color:var(--muted);font-family:'Outfit',sans-serif;font-weight:700;font-size:.75rem;padding:.35rem .85rem;border-radius:100px;cursor:pointer;transition:all .2s;}
+    .filter-btn:hover,.filter-btn.active{background:var(--dark);border-color:var(--dark);color:#fff;}
+
+    .sec-divider{max-width:1380px;margin:0 auto;padding:0 2rem;}
+    .sec-divider hr{border:none;border-top:1px solid var(--border);}
+
+    /* ══ GRID ══ */
+    .grid-wrap{max-width:1380px;margin:0 auto;padding:.5rem 2rem 3.5rem;}
+    .prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:1.5rem;}
+
+    /* ══ CARD ══ */
+    .card{background:var(--card);border-radius:20px;overflow:hidden;cursor:pointer;
+      box-shadow:0 2px 10px rgba(0,0,0,.055);
+      transition:transform .38s cubic-bezier(.34,1.56,.64,1),box-shadow .35s;
+      position:relative;
+    }
+    .card:hover{transform:translateY(-10px) scale(1.015);box-shadow:0 24px 55px rgba(0,0,0,.13);}
+    .card.hidden-card{display:none;}
+    .card:hover .cimg{transform:scale(1.08);}
+    .card:hover .c-overlay{opacity:1;}
+    .card:hover .c-btn{transform:translateX(-50%) translateY(0);opacity:1;}
+    .c-img-wrap{overflow:hidden;position:relative;height:275px;}
+    .cimg{width:100%;height:100%;object-fit:cover;display:block;transition:transform .55s ease;}
+    .c-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(20,20,20,.62) 0%,transparent 55%);opacity:0;transition:opacity .3s;}
+    .c-btn{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%) translateY(10px);opacity:0;background:#fff;color:var(--dark);font-weight:700;font-size:.75rem;padding:.5rem 1.3rem;border-radius:100px;white-space:nowrap;display:flex;align-items:center;gap:.4rem;box-shadow:0 4px 14px rgba(0,0,0,.15);transition:transform .38s cubic-bezier(.34,1.56,.64,1),opacity .28s;}
+    .c-badge{position:absolute;top:.9rem;left:.9rem;background:var(--amber);color:#fff;font-weight:700;font-size:.62rem;letter-spacing:.07em;text-transform:uppercase;padding:.27rem .7rem;border-radius:100px;}
+    .c-body{padding:1.15rem 1.3rem 1.4rem;}
+    .c-brand{font-size:.67rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.25rem;}
+    .c-name{font-weight:700;font-size:1rem;color:var(--dark);margin-bottom:.7rem;line-height:1.25;}
+    .c-foot{display:flex;align-items:center;justify-content:space-between;gap:.5rem;}
+    .c-price{font-family:'Bebas Neue',sans-serif;font-size:1.28rem;color:var(--green);letter-spacing:.03em;}
+    .c-sizes{display:flex;gap:.25rem;flex-wrap:wrap;}
+    .sz-chip{background:rgba(42,96,68,.08);color:var(--green);font-weight:700;font-size:.6rem;padding:.22rem .5rem;border-radius:6px;}
+
+    /* ══ INFO DARK ══ */
+    .info-wrap{max-width:1380px;margin:4rem auto;padding:0 2rem;}
+    .info-dark{background:var(--dark);color:#fff;border-radius:28px;padding:3.5rem 4rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;position:relative;overflow:hidden;}
+    .info-dark::before{content:'';position:absolute;top:-120px;right:-80px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(75,174,127,.18) 0%,transparent 70%);pointer-events:none;}
+    .info-dark::after{content:'';position:absolute;bottom:-80px;left:25%;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(232,160,48,.12) 0%,transparent 70%);pointer-events:none;}
+    .info-tag{font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--green2);margin-bottom:.9rem;display:block;}
+    .info-h{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:.03em;line-height:1;margin-bottom:1rem;}
+    .info-p{color:rgba(255,255,255,.58);font-size:.93rem;line-height:1.8;margin-bottom:.8rem;}
+    .info-cta{display:inline-flex;align-items:center;gap:.6rem;background:var(--green2);color:#fff;font-weight:700;font-size:.88rem;padding:.8rem 1.8rem;border-radius:100px;text-decoration:none;margin-top:.8rem;transition:background .2s,transform .2s;}
+    .info-cta:hover{background:var(--green);transform:translateY(-2px);}
+    .feat-list{display:flex;flex-direction:column;gap:.9rem;position:relative;z-index:1;}
+    .feat{display:flex;align-items:center;gap:.9rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:.9rem 1.2rem;transition:background .2s;}
+    .feat:hover{background:rgba(255,255,255,.09);}
+    .feat-ico{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+    .ico-g{background:rgba(75,174,127,.2);color:var(--green2);}
+    .ico-a{background:rgba(232,160,48,.2);color:var(--amber);}
+    .ico-r{background:rgba(217,95,43,.2);color:var(--rust);}
+    .feat-txt strong{display:block;font-weight:700;font-size:.88rem;margin-bottom:.12rem;}
+    .feat-txt span{font-size:.78rem;color:rgba(255,255,255,.45);}
+
+    /* ══ TESTIMONIAL STRIP ══ */
+    .testi-wrap{max-width:1380px;margin:0 auto 1rem;padding:0 2rem;}
+    .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;}
+    .testi-card{background:var(--card);border-radius:18px;padding:1.5rem;box-shadow:0 2px 10px rgba(0,0,0,.05);}
+    .testi-stars{color:var(--amber);font-size:.8rem;margin-bottom:.7rem;letter-spacing:.05em;}
+    .testi-text{font-size:.88rem;color:var(--dark);line-height:1.7;margin-bottom:.9rem;font-style:italic;}
+    .testi-author{font-weight:700;font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;}
+
+    /* ══ CONTACT ══ */
+    .ct-wrap{max-width:1380px;margin:0 auto 4rem;padding:0 2rem;}
+    .ct-card{background:var(--card);border-radius:28px;padding:3rem 3.5rem;box-shadow:0 4px 28px rgba(0,0,0,.06);display:grid;grid-template-columns:1fr 1fr;gap:3rem;}
+    .ct-title{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:.03em;margin-bottom:.6rem;}
+    .ct-sub{color:var(--muted);font-size:.9rem;line-height:1.7;margin-bottom:1.8rem;}
+    .ct-items{display:flex;flex-direction:column;gap:.9rem;}
+    .ct-item{display:flex;align-items:center;gap:.9rem;color:var(--dark);text-decoration:none;transition:color .2s;}
+    .ct-item:hover{color:var(--green);}
+    .ct-ico{width:44px;height:44px;background:rgba(42,96,68,.07);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--green);font-size:.95rem;flex-shrink:0;transition:background .2s;}
+    .ct-item:hover .ct-ico{background:rgba(42,96,68,.14);}
+    .ct-itxt strong{display:block;font-weight:700;font-size:.82rem;}
+    .ct-itxt span{font-size:.82rem;color:var(--muted);}
+    .ct-form{display:flex;flex-direction:column;gap:.9rem;}
+    .flabel{font-weight:700;font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.32rem;display:block;}
+    .finput{width:100%;padding:.8rem 1rem;border:1.5px solid var(--border);border-radius:12px;font-family:'Outfit',sans-serif;font-size:.9rem;color:var(--dark);background:var(--bg);outline:none;resize:none;transition:border-color .2s,box-shadow .2s;}
+    .finput::placeholder{color:#bbb;}
+    .finput:focus{border-color:var(--green2);box-shadow:0 0 0 3px rgba(75,174,127,.1);}
+    .fsend{background:var(--dark);color:#fff;border:none;padding:.9rem 2rem;border-radius:100px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.55rem;margin-top:.4rem;transition:background .2s,transform .2s,box-shadow .2s;box-shadow:0 4px 18px rgba(20,20,20,.15);}
+    .fsend:hover{background:var(--green);transform:translateY(-2px);box-shadow:0 8px 28px rgba(42,96,68,.28);}
+
+    /* ══ PAYMENT ══ */
+    .pay-band{background:var(--dark);padding:3.5rem 2rem;text-align:center;}
+    .pay-h{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.05em;color:#fff;margin-bottom:.4rem;}
+    .pay-sub{color:rgba(255,255,255,.45);font-size:.88rem;margin-bottom:1.8rem;}
+    .pay-logos{display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;}
+    .pay-logos img{height:46px;border-radius:10px;background:#fff;padding:.4rem .9rem;object-fit:contain;}
+
+    /* ══ FOOTER ══ */
+    footer{background:#0d0d0d;padding:2.2rem 2rem;}
+    .foot-inner{max-width:1380px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+    .foot-brand{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.05em;color:#fff;}
+    .foot-links{display:flex;gap:1.4rem;}
+    .foot-links a{color:rgba(255,255,255,.4);font-size:1.2rem;transition:color .2s;}
+    .foot-links a:hover{color:var(--green2);}
+    .foot-copy{font-size:.75rem;color:rgba(255,255,255,.28);}
+
+    /* ══ FLOATING WA ══ */
+    .wa-float{
+      position:fixed;bottom:2rem;right:2rem;z-index:700;
+      width:58px;height:58px;border-radius:50%;
+      background:#25D366;color:#fff;
+      display:flex;align-items:center;justify-content:center;
+      font-size:1.5rem;text-decoration:none;
+      box-shadow:0 6px 24px rgba(37,211,102,.4);
+      transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;
+      animation:waIn .6s 1s ease both;
+    }
+    @keyframes waIn{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}
+    .wa-float:hover{transform:scale(1.15);box-shadow:0 10px 32px rgba(37,211,102,.5);}
+    .wa-float .wa-tooltip{
+      position:absolute;right:calc(100% + .8rem);top:50%;transform:translateY(-50%);
+      background:var(--dark);color:#fff;font-weight:700;font-size:.75rem;
+      padding:.42rem .9rem;border-radius:100px;white-space:nowrap;
+      opacity:0;pointer-events:none;transition:opacity .2s;
+    }
+    .wa-float:hover .wa-tooltip{opacity:1;}
+
+    /* ══ MODAL ══ */
+    .modal-bg{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.75);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity .3s;}
+    .modal-bg.open{opacity:1;pointer-events:all;}
+    .modal-box{background:#fff;border-radius:26px;max-width:900px;width:100%;max-height:92vh;overflow-y:auto;padding:0;position:relative;transform:translateY(24px) scale(.97);transition:transform .4s cubic-bezier(.34,1.56,.64,1);box-shadow:0 36px 90px rgba(0,0,0,.3);}
+    .modal-bg.open .modal-box{transform:translateY(0) scale(1);}
+    .m-close{position:absolute;top:1.1rem;right:1.2rem;background:rgba(0,0,0,.07);border:none;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.95rem;color:var(--dark);transition:background .2s;z-index:5;}
+    .m-close:hover{background:rgba(0,0,0,.14);}
+
+    /* Modal layout */
+    .m-grid{display:grid;grid-template-columns:1.05fr 1fr;min-height:500px;}
+
+    /* Carousel */
+    .m-carousel{position:relative;background:#f5f5f5;border-radius:26px 0 0 26px;overflow:hidden;}
+    .m-carousel-track{display:flex;transition:transform .4s cubic-bezier(.25,.46,.45,.94);}
+    .m-carousel-slide{min-width:100%;position:relative;}
+    .m-carousel-slide img{width:100%;height:100%;object-fit:cover;display:block;min-height:480px;}
+    .carousel-prev,.carousel-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.9);border:none;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.85rem;color:var(--dark);box-shadow:0 2px 10px rgba(0,0,0,.12);transition:background .2s,transform .2s;z-index:3;}
+    .carousel-prev{left:.8rem;}
+    .carousel-next{right:.8rem;}
+    .carousel-prev:hover,.carousel-next:hover{background:#fff;transform:translateY(-50%) scale(1.08);}
+    .carousel-dots{position:absolute;bottom:.9rem;left:50%;transform:translateX(-50%);display:flex;gap:.4rem;}
+    .c-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.5);border:none;cursor:pointer;transition:background .2s,transform .2s;padding:0;}
+    .c-dot.active{background:#fff;transform:scale(1.3);}
+
+    /* Modal info */
+    .m-info{padding:2.5rem 2.5rem 2.5rem;display:flex;flex-direction:column;}
+    .m-brand{font-size:.7rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem;}
+    .m-title{font-family:'Bebas Neue',sans-serif;font-size:2.1rem;letter-spacing:.03em;color:var(--dark);margin-bottom:.5rem;line-height:1;}
+    .m-desc{font-size:.88rem;color:var(--muted);line-height:1.75;margin-bottom:1.1rem;}
+    .m-price{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:.03em;color:var(--green);margin-bottom:1.4rem;}
+    .sz-label{font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--dark);margin-bottom:.55rem;}
+    .sz-row{display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:1.8rem;}
+    .sz-btn{min-width:52px;padding:.5rem .8rem;border-radius:10px;font-weight:700;font-size:.78rem;text-align:center;border:1.5px solid var(--border);color:#ccc;background:var(--bg);}
+    .sz-btn.on{border-color:var(--green);color:var(--green);background:rgba(42,96,68,.05);}
+    .sz-btn .sq{display:block;font-size:.52rem;font-weight:500;color:var(--green2);margin-top:1px;}
+    .sz-btn:not(.on) .sq{display:none;}
+    .m-wa{display:flex;align-items:center;justify-content:center;gap:.65rem;background:#25D366;color:#fff;font-weight:700;font-size:.88rem;padding:.9rem 2rem;border-radius:100px;text-decoration:none;width:100%;margin-top:auto;transition:background .2s,transform .2s,box-shadow .2s;box-shadow:0 4px 18px rgba(37,211,102,.24);}
+    .m-wa:hover{background:#1cb254;transform:translateY(-2px);box-shadow:0 8px 28px rgba(37,211,102,.32);}
+
+    /* ══ ANIMATIONS ══ */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+    .reveal{opacity:0;transform:translateY(30px);transition:opacity .65s ease,transform .65s ease;}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+
+    /* ══ CART BUTTON IN NAV ══ */
+    .cart-btn{position:relative;background:none;border:2px solid var(--dark);border-radius:100px;padding:.4rem 1rem;display:flex;align-items:center;gap:.5rem;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:700;font-size:.78rem;color:var(--dark);transition:all .2s;}
+    .cart-btn:hover{background:var(--dark);color:#fff;}
+    .cart-badge{position:absolute;top:-.45rem;right:-.45rem;background:var(--amber);color:#fff;font-size:.6rem;font-weight:800;min-width:18px;height:18px;border-radius:100px;display:flex;align-items:center;justify-content:center;padding:0 4px;transition:transform .25s cubic-bezier(.34,1.56,.64,1);}
+    .cart-badge.bump{transform:scale(1.5);}
+
+    /* ══ CART DRAWER ══ */
+    .cart-overlay{position:fixed;inset:0;z-index:850;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .3s;}
+    .cart-overlay.open{opacity:1;pointer-events:all;}
+    .cart-drawer{position:fixed;top:0;right:0;bottom:0;z-index:860;width:min(480px,100vw);background:#fff;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .38s cubic-bezier(.25,.46,.45,.94);box-shadow:-20px 0 60px rgba(0,0,0,.15);}
+    .cart-drawer.open{transform:translateX(0);}
+    .cart-head{display:flex;align-items:center;justify-content:space-between;padding:1.4rem 1.6rem;border-bottom:1px solid var(--border);}
+    .cart-head-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.04em;}
+    .cart-close-btn{background:rgba(0,0,0,.06);border:none;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+    .cart-close-btn:hover{background:rgba(0,0,0,.13);}
+    .cart-items{flex:1;overflow-y:auto;padding:1rem 1.6rem;}
+    .cart-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:1rem;color:var(--muted);}
+    .cart-empty i{font-size:3rem;opacity:.3;}
+    .cart-empty p{font-size:.9rem;}
+    .cart-item{display:grid;grid-template-columns:72px 1fr auto;gap:.9rem;align-items:center;padding:.9rem 0;border-bottom:1px solid var(--border);}
+    .cart-item-img{width:72px;height:72px;border-radius:10px;object-fit:cover;background:#f5f5f5;}
+    .cart-item-info{}
+    .cart-item-name{font-weight:700;font-size:.88rem;line-height:1.3;margin-bottom:.2rem;}
+    .cart-item-sub{font-size:.75rem;color:var(--muted);}
+    .cart-item-price{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--green);margin-top:.3rem;}
+    .cart-item-remove{background:none;border:none;cursor:pointer;color:#ccc;font-size:.9rem;padding:.3rem;transition:color .2s;}
+    .cart-item-remove:hover{color:var(--rust);}
+    .cart-foot{padding:1.2rem 1.6rem;border-top:1px solid var(--border);background:#fafafa;}
+    .cart-subtotal{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
+    .cart-subtotal-label{font-size:.85rem;color:var(--muted);font-weight:600;}
+    .cart-subtotal-price{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--dark);}
+    .cart-checkout-btn{width:100%;background:var(--dark);color:#fff;border:none;padding:1rem;border-radius:100px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.6rem;transition:background .2s,transform .2s;box-shadow:0 4px 18px rgba(0,0,0,.15);}
+    .cart-checkout-btn:hover{background:var(--green);transform:translateY(-1px);}
+
+    /* SIZE SELECTOR IN MODAL (for add-to-cart) */
+    .sz-btn.selected{border-color:var(--dark);background:var(--dark);color:#fff;}
+    .m-atc{width:100%;background:var(--dark);color:#fff;border:none;padding:.9rem;border-radius:100px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.6rem;margin-bottom:.7rem;transition:background .2s,transform .2s;box-shadow:0 4px 18px rgba(0,0,0,.15);}
+    .m-atc:hover{background:var(--green);transform:translateY(-1px);}
+    .m-atc:disabled{background:#ccc;cursor:not-allowed;transform:none;box-shadow:none;}
+
+    /* ══ CHECKOUT MODAL ══ */
+    .ck-bg{position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.8);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .3s;}
+    .ck-bg.open{opacity:1;pointer-events:all;}
+    .ck-box{background:#fff;border-radius:24px;width:100%;max-width:740px;max-height:92vh;overflow-y:auto;position:relative;transform:translateY(20px) scale(.97);transition:transform .38s cubic-bezier(.34,1.56,.64,1);box-shadow:0 40px 100px rgba(0,0,0,.35);}
+    .ck-bg.open .ck-box{transform:translateY(0) scale(1);}
+    .ck-head{padding:1.8rem 2rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+    .ck-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.04em;}
+    .ck-close{background:rgba(0,0,0,.06);border:none;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+    .ck-close:hover{background:rgba(0,0,0,.13);}
+    .ck-body{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+    .ck-form-side{padding:1.6rem 2rem 2rem;border-right:1px solid var(--border);}
+    .ck-summary-side{padding:1.6rem 2rem 2rem;background:#fafafa;border-radius:0 0 24px 0;}
+    .ck-section-label{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.04em;margin-bottom:1rem;margin-top:.5rem;color:var(--dark);}
+    .ck-field{margin-bottom:.85rem;}
+    .ck-label{font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:.32rem;color:var(--dark);}
+    .ck-input{width:100%;padding:.75rem 1rem;border:1.5px solid var(--border);border-radius:10px;font-family:'Outfit',sans-serif;font-size:.88rem;outline:none;background:#fff;transition:border-color .2s,box-shadow .2s;}
+    .ck-input:focus{border-color:var(--green2);box-shadow:0 0 0 3px rgba(75,174,127,.1);}
+    .ck-row{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
+    /* Payment methods */
+    .pay-methods{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.2rem;}
+    .pay-method{display:flex;align-items:center;gap:.75rem;padding:.8rem 1rem;border:1.5px solid var(--border);border-radius:12px;cursor:pointer;transition:border-color .2s,background .2s;}
+    .pay-method:hover{border-color:var(--green2);background:rgba(75,174,127,.04);}
+    .pay-method.selected{border-color:var(--green);background:rgba(42,96,68,.05);}
+    .pay-method input[type=radio]{display:none;}
+    .pay-method-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+    .pmi-mp{background:#009EE3;color:#fff;}
+    .pmi-card{background:#1a1a1a;color:#fff;}
+    .pmi-cash{background:#4BAE7F;color:#fff;}
+    .pay-method-info strong{display:block;font-weight:700;font-size:.84rem;margin-bottom:.1rem;}
+    .pay-method-info span{font-size:.73rem;color:var(--muted);}
+    /* Summary */
+    .ck-sum-items{display:flex;flex-direction:column;gap:.7rem;margin-bottom:1.2rem;}
+    .ck-sum-item{display:flex;align-items:center;gap:.75rem;}
+    .ck-sum-img{width:48px;height:48px;border-radius:8px;object-fit:cover;background:#eee;flex-shrink:0;}
+    .ck-sum-name{font-size:.82rem;font-weight:600;flex:1;line-height:1.3;}
+    .ck-sum-price{font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--green);}
+    .ck-divider{border:none;border-top:1px solid var(--border);margin:.9rem 0;}
+    .ck-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem;}
+    .ck-total-label{font-weight:700;font-size:.85rem;}
+    .ck-total-price{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;color:var(--dark);}
+    .ck-pay-btn{width:100%;padding:1rem;border:none;border-radius:100px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.6rem;transition:all .2s;box-shadow:0 4px 20px rgba(0,0,0,.15);}
+    .ck-pay-btn.mp{background:#009EE3;color:#fff;}
+    .ck-pay-btn.mp:hover{background:#0087c4;transform:translateY(-1px);}
+    .ck-pay-btn.card{background:#1a1a1a;color:#fff;}
+    .ck-pay-btn.card:hover{background:var(--green);transform:translateY(-1px);}
+    .ck-pay-btn.cash{background:var(--green2);color:#fff;}
+    .ck-pay-btn.cash:hover{background:var(--green);transform:translateY(-1px);}
+    .ck-note{font-size:.74rem;color:var(--muted);text-align:center;margin-top:.7rem;line-height:1.5;}
+    /* Success screen */
+    .ck-success{display:none;flex-direction:column;align-items:center;justify-content:center;padding:3rem 2rem;text-align:center;}
+    .ck-success.show{display:flex;}
+    .ck-success-icon{width:72px;height:72px;border-radius:50%;background:rgba(75,174,127,.15);display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--green2);margin-bottom:1.2rem;}
+    .ck-success h2{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.03em;margin-bottom:.5rem;}
+    .ck-success p{color:var(--muted);font-size:.9rem;line-height:1.6;max-width:340px;}
+    .ck-success .order-num{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.08em;color:var(--green);background:rgba(42,96,68,.08);padding:.4rem 1.2rem;border-radius:100px;margin:.8rem 0;}
+
+    /* ══ ORDERS PANEL ══ */
+    .orders-panel-bg{position:fixed;inset:0;z-index:950;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .3s;display:flex;align-items:center;justify-content:center;padding:1rem;}
+    .orders-panel-bg.open{opacity:1;pointer-events:all;}
+    .orders-panel{background:#fff;border-radius:24px;width:100%;max-width:860px;max-height:90vh;overflow-y:auto;position:relative;transform:translateY(18px);transition:transform .35s cubic-bezier(.34,1.56,.64,1);box-shadow:0 40px 100px rgba(0,0,0,.3);}
+    .orders-panel-bg.open .orders-panel{transform:translateY(0);}
+    .op-head{display:flex;align-items:center;justify-content:space-between;padding:1.6rem 2rem;border-bottom:1px solid var(--border);}
+    .op-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.04em;}
+    .op-close{background:rgba(0,0,0,.06);border:none;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+    .op-close:hover{background:rgba(0,0,0,.13);}
+    .op-body{padding:1.4rem 2rem 2rem;}
+    .op-empty{text-align:center;padding:3rem;color:var(--muted);}
+    .op-empty i{font-size:2.5rem;opacity:.3;display:block;margin-bottom:.8rem;}
+    .order-card{border:1.5px solid var(--border);border-radius:16px;margin-bottom:1rem;overflow:hidden;}
+    .order-card-head{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.2rem;background:#fafafa;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:.5rem;}
+    .order-num-label{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.05em;color:var(--dark);}
+    .order-date{font-size:.74rem;color:var(--muted);}
+    .order-status{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:.25rem .7rem;border-radius:100px;}
+    .status-pending{background:rgba(232,160,48,.15);color:#b07800;}
+    .status-paid{background:rgba(75,174,127,.15);color:var(--green);}
+    .status-cash{background:rgba(107,107,107,.12);color:#555;}
+    .order-card-body{padding:1rem 1.2rem;}
+    .order-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem 1.5rem;margin-bottom:.9rem;}
+    .order-info-item{font-size:.8rem;}
+    .order-info-item strong{display:block;font-weight:700;color:var(--dark);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.1rem;}
+    .order-info-item span{color:var(--muted);}
+    .order-products{display:flex;flex-direction:column;gap:.5rem;border-top:1px solid var(--border);padding-top:.8rem;}
+    .order-product{display:flex;align-items:center;gap:.7rem;font-size:.82rem;}
+    .order-product img{width:40px;height:40px;border-radius:8px;object-fit:cover;background:#eee;}
+    .order-product-name{flex:1;font-weight:600;}
+    .order-product-price{font-family:'Bebas Neue',sans-serif;font-size:.95rem;color:var(--green);}
+    .order-total-row{display:flex;justify-content:space-between;padding-top:.8rem;border-top:1px solid var(--border);margin-top:.5rem;}
+    .order-total-label{font-weight:700;font-size:.82rem;}
+    .order-total-price{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--dark);}
+
+    /* Admin link */
+    .admin-link{position:fixed;bottom:2rem;left:2rem;z-index:700;background:var(--dark);color:#fff;border:none;border-radius:100px;padding:.5rem 1.1rem;font-family:'Outfit',sans-serif;font-weight:700;font-size:.72rem;cursor:pointer;display:flex;align-items:center;gap:.4rem;opacity:.5;transition:opacity .2s;}
+    .admin-link:hover{opacity:1;}
+
+    /* ══ RESPONSIVE ══ */
+    @media(max-width:960px){
+      .hero{grid-template-columns:1fr;min-height:auto;padding-top:3rem;text-align:center;}
+      .hero-sub{margin:0 auto 2rem;}
+      .hero-btns{justify-content:center;}
+      .hero-stats{position:static;transform:none;margin-top:2.5rem;}
+      .pill{display:none;}
+      .info-dark{grid-template-columns:1fr;}
+      .ct-card{grid-template-columns:1fr;}
+      .m-grid{grid-template-columns:1fr;}
+      .m-carousel{border-radius:26px 26px 0 0;}
+      .m-carousel-slide img{min-height:300px;}
+      .sec-top{flex-direction:column;align-items:flex-start;}
+      .testi-grid{grid-template-columns:1fr;}
+      .brand-strip-inner{justify-content:center;}
+      #mob-btn{display:block;}
+      .desktop-nav{display:none;}
+      .foot-inner{flex-direction:column;text-align:center;}
+    }
+    @media(max-width:580px){
+      .prod-grid{grid-template-columns:1fr 1fr;gap:.9rem;}
+      .c-img-wrap{height:195px;}
+      .info-dark{padding:2rem 1.6rem;}
+      .ct-card{padding:1.8rem;}
+      .modal-box{border-radius:20px;}
+      .ck-body{grid-template-columns:1fr;}
+      .ck-form-side{border-right:none;border-bottom:1px solid var(--border);}
+      .ck-summary-side{border-radius:0 0 24px 24px;}
+      .order-info-grid{grid-template-columns:1fr;}
     }
   </style>
- </head>
- <body class="bg-white text-gray-800">
-  <header class="bg-white shadow-md sticky top-0 z-50 border-b border-green-700">
-   <div class="container mx-auto px-6 py-4 flex items-center justify-between">
-    <a class="text-2xl font-bold text-green-700" href="#">
-     Importado Devoto
-    </a>
-    <nav class="hidden md:flex space-x-8 text-green-700 font-semibold">
-     <a class="hover:text-green-900 transition" href="#buzos">
-      Buzos
-     </a>
-     <a class="hover:text-green-900 transition" href="#remeras">
-      Remeras
-     </a>
-     <a class="hover:text-green-900 transition" href="#contacto">
-      Contacto
-     </a>
+</head>
+<body>
+
+<!-- ══ FLOATING WA ══ -->
+<a class="wa-float" href="https://wa.me/541164890594?text=Hola%2C%20quisiera%20consultar%20sobre%20un%20producto." target="_blank" aria-label="WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+  <span class="wa-tooltip">¡Consultanos!</span>
+</a>
+
+<!-- ══ HEADER ══ -->
+<header id="main-header">
+  <div class="nav-wrap">
+    <a class="logo" href="#"><span class="logo-pip"></span>Importado Devoto</a>
+    <nav class="desktop-nav">
+      <a href="#buzos">Buzos</a>
+      <a href="#remeras">Remeras</a>
+      <a href="#nosotros">Nosotros</a>
+      <a class="nav-wa" href="https://wa.me/541164890594" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      <button class="cart-btn" onclick="openCart()">
+        <i class="fas fa-shopping-bag"></i> Carrito
+        <span class="cart-badge" id="cartBadge" style="display:none">0</span>
+      </button>
     </nav>
-    <button class="md:hidden text-green-700 focus:outline-none" id="menu-btn">
-     <i class="fas fa-bars fa-lg">
-     </i>
-    </button>
-   </div>
-   <nav class="hidden md:hidden bg-white border-t border-green-700" id="mobile-menu">
-    <a class="block px-6 py-3 border-b border-green-700 hover:bg-green-50 transition" href="#buzos">
-     Buzos
-    </a>
-    <a class="block px-6 py-3 border-b border-green-700 hover:bg-green-50 transition" href="#remeras">
-     Remeras
-    </a>
-    <a class="block px-6 py-3 hover:bg-green-50 transition" href="#contacto">
-     Contacto
-    </a>
-   </nav>
-  </header>
-  <main class="container mx-auto px-6 py-10">
-   <section class="text-center mb-8">
-    <h1 class="text-4xl md:text-5xl font-extrabold text-green-700 mb-2">
-     La mejor calidad, al mejor precio
-    </h1>
-    <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-6">
-     Descubrí nuestra selección de buzos y remeras, con la calidad y estilo que buscás. Envíos a todo Buenos Aires.
-    </p>
-    <div class="relative w-full max-w-3xl mx-auto">
-     <img src="https://i.imgur.com/Txb8k55.jpeg" alt="Logo Importado Devoto" class="mx-auto rounded-lg shadow-lg w-full max-w-xl" />
+    <button id="mob-btn"><i class="fas fa-bars"></i></button>
+  </div>
+  <nav id="mob-menu">
+    <a href="#buzos">Buzos</a>
+    <a href="#remeras">Remeras</a>
+    <a href="#nosotros">Nosotros</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+</header>
+
+<!-- ══ TICKER ══ -->
+<div class="ticker">
+  <div class="ticker-track" id="tickerTrack">
+    <span class="ticker-item"><i class="fas fa-star"></i> Ropa importada original</span>
+    <span class="ticker-item"><i class="fas fa-truck-fast"></i> Envíos a todo Buenos Aires</span>
+    <span class="ticker-item"><i class="fas fa-shield-check"></i> Marcas H&M · Jack & Jones</span>
+    <span class="ticker-item"><i class="fas fa-tag"></i> Calidad importada · precio local</span>
+    <span class="ticker-item"><i class="fab fa-whatsapp"></i> Consultanos por WhatsApp</span>
+    <span class="ticker-item"><i class="fas fa-map-marker-alt"></i> Base en Villa Devoto · BsAs</span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item"><i class="fas fa-star"></i> Ropa importada original</span>
+    <span class="ticker-item"><i class="fas fa-truck-fast"></i> Envíos a todo Buenos Aires</span>
+    <span class="ticker-item"><i class="fas fa-shield-check"></i> Marcas H&M · Jack & Jones</span>
+    <span class="ticker-item"><i class="fas fa-tag"></i> Calidad importada · precio local</span>
+    <span class="ticker-item"><i class="fab fa-whatsapp"></i> Consultanos por WhatsApp</span>
+    <span class="ticker-item"><i class="fas fa-map-marker-alt"></i> Base en Villa Devoto · BsAs</span>
+  </div>
+</div>
+
+<!-- ══ HERO ══ -->
+<section>
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-chip"><i class="fas fa-star"></i> Ropa importada original</div>
+      <h1 class="hero-title">La mejor<br>calidad al<br><span class="outline">mejor precio</span></h1>
+      <p class="hero-sub">Buzos y remeras importadas de primeras marcas. Envíos a todo Buenos Aires desde Villa Devoto.</p>
+      <div class="hero-btns">
+        <a class="btn-dark" href="#buzos"><i class="fas fa-shopping-bag"></i> Ver catálogo</a>
+        <a class="btn-outline" href="https://wa.me/541164890594" target="_blank"><i class="fab fa-whatsapp"></i> Consultanos</a>
+      </div>
     </div>
-   </section>
-   <section class="mb-20" id="buzos">
-  <h2 class="text-3xl font-bold text-green-700 mb-8 text-center">Buzos</h2>
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-
-    <!-- Buzo Hoodie Crema -->
-    <article onclick="abrirModal('modalBuzoCrema')" class="cursor-pointer bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition border border-green-200">
-      <img src="https://i.imgur.com/SqNxpHu.png" alt="Buzo Hoodie Crema" class="w-full h-64 object-cover" />
-      <div class="p-4">
-        <h3 class="text-xl font-semibold mb-2 text-green-800">Buzo Hoodie Crema</h3>
-        <p class="text-gray-600 mb-4"></p>
-        <p class="text-green-700 font-bold text-lg">$50,000 ARS</p>
-        <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong></p>
+    <div class="hero-right">
+      <div class="hero-logo-frame">
+        <img src="https://i.imgur.com/Txb8k55.jpeg" alt="Importado Devoto"/>
       </div>
-    </article>
-
-    <!-- Buzo Hoodie Gris -->
-   <!-- En <p class="text-gray-600 mb-4">(ACA PODEMOS CAMBIAR LO QUE SE VE POR FUERA DE LOS BUZOS)</p> -->
-    <article onclick="abrirModal('modalBuzoGris')" class="cursor-pointer bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition border border-green-200">
-      <img src="https://i.imgur.com/CK4ae0T.png" alt="Buzo Hoodie Gris" class="w-full h-64 object-cover" />
-      <div class="p-4">
-        <h3 class="text-xl font-semibold mb-2 text-green-800">Buzo Hoodie Gris</h3>
-        <p class="text-gray-600 mb-4"></p>
-        <p class="text-green-700 font-bold text-lg">$50,000 ARS</p>
-        <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> XL (1)</p>
+      <div class="pill pill-1"><i class="fas fa-truck-fast"></i> Envíos BsAs</div>
+      <div class="pill pill-2"><i class="fas fa-shield-check"></i> 100% original</div>
+      <div class="hero-stats">
+        <div><div class="stat-n">H&M</div><div class="stat-l">Marca</div></div>
+        <div class="sdiv"></div>
+        <div><div class="stat-n">13+</div><div class="stat-l">Productos</div></div>
+        <div class="sdiv"></div>
+        <div><div class="stat-n">CABA</div><div class="stat-l">Envíos</div></div>
       </div>
-    </article>
-
-    <!-- Buzo Organic Marrón -->
-    <article onclick="abrirModal('modalBuzoMarron')" class="cursor-pointer bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition border border-green-200">
-      <img src="https://i.imgur.com/lbH7o8S.png" alt="Buzo Organic Marrón" class="w-full h-64 object-cover" />
-      <div class="p-4">
-        <h3 class="text-xl font-semibold mb-2 text-green-800">Buzo Organic Marrón</h3>
-        <p class="text-gray-600 mb-4"></p>
-        <p class="text-green-700 font-bold text-lg">$45,000 ARS</p>
-        <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> XL (1)</p>
-      </div>
-    </article>
-
-    <!-- Buzo Gris Jack & Jones -->
-    <article onclick="abrirModal('modalBuzoJack')" class="cursor-pointer bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition border border-green-200">
-      <img src="https://i.imgur.com/cxJ97XX.png" alt="Buzo Gris Jack & Jones" class="w-full h-64 object-cover" />
-      <div class="p-4">
-        <h3 class="text-xl font-semibold mb-2 text-green-800">Buzo Gris Jack & Jones</h3>
-        <p class="text-gray-600 mb-4"></p>
-        <p class="text-green-700 font-bold text-lg">$50,000 ARS</p>
-        <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> L (1)</p>
-      </div>
-    </article>
-
-<!-- Buzo Polo H&M Negro -->
-<article onclick="abrirModal('modalBuzoPoloNegro')" class="cursor-pointer bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition border border-green-200">
-  <img src="https://i.imgur.com/qYiVZa5.png" alt="Buzo Polo Negro" class="w-full h-64 object-cover" />
-  <div class="p-4">
-    <h3 class="text-xl font-semibold mb-2 text-green-800">Buzo Polo H&amp;M Negro</h3>
-    <p class="text-gray-600 mb-4"></p>
-    <p class="text-green-700 font-bold text-lg">$45,000 ARS</p>
-    <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> L (2), S (1)</p>
-  </div>
-</article>
-
-<!-- Sweater Polo Gris -->
-<article onclick="abrirModal('modalSweaterGris')" class="cursor-pointer bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition border border-green-200">
-  <img src="https://i.imgur.com/4tDnp2o.png" alt="Sweater Polo Gris" class="w-full h-64 object-cover" />
-  <div class="p-4">
-    <h3 class="text-xl font-semibold mb-2 text-green-800">Sweater H&amp;M Polo Gris</h3>
-    <p class="text-gray-600 mb-4"></p>
-    <p class="text-green-700 font-bold text-lg">$45,000 ARS</p>
-    <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> XXL (1), S (2)</p>
-  </div>
-</article>
-
-<!-- Buzo Verde-->
-<article onclick="abrirModal('modalBuzoVerde')" class="cursor-pointer bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition border border-green-200">
-  <img src="https://i.imgur.com/H72Aagu.png" alt="Buzo H&M Verde" class="w-full h-64 object-cover" />
-  <div class="p-4">
-    <h3 class="text-xl font-semibold mb-2 text-green-800">Buzo H&M Verde</h3>
-    <p class="text-gray-600 mb-4"></p>
-    <p class="text-green-700 font-bold text-lg">$40,000 ARS</p>
-    <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> XL (1), M (1)</p>
-  </div>
-</article>
-
+    </div>
   </div>
 </section>
-   <section class="mb-20" id="remeras">
-  <h2 class="text-3xl font-bold text-green-700 mb-8 text-center">
-    Remeras Relaxed Fit H&amp;M
-  </h2>
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-    <!-- Remera Negra -->
-    <article onclick="abrirModal('modalRemeraNegra')" class="cursor-pointer bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition border border-green-200">
-  <img src="https://i.imgur.com/AubO6xY.jpeg" alt="Remera negra" class="w-full h-64 object-cover" />
-  <div class="p-4">
-    <h3 class="text-xl font-semibold mb-2 text-green-800">Remera Negra</h3>
-    <p class="text-gray-600 mb-4"></p>
-    <p class="text-green-700 font-bold text-lg">$30,000 ARS</p>
-<p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> XL (1)</p>
+
+<!-- ══ BRAND STRIP ══ -->
+<div class="brand-strip reveal">
+  <div class="brand-strip-inner">
+    <span class="brand-label">Marcas disponibles</span>
+    <div class="brand-names">
+      <span class="brand-name">H&M</span>
+      <span class="brand-name">Jack & Jones</span>
+    </div>
   </div>
-</article>
+</div>
 
-<!-- Remera Rosa -->
-<article onclick="abrirModal('modalRemeraRosa')" class="cursor-pointer bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition border border-green-200">
-  <img src="https://i.imgur.com/uxBvwif.jpeg" alt="Remera rosa" class="w-full h-64 object-cover" />
-  <div class="p-4">
-    <h3 class="text-xl font-semibold mb-2 text-green-800">Remera Rosa</h3>
-    <p class="text-gray-600 mb-4"></p>
-  <p class="text-green-700 font-bold text-lg">$30,000 ARS</p>
-    <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> M (1), L (1)</p>
+<!-- ══ BUZOS ══ -->
+<div class="sec-divider" style="margin-top:4rem;"><hr></div>
+<div class="sec-wrap reveal" id="buzos">
+  <div class="sec-top">
+    <div><span class="sec-label">Colección</span><h2 class="sec-title">Buzos</h2></div>
+    <span class="sec-count">7 productos</span>
   </div>
-</article>
+</div>
 
-<!-- Remera Marrón -->
-<article onclick="abrirModal('modalRemeraMarron')" class="cursor-pointer bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition border border-green-200">
-  <img src="https://i.imgur.com/CpI29Ja.jpeg" alt="Remera marrón" class="w-full h-64 object-cover" />
-  <div class="p-4">
-    <h3 class="text-xl font-semibold mb-2 text-green-800">Remera Marrón</h3>
-    <p class="text-gray-600 mb-4"></p>
-      <p class="text-green-700 font-bold text-lg">$30,000 ARS</p>
-    <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> L (2), S (1)</p>
+<div class="filter-bar reveal">
+  <span class="filter-label">Filtrar talle:</span>
+  <button class="filter-btn active" data-size="all">Todos</button>
+  <button class="filter-btn" data-size="XS">XS</button>
+  <button class="filter-btn" data-size="S">S</button>
+  <button class="filter-btn" data-size="M">M</button>
+  <button class="filter-btn" data-size="L">L</button>
+  <button class="filter-btn" data-size="XL">XL</button>
+  <button class="filter-btn" data-size="XXL">XXL</button>
+</div>
+
+<div class="grid-wrap" id="buzoGrid">
+  <div class="prod-grid">
+
+    <article class="card" data-sizes="consultar" onclick="openM('mBuzoCrema')">
+      <div class="c-img-wrap">
+        <img class="cimg" src="https://i.imgur.com/SqNxpHu.png" alt="Buzo Hoodie Crema"/>
+        <div class="c-overlay"></div>
+        <div class="c-btn"><i class="fas fa-eye"></i> Ver detalle</div>
+        <span class="c-badge">Nuevo</span>
+      </div>
+      <div class="c-body">
+        <div class="c-brand">H&M · Hoodie</div>
+        <div class="c-name">Buzo Hoodie Crema</div>
+        <div class="c-foot"><span class="c-price">$50.000</span><div class="c-sizes"><span class="sz-chip">Consultar</span></div></div>
+      </div>
+    </article>
+
+    <article class="card" data-sizes="consultar" onclick="openM('mBuzoGris')">
+      <div class="c-img-wrap">
+        <img class="cimg" src="https://i.imgur.com/CK4ae0T.png" alt="Buzo Hoodie Gris"/>
+        <div class="c-overlay"></div>
+        <div class="c-btn"><i class="fas fa-eye"></i> Ver detalle</div>
+      </div>
+      <div class="c-body">
+        <div class="c-brand">H&M · Hoodie</div>
+        <div class="c-name">Buzo Hoodie Gris</div>
+        <div class="c-foot"><span class="c-price">$50.000</span><div class="c-sizes"><span class="sz-chip">Consultar</span></div></div>
+      </div>
+    </article>
+
+    <article class="card" data-sizes="XL" onclick="openM('mBuzoMarron')">
+      <div class="c-img-wrap">
+        <img class="cimg" src="https://i.imgur.com/lbH7o8S.png" alt="Buzo Organic Marrón"/>
+        <div class="c-overlay"></div>
+        <div class="c-btn"><i class="fas fa-eye"></i> Ver detalle</div>
+      </div>
+      <div class="c-body">
+        <div class="c-brand">H&M · Organic</div>
+        <div class="c-name">Buzo Organic Marrón</div>
+        <div class="c-foot"><span class="c-price">$45.000</span><div class="c-sizes"><span class="sz-chip">XL</span></div></div>
+      </div>
+    </article>
+
+    <article class="card" data-sizes="L" onclick="openM('mBuzoJack')">
+      <div class="c-img-wrap">
+        <img class="cimg" src="https://i.imgur.com/cxJ97XX.png" alt="Buzo Gris Jack & Jones"/>
+        <div class="c-overlay"></div>
+        <div class="c-btn"><i class="fas fa-eye"></i> Ver detalle</div>
+      </div>
+      <div class="c-body">
+        <div class="c-brand">Jack & Jones</div>
+        <div class="c-name">Buzo Gris Jack & Jones</div>
+        <div class="c-foot"><span class="c-price">$50.000</span><div class="c-sizes"><span class="sz-chip">L</span></div></div>
+      </div>
+    </article>
+
+    <article class="card" data-sizes="S L" onclick="openM('mBuzoPoloNegro')">
+      <div class="c-img-wrap">
+        <img class="cimg" src="https://i.imgur.com/qYiVZa5.png" alt="Buzo Polo H&M Negro"/>
+        <div class="c-overlay"></div>
+        <div class="c-btn"><i class="fas fa-eye"></i> Ver detalle</div>
+      </div>
+      <div class="c-body">
+        <div class="c-brand">H&M · Polo Loose Fit</div>
+        <div class="c-name">Buzo Polo H&M Negro</div>
+        <div class="c-foot"><span class="c-price">$45.000</span><div class="c-sizes"><span class="sz-chip">L</span><span class="sz-chip">S</span></div></div>
+      </div>
+    </article>
+
+    <article class="card" data-sizes="S XXL" onclick="openM('mSweaterGris')">
+      <div class="c-img-wrap">
+        <img class="cimg" src="https://i.imgur.com/4tDnp2o.png" alt="Sweater H&M Polo Gris"/>
+        <div class="c-overlay"></div>
+        <div class="c-btn"><i class="fas fa-eye"></i> Ver detalle</div>
+      </div>
+      <div class="c-body">
+        <div class="c-brand">H&M · Polo Slim Fit</div>
+        <div class="c-name">Sweater H&M Polo Gris</div>
+        <div class="c-foot"><span class="c-price">$45.000</span><div class="c-sizes"><span class="sz-chip">XXL</span><span class="sz-chip">S</span></div></div>
+      </div>
+    </article>
+
+    <article class="card" data-sizes="M XL" onclick="openM('mBuzoVerde')">
+      <div class="c-img-wrap">
+        <img class="cimg" src="https://i.imgur.com/H72Aagu.png" alt="Buzo H&M Verde"/>
+        <div class="c-overlay"></div>
+        <div class="c-btn"><i class="fas fa-eye"></i> Ver detalle</div>
+      </div>
+      <div class="c-body">
+        <div class="c-brand">H&M · Loose Fit</div>
+        <div class="c-name">Buzo H&M Verde</div>
+        <div class="c-foot"><span class="c-price">$40.000</span><div class="c-sizes"><span class="sz-chip">XL</span><span class="sz-chip">M</span></div></div>
+      </div>
+    </article>
+
   </div>
-</article>
+</div>
 
-<!-- Remera Crema -->
-<article onclick="abrirModal('modalRemeraCrema')" class="cursor-pointer bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition border border-green-200">
-  <img src="https://i.imgur.com/KvWCiCD.jpeg" alt="Remera crema" class="w-full h-64 object-cover" />
-  <div class="p-4">
-    <h3 class="text-xl font-semibold mb-2 text-green-800">Remera Crema</h3>
-    <p class="text-gray-600 mb-4"></p>
-     <p class="text-green-700 font-bold text-lg">$30,000 ARS</p>
-    <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> L (1), XL (1)</p>
+<!-- ══ REMERAS ══ -->
+<div class="sec-divider"><hr></div>
+<div class="sec-wrap reveal" id="remeras">
+  <div class="sec-top">
+    <div><span class="sec-label">Colección</span><h2 class="sec-title">Remeras</h2></div>
+    <span class="sec-count">6 productos</span>
   </div>
-</article>
+</div>
 
-<!-- Marrón Manga Larga -->
-<article onclick="abrirModal('modalRemeraMarronML')" class="cursor-pointer bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition border border-green-200">
-  <img src="https://i.imgur.com/ZikUv4E.png" alt="Remera Marrón Manga Larga" class="w-full h-64 object-cover" />
-  <div class="p-4">
-    <h3 class="text-xl font-semibold mb-2 text-green-800">Remera Marrón Manga Larga</h3>
-    <p class="text-gray-600 mb-4"></p>
-    <p class="text-green-700 font-bold text-lg">$30,000 ARS</p>
-    <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> XL (1), L (1), M (1)</p>
+<div class="filter-bar reveal" id="remeraFilter">
+  <span class="filter-label">Filtrar talle:</span>
+  <button class="filter-btn active" data-size="all">Todos</button>
+  <button class="filter-btn" data-size="XS">XS</button>
+  <button class="filter-btn" data-size="S">S</button>
+  <button class="filter-btn" data-size="M">M</button>
+  <button class="filter-btn" data-size="L">L</button>
+  <button class="filter-btn" data-size="XL">XL</button>
+  <button class="filter-btn" data-size="XXL">XXL</button>
+</div>
+
+<div class="grid-wrap" id="remeraGrid">
+  <div class="prod-grid">
+
+    <article class="card" data-sizes="XL" onclick="openM('mRemeraNegra')">
+      <div class="c-img-wrap">
+        <img class="cimg" src="https://i.imgur.com/AubO6xY.jpeg" alt="Remera Negra"/>
+        <div class="c-overlay"></div>
+        <div class="c-btn"><i class="fas fa-eye"></i> Ver detalle</div>
+      </div>
+      <div class="c-body">
+        <div class="c-brand">H&M · Relaxed Fit</div>
+        <div class="c-name">Remera Negra</div>
+        <div class="c-foot"><span class="c-price">$30.000</span><div class="c-sizes"><span class="sz-chip">XL</span></div></div>
+      </div>
+    </article>
+
+    <article class="card" data-sizes="M L" onclick="openM('mRemeraRosa')">
+      <div class="c-img-wrap">
+        <img class="cimg" src="https://i.imgur.com/uxBvwif.jpeg" alt="Remera Rosa"/>
+        <div class="c-overlay"></div>
+        <div class="c-btn"><i class="fas fa-eye"></i> Ver detalle</div>
+      </div>
+      <div class="c-body">
+        <div class="c-brand">H&M · Relaxed Fit</div>
+        <div class="c-name">Remera Rosa</div>
+        <div class="c-foot"><span class="c-price">$30.000</span><div class="c-sizes"><span class="sz-chip">M</span><span class="sz-chip">L</span></div></div>
+      </div>
+    </article>
+
+    <article class="card" data-sizes="S L" onclick="openM('mRemeraMarron')">
+      <div class="c-img-wrap">
+        <img class="cimg" src="https://i.imgur.com/CpI29Ja.jpeg" alt="Remera Marrón"/>
+        <div class="c-overlay"></div>
+        <div class="c-btn"><i class="fas fa-eye"></i> Ver detalle</div>
+      </div>
+      <div class="c-body">
+        <div class="c-brand">H&M · Relaxed Fit</div>
+        <div class="c-name">Remera Marrón</div>
+        <div class="c-foot"><span class="c-price">$30.000</span><div class="c-sizes"><span class="sz-chip">L</span><span class="sz-chip">S</span></div></div>
+      </div>
+    </article>
+
+    <article class="card" data-sizes="L XL" onclick="openM('mRemeraCrema')">
+      <div class="c-img-wrap">
+        <img class="cimg" src="https://i.imgur.com/KvWCiCD.jpeg" alt="Remera Crema"/>
+        <div class="c-overlay"></div>
+        <div class="c-btn"><i class="fas fa-eye"></i> Ver detalle</div>
+      </div>
+      <div class="c-body">
+        <div class="c-brand">H&M · Relaxed Fit</div>
+        <div class="c-name">Remera Crema</div>
+        <div class="c-foot"><span class="c-price">$30.000</span><div class="c-sizes"><span class="sz-chip">L</span><span class="sz-chip">XL</span></div></div>
+      </div>
+    </article>
+
+    <article class="card" data-sizes="M L XL" onclick="openM('mRemeraMarronML')">
+      <div class="c-img-wrap">
+        <img class="cimg" src="https://i.imgur.com/ZikUv4E.png" alt="Remera Marrón Manga Larga"/>
+        <div class="c-overlay"></div>
+        <div class="c-btn"><i class="fas fa-eye"></i> Ver detalle</div>
+      </div>
+      <div class="c-body">
+        <div class="c-brand">H&M · Loose Fit</div>
+        <div class="c-name">Remera Marrón Manga Larga</div>
+        <div class="c-foot"><span class="c-price">$30.000</span><div class="c-sizes"><span class="sz-chip">XL</span><span class="sz-chip">L</span><span class="sz-chip">M</span></div></div>
+      </div>
+    </article>
+
+    <article class="card" data-sizes="XS" onclick="openM('mRemeraWednesday')">
+      <div class="c-img-wrap">
+        <img class="cimg" src="https://i.imgur.com/IJqQXL2.png" alt="Remera Wednesday"/>
+        <div class="c-overlay"></div>
+        <div class="c-btn"><i class="fas fa-eye"></i> Ver detalle</div>
+      </div>
+      <div class="c-body">
+        <div class="c-brand">Regular Fit</div>
+        <div class="c-name">Remera Manga Larga Wednesday</div>
+        <div class="c-foot"><span class="c-price">$30.000</span><div class="c-sizes"><span class="sz-chip">XS</span></div></div>
+      </div>
+    </article>
+
   </div>
-</article>
+</div>
 
-<!-- Wednesday -->
-<article onclick="abrirModal('modalRemeraWednesday')" class="cursor-pointer bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition border border-green-200">
-  <img src="https://i.imgur.com/IJqQXL2.png" alt="Remera Wednesday" class="w-full h-64 object-cover" />
-  <div class="p-4">
-    <h3 class="text-xl font-semibold mb-2 text-green-800">Remera Manga Larga Wednesday</h3>
-    <p class="text-gray-600 mb-4"></p>
-    <p class="text-green-700 font-bold text-lg">$30,000 ARS</p>
-    <p class="text-sm text-gray-600 mt-2"><strong>Talles disponibles:</strong> XS (2)</p>
+<!-- ══ TESTIMONIALS ══ -->
+<div class="testi-wrap reveal" id="nosotros">
+  <div style="margin-bottom:1.5rem;">
+    <span class="sec-label">Clientes</span>
+    <h2 class="sec-title">Lo que dicen de nosotros</h2>
   </div>
-</article>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Excelente calidad, el buzo llegó en perfecto estado. La atención por WhatsApp fue muy rápida. Lo recomiendo al 100%."</p>
+      <span class="testi-author">— Martín G., Palermo</span>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Compré la remera crema y es idéntica a la foto. La tela es muy suave y el envío llegó en 2 días. ¡Volvería a comprar!"</p>
+      <span class="testi-author">— Valentina R., Flores</span>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"El sweater polo gris es una joya. No encontrás esos precios en ningún lado. Súper recomendable para ropa de marca."</p>
+      <span class="testi-author">— Lucas P., Belgrano</span>
+    </div>
+  </div>
+</div>
 
-   </section>
+<!-- ══ NOSOTROS ══ -->
+<div class="info-wrap reveal">
+  <div class="info-dark">
+    <div>
+      <span class="info-tag">Quiénes somos</span>
+      <h2 class="info-h">Somos<br>Importado Devoto</h2>
+      <p class="info-p">Importamos ropa de primeras marcas. Te traemos lo mejor al mejor precio, sin vueltas. Base en Villa Devoto, Buenos Aires.</p>
+      <p class="info-p">¿Buscás algo que no ves en el catálogo? Escribinos por WhatsApp o redes sociales.</p>
+      <a class="info-cta" href="https://wa.me/541164890594" target="_blank"><i class="fab fa-whatsapp"></i> Escribinos ahora</a>
+    </div>
+    <div class="feat-list">
+      <div class="feat"><div class="feat-ico ico-g"><i class="fas fa-award"></i></div><div class="feat-txt"><strong>Marcas originales</strong><span>H&M, Jack & Jones y más</span></div></div>
+      <div class="feat"><div class="feat-ico ico-a"><i class="fas fa-truck-fast"></i></div><div class="feat-txt"><strong>Envíos a todo Buenos Aires</strong><span>Rápidos y seguros</span></div></div>
+      <div class="feat"><div class="feat-ico ico-r"><i class="fas fa-tag"></i></div><div class="feat-txt"><strong>Precios imbatibles</strong><span>Calidad importada, precio local</span></div></div>
+    </div>
+  </div>
+</div>
 
-<!-- Sección Info -->
-   <section class="bg-green-50 py-12 px-6 rounded-lg shadow-md max-w-4xl mx-auto mb-20 border border-green-300">
-  <h2 class="text-3xl font-bold text-green-700 mb-6 text-center">Somos Importado Devoto</h2>
-  <p class="text-gray-700 text-lg mb-4 text-center max-w-2xl mx-auto">
-    Importamos ropa de primeras marcas. Te traemos lo mejor, al mejor precio, sin vueltas. Nuestra base está en Villa Devoto, pero hacemos envíos a todo Buenos Aires.
-  </p>
-  <p class="text-gray-700 text-lg text-center max-w-2xl mx-auto">
-    Si querés algo que no ves, escribinos por WhatsApp o redes sociales.
-  </p>
-</section>
-
-   <section class="bg-white rounded-lg shadow-md p-8 max-w-3xl mx-auto mb-20 border border-green-300" id="contacto">
-    <h2 class="text-3xl font-bold text-green-700 mb-6 text-center">
-     Contacto
-    </h2>
-    <form action="#" class="space-y-6" method="POST">
-     <div>
-      <label class="block text-gray-700 font-semibold mb-2" for="nombre">
-       Nombre
-      </label>
-      <input class="w-full border border-green-400 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" id="nombre" name="nombre" placeholder="Tu nombre completo" required="" type="text"/>
-     </div>
-     <div>
-      <label class="block text-gray-700 font-semibold mb-2" for="email">
-       Correo Electrónico
-      </label>
-      <input class="w-full border border-green-400 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" id="email" name="email" placeholder="tuemail@ejemplo.com" required="" type="email"/>
-     </div>
-     <div>
-      <label class="block text-gray-700 font-semibold mb-2" for="mensaje">
-       Mensaje
-      </label>
-      <textarea class="w-full border border-green-400 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" id="mensaje" name="mensaje" placeholder="Escribí tu consulta o mensaje aquí" required="" rows="4"></textarea>
-     </div>
-     <button class="w-full bg-green-700 text-white font-bold py-3 rounded-md hover:bg-green-800 transition" type="submit">
-      Enviar Mensaje
-     </button>
+<!-- ══ CONTACT ══ -->
+<div class="ct-wrap reveal" id="contacto">
+  <div class="ct-card">
+    <div>
+      <h2 class="ct-title">Contacto</h2>
+      <p class="ct-sub">¿Tenés una consulta? Escribinos, te respondemos rápido.</p>
+      <div class="ct-items">
+        <a class="ct-item" href="tel:+541164890594"><div class="ct-ico"><i class="fas fa-phone"></i></div><div class="ct-itxt"><strong>Teléfono</strong><span>+54 11 6489 0594</span></div></a>
+        <a class="ct-item" href="/cdn-cgi/l/email-protection#7f16120f100d0b1e1b101b1a09100b104e4d3f18121e1613511c1012"><div class="ct-ico"><i class="fas fa-envelope"></i></div><div class="ct-itxt"><strong>Email</strong><span><span class="__cf_email__" data-cfemail="573e3a27382523363338333221382338666517303a363e3b7934383a">[email&#160;protected]</span></span></div></a>
+        <a class="ct-item" href="https://www.instagram.com/importado.devoto/" target="_blank"><div class="ct-ico"><i class="fab fa-instagram"></i></div><div class="ct-itxt"><strong>Instagram</strong><span>@importado.devoto</span></div></a>
+        <div class="ct-item"><div class="ct-ico"><i class="fas fa-map-marker-alt"></i></div><div class="ct-itxt"><strong>Ubicación</strong><span>Villa Devoto, Buenos Aires</span></div></div>
+      </div>
+    </div>
+    <form class="ct-form" onsubmit="return false;">
+      <div><label class="flabel">Nombre</label><input class="finput" placeholder="Tu nombre completo" type="text"/></div>
+      <div><label class="flabel">Correo Electrónico</label><input class="finput" placeholder="tuemail@ejemplo.com" type="email"/></div>
+      <div><label class="flabel">Mensaje</label><textarea class="finput" placeholder="Escribí tu consulta aquí..." rows="4"></textarea></div>
+      <button class="fsend" type="submit"><i class="fas fa-paper-plane"></i> Enviar Mensaje</button>
     </form>
-    <div class="mt-8 text-center text-gray-600">
-     <p>
-      <i class="fas fa-phone-alt mr-2 text-green-700">
-      </i>
-      Teléfono: +54 11 6489 0594
-     </p>
-     <p>
-      <i class="fas fa-envelope mr-2 text-green-700">
-      </i>
-      Email: importadodevoto12@gmail.com
-     </p>
-     <p>
-      <i class="fas fa-map-marker-alt mr-2 text-green-700">
-      </i>
-      Buenos Aires, Argentina
-     </p>
-    </div>
-   </section>
-
-<!-- Sección Medios de Pago -->
-<section class="bg-gray-100 py-10 mt-12">
-  <div class="max-w-6xl mx-auto text-center">
-    <h2 class="text-2xl font-bold text-green-700 mb-4">Medios de pago</h2>
-    <p class="text-gray-700 mb-6">Aceptamos transferencias bancarias. Comprá seguro y rápido!</p>
-    <div class="flex justify-center gap-6 flex-wrap">
-      <img src="https://i.imgur.com/UDLq4lg.png" alt="Pago con tarjeta" class="h-12" />
-      <img src="https://i.imgur.com/EsYzTC3.png" alt="Métodos de pago alternativos" class="h-12" />
-    </div>
   </div>
-</section>
+</div>
 
-  </main>
-<footer class="bg-green-700 text-white py-8">
-  <div class="container mx-auto px-6 text-center">
-    <p class="mb-4 text-lg">©️ 2024 Importado Devoto. Todos los derechos reservados.</p>
-    <div class="flex justify-center space-x-6 text-2xl">
-      <a href="https://www.instagram.com/importado.devoto/" target="_blank" class="hover:text-green-300" aria-label="Instagram">
-        <i class="fab fa-instagram"></i>
-      </a>
-      <a href="mailto:importadodevoto12@gmail.com" class="hover:text-green-300" aria-label="Email">
-        <i class="fas fa-envelope"></i>
-      </a>
+<!-- ══ PAYMENT ══ -->
+<div class="pay-band">
+  <h2 class="pay-h">Medios de pago</h2>
+  <p class="pay-sub">Aceptamos transferencias bancarias. Comprá seguro y rápido.</p>
+  <div class="pay-logos">
+    <img src="https://i.imgur.com/UDLq4lg.png" alt="Santander"/>
+    <img src="https://i.imgur.com/EsYzTC3.png" alt="Mercado Pago"/>
+  </div>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="foot-inner">
+    <span class="foot-brand">Importado Devoto</span>
+    <div class="foot-links">
+      <a href="https://www.instagram.com/importado.devoto/" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://wa.me/541164890594" target="_blank"><i class="fab fa-whatsapp"></i></a>
+      <a href="/cdn-cgi/l/email-protection#0f66627f607d7b6e6b606b6a79607b603e3d4f68626e6663216c6062"><i class="fas fa-envelope"></i></a>
     </div>
+    <span class="foot-copy">© 2024 Importado Devoto. Todos los derechos reservados.</span>
   </div>
 </footer>
 
+<!-- ══ CART DRAWER ══ -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-head">
+    <span class="cart-head-title">Tu Carrito</span>
+    <button class="cart-close-btn" onclick="closeCart()"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty" id="cartEmpty">
+      <i class="fas fa-shopping-bag"></i>
+      <p>Tu carrito está vacío</p>
+    </div>
+  </div>
+  <div class="cart-foot" id="cartFoot" style="display:none">
+    <div class="cart-subtotal">
+      <span class="cart-subtotal-label">Total</span>
+      <span class="cart-subtotal-price" id="cartTotal">$0</span>
+    </div>
+    <button class="cart-checkout-btn" onclick="openCheckout()">
+      <i class="fas fa-lock"></i> Finalizar compra
+    </button>
+  </div>
+</div>
 
-<script>
-   const menuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
+<!-- ══ CHECKOUT MODAL ══ -->
+<div class="ck-bg" id="ckBg">
+  <div class="ck-box">
+    <!-- Success screen (hidden by default) -->
+    <div class="ck-success" id="ckSuccess">
+      <div class="ck-success-icon"><i class="fas fa-check"></i></div>
+      <h2>¡Pedido recibido!</h2>
+      <p>Tu orden fue registrada. Te contactaremos pronto para coordinar el envío.</p>
+      <div class="order-num" id="successOrderNum">#000000</div>
+      <p style="font-size:.8rem;color:var(--muted);margin-top:.5rem;">Guardamos tu pedido en el historial de esta sesión.</p>
+      <button class="cart-checkout-btn" style="max-width:280px;margin-top:1.5rem;" onclick="closeCk();closeCart();">
+        <i class="fas fa-check"></i> Cerrar
+      </button>
+    </div>
 
-    menuBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
+    <!-- Checkout form (visible by default) -->
+    <div id="ckForm">
+      <div class="ck-head">
+        <span class="ck-title">Finalizar compra</span>
+        <button class="ck-close" onclick="closeCk()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="ck-body">
+        <!-- LEFT: Form -->
+        <div class="ck-form-side">
+          <div class="ck-section-label">Datos personales</div>
+          <div class="ck-field">
+            <label class="ck-label">Nombre completo</label>
+            <input class="ck-input" id="ckNombre" placeholder="Ej: Juan García" type="text"/>
+          </div>
+          <div class="ck-row">
+            <div class="ck-field">
+              <label class="ck-label">Email</label>
+              <input class="ck-input" id="ckEmail" placeholder="tu@email.com" type="email"/>
+            </div>
+            <div class="ck-field">
+              <label class="ck-label">Teléfono</label>
+              <input class="ck-input" id="ckTel" placeholder="11 1234-5678" type="tel"/>
+            </div>
+          </div>
+
+          <div class="ck-section-label" style="margin-top:1rem;">Dirección de envío</div>
+          <div class="ck-field">
+            <label class="ck-label">Calle y número</label>
+            <input class="ck-input" id="ckCalle" placeholder="Ej: Av. Corrientes 1234" type="text"/>
+          </div>
+          <div class="ck-row">
+            <div class="ck-field">
+              <label class="ck-label">Piso / Depto (opcional)</label>
+              <input class="ck-input" id="ckDepto" placeholder="3B" type="text"/>
+            </div>
+            <div class="ck-field">
+              <label class="ck-label">Código Postal</label>
+              <input class="ck-input" id="ckCp" placeholder="1425" type="text"/>
+            </div>
+          </div>
+          <div class="ck-field">
+            <label class="ck-label">Barrio / Localidad</label>
+            <input class="ck-input" id="ckBarrio" placeholder="Ej: Palermo, Devoto..." type="text"/>
+          </div>
+
+          <div class="ck-section-label" style="margin-top:1rem;">Método de pago</div>
+          <div class="pay-methods" id="payMethods">
+            <label class="pay-method selected" onclick="selectPay(this,'mp')">
+              <input type="radio" name="pago" value="mp" checked/>
+              <div class="pay-method-icon pmi-mp"><i class="fas fa-wallet"></i></div>
+              <div class="pay-method-info">
+                <strong>Mercado Pago</strong>
+                <span>Tarjeta, débito, billetera virtual</span>
+              </div>
+            </label>
+            <label class="pay-method" onclick="selectPay(this,'card')">
+              <input type="radio" name="pago" value="card"/>
+              <div class="pay-method-icon pmi-card"><i class="fas fa-credit-card"></i></div>
+              <div class="pay-method-info">
+                <strong>Tarjeta crédito / débito</strong>
+                <span>Visa, Mastercard, AMEX</span>
+              </div>
+            </label>
+            <label class="pay-method" onclick="selectPay(this,'cash')">
+              <input type="radio" name="pago" value="cash"/>
+              <div class="pay-method-icon pmi-cash"><i class="fas fa-money-bill-wave"></i></div>
+              <div class="pay-method-info">
+                <strong>Efectivo</strong>
+                <span>Rapipago · Pago Fácil · En mano</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- RIGHT: Summary -->
+        <div class="ck-summary-side">
+          <div class="ck-section-label">Resumen del pedido</div>
+          <div class="ck-sum-items" id="ckSumItems"></div>
+          <hr class="ck-divider"/>
+          <div class="ck-total-row">
+            <span class="ck-total-label">Total a pagar</span>
+            <span class="ck-total-price" id="ckTotalPrice">$0</span>
+          </div>
+          <button class="ck-pay-btn mp" id="ckPayBtn" onclick="procesarPago()">
+            <i class="fas fa-lock"></i> Pagar con Mercado Pago
+          </button>
+          <p class="ck-note">
+            🔒 Pago seguro procesado por Mercado Pago.<br/>
+            Tu información está protegida.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ORDERS PANEL ══ -->
+<div class="orders-panel-bg" id="ordersPanelBg">
+  <div class="orders-panel">
+    <div class="op-head">
+      <span class="op-title">Historial de Órdenes</span>
+      <button class="op-close" onclick="closeOrders()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="op-body" id="opBody">
+      <div class="op-empty"><i class="fas fa-receipt"></i>No hay órdenes todavía.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Admin button -->
+<button class="admin-link" onclick="openOrders()">
+  <i class="fas fa-receipt"></i> Ver órdenes
+</button>
+
+<!-- ══════════════ MODALS ══════════════ -->
+
+<!-- Buzo Hoodie Crema -->
+<div class="modal-bg" id="mBuzoCrema">
+  <div class="modal-box">
+    <button class="m-close" onclick="closeM('mBuzoCrema')"><i class="fas fa-times"></i></button>
+    <div class="m-grid">
+      <div class="m-carousel">
+        <div class="m-carousel-track" id="car-mBuzoCrema">
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/SqNxpHu.png" alt="Buzo Hoodie Crema 1"/></div>
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/mfF9UGx.png" alt="Buzo Hoodie Crema 2"/></div>
+        </div>
+        <button class="carousel-prev" onclick="carPrev('mBuzoCrema')"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-next" onclick="carNext('mBuzoCrema')"><i class="fas fa-chevron-right"></i></button>
+        <div class="carousel-dots" id="dots-mBuzoCrema">
+          <button class="c-dot active" onclick="carGo('mBuzoCrema',0)"></button>
+          <button class="c-dot" onclick="carGo('mBuzoCrema',1)"></button>
+        </div>
+      </div>
+      <div class="m-info">
+        <div class="m-brand">H&M · Hoodie</div>
+        <h2 class="m-title">Buzo Hoodie Crema</h2>
+        <p class="m-desc">Buzo de H&M con capucha. Suave, abrigado y con estilo relajado. Perfecto para el día a día.</p>
+        <div class="m-price">$50.000 ARS</div>
+        <div class="sz-label">Seleccioná tu talle</div>
+        <div class="sz-row" data-modal="mBuzoCrema">
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoCrema')">XS</div><div class="sz-btn" onclick="selectSz(this,'mBuzoCrema')">S</div><div class="sz-btn" onclick="selectSz(this,'mBuzoCrema')">M</div>
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoCrema')">L</div><div class="sz-btn" onclick="selectSz(this,'mBuzoCrema')">XL</div><div class="sz-btn" onclick="selectSz(this,'mBuzoCrema')">XXL</div>
+        </div>
+        <button class="m-atc" id="atc-mBuzoCrema" disabled onclick="addToCart('mBuzoCrema','Buzo Hoodie Crema','H&M · Hoodie',50000,'https://i.imgur.com/SqNxpHu.png')">
+          <i class="fas fa-shopping-bag"></i> Agregar al carrito
+        </button>
+        <a class="m-wa" href="https://wa.me/541164890594?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20el%20Buzo%20Hoodie%20Crema%20en%20talle%20___." target="_blank"><i class="fab fa-whatsapp"></i> Consultar por WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Buzo Hoodie Gris -->
+<div class="modal-bg" id="mBuzoGris">
+  <div class="modal-box">
+    <button class="m-close" onclick="closeM('mBuzoGris')"><i class="fas fa-times"></i></button>
+    <div class="m-grid">
+      <div class="m-carousel">
+        <div class="m-carousel-track" id="car-mBuzoGris">
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/CK4ae0T.png" alt="Buzo Hoodie Gris 1"/></div>
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/g4sKD6E.png" alt="Buzo Hoodie Gris 2"/></div>
+        </div>
+        <button class="carousel-prev" onclick="carPrev('mBuzoGris')"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-next" onclick="carNext('mBuzoGris')"><i class="fas fa-chevron-right"></i></button>
+        <div class="carousel-dots" id="dots-mBuzoGris">
+          <button class="c-dot active" onclick="carGo('mBuzoGris',0)"></button>
+          <button class="c-dot" onclick="carGo('mBuzoGris',1)"></button>
+        </div>
+      </div>
+            <div class="m-info">
+        <div class="m-brand">H&M · Hoodie</div>
+        <h2 class="m-title">Buzo Hoodie Gris</h2>
+        <p class="m-desc">Buzo de H&M. Suave, abrigado y con estilo relajado.</p>
+        <div class="m-price">$50.000 ARS</div>
+        <div class="sz-label">Seleccioná tu talle</div>
+        <div class="sz-row" data-modal="mBuzoGris">
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoGris')">XS</div>
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoGris')">S</div>
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoGris')">M</div>
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoGris')">L</div>
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoGris')">XL</div>
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoGris')">XXL</div>
+        </div>
+        <button class="m-atc" id="atc-mBuzoGris" disabled onclick="addToCart('mBuzoGris','Buzo Hoodie Gris','HandM · Hoodie',50000,'https://i.imgur.com/CK4ae0T.png')">
+          <i class="fas fa-shopping-bag"></i> Agregar al carrito
+        </button>
+        <a class="m-wa" href="https://wa.me/541164890594?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20el%20Buzo%20Hoodie%20Gris%20en%20talle%20___." target="_blank"><i class="fab fa-whatsapp"></i> Consultar por WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Buzo Organic Marrón -->
+<div class="modal-bg" id="mBuzoMarron">
+  <div class="modal-box">
+    <button class="m-close" onclick="closeM('mBuzoMarron')"><i class="fas fa-times"></i></button>
+    <div class="m-grid">
+      <div class="m-carousel">
+        <div class="m-carousel-track" id="car-mBuzoMarron">
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/lbH7o8S.png" alt="Buzo Organic Marrón 1"/></div>
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/icJ32pF.png" alt="Buzo Organic Marrón 2"/></div>
+        </div>
+        <button class="carousel-prev" onclick="carPrev('mBuzoMarron')"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-next" onclick="carNext('mBuzoMarron')"><i class="fas fa-chevron-right"></i></button>
+        <div class="carousel-dots" id="dots-mBuzoMarron">
+          <button class="c-dot active" onclick="carGo('mBuzoMarron',0)"></button>
+          <button class="c-dot" onclick="carGo('mBuzoMarron',1)"></button>
+        </div>
+      </div>
+            <div class="m-info">
+        <div class="m-brand">H&M · Organic</div>
+        <h2 class="m-title">Buzo Organic Marrón</h2>
+        <p class="m-desc">Buzo de H&M, diseño cómodo y abrigado. Confeccionado con materiales orgánicos de calidad.</p>
+        <div class="m-price">$45.000 ARS</div>
+        <div class="sz-label">Seleccioná tu talle</div>
+        <div class="sz-row" data-modal="mBuzoMarron">
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoMarron')">XS</div>
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoMarron')">S</div>
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoMarron')">M</div>
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoMarron')">L</div>
+          <div class="sz-btn on" onclick="selectSz(this,'mBuzoMarron')">XL<span class="sq">1 unid.</span></div>
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoMarron')">XXL</div>
+        </div>
+        <button class="m-atc" id="atc-mBuzoMarron" disabled onclick="addToCart('mBuzoMarron','Buzo Organic Marrón','HandM · Organic',45000,'https://i.imgur.com/lbH7o8S.png')">
+          <i class="fas fa-shopping-bag"></i> Agregar al carrito
+        </button>
+        <a class="m-wa" href="https://wa.me/541164890594?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20el%20Buzo%20Organic%20Marr%C3%B3n%20en%20talle%20___." target="_blank"><i class="fab fa-whatsapp"></i> Consultar por WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Buzo Gris Jack & Jones -->
+<div class="modal-bg" id="mBuzoJack">
+  <div class="modal-box">
+    <button class="m-close" onclick="closeM('mBuzoJack')"><i class="fas fa-times"></i></button>
+    <div class="m-grid">
+      <div class="m-carousel">
+        <div class="m-carousel-track" id="car-mBuzoJack">
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/cxJ97XX.png" alt="Jack & Jones 1"/></div>
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/kFl9sIN.png" alt="Jack & Jones 2"/></div>
+        </div>
+        <button class="carousel-prev" onclick="carPrev('mBuzoJack')"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-next" onclick="carNext('mBuzoJack')"><i class="fas fa-chevron-right"></i></button>
+        <div class="carousel-dots" id="dots-mBuzoJack">
+          <button class="c-dot active" onclick="carGo('mBuzoJack',0)"></button>
+          <button class="c-dot" onclick="carGo('mBuzoJack',1)"></button>
+        </div>
+      </div>
+            <div class="m-info">
+        <div class="m-brand">Jack &amp; Jones</div>
+        <h2 class="m-title">Buzo Gris Jack &amp; Jones</h2>
+        <p class="m-desc">Buzo de Jack &amp; Jones. Diseño moderno y abrigado, ideal para looks urbanos.</p>
+        <div class="m-price">$50.000 ARS</div>
+        <div class="sz-label">Seleccioná tu talle</div>
+        <div class="sz-row" data-modal="mBuzoJack">
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoJack')">XS</div>
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoJack')">S</div>
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoJack')">M</div>
+          <div class="sz-btn on" onclick="selectSz(this,'mBuzoJack')">L<span class="sq">1 unid.</span></div>
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoJack')">XL</div>
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoJack')">XXL</div>
+        </div>
+        <button class="m-atc" id="atc-mBuzoJack" disabled onclick="addToCart('mBuzoJack','Buzo Gris Jack and Jones','Jack and Jones',50000,'https://i.imgur.com/cxJ97XX.png')">
+          <i class="fas fa-shopping-bag"></i> Agregar al carrito
+        </button>
+        <a class="m-wa" href="https://wa.me/541164890594?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20el%20Buzo%20Jack%20%26%20Jones%20en%20talle%20___." target="_blank"><i class="fab fa-whatsapp"></i> Consultar por WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Buzo Polo H&M Negro -->
+<div class="modal-bg" id="mBuzoPoloNegro">
+  <div class="modal-box">
+    <button class="m-close" onclick="closeM('mBuzoPoloNegro')"><i class="fas fa-times"></i></button>
+    <div class="m-grid">
+      <div class="m-carousel">
+        <div class="m-carousel-track" id="car-mBuzoPoloNegro">
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/qYiVZa5.png" alt="Buzo Polo Negro 1"/></div>
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/wj0S4cf.png" alt="Buzo Polo Negro 2"/></div>
+        </div>
+        <button class="carousel-prev" onclick="carPrev('mBuzoPoloNegro')"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-next" onclick="carNext('mBuzoPoloNegro')"><i class="fas fa-chevron-right"></i></button>
+        <div class="carousel-dots" id="dots-mBuzoPoloNegro">
+          <button class="c-dot active" onclick="carGo('mBuzoPoloNegro',0)"></button>
+          <button class="c-dot" onclick="carGo('mBuzoPoloNegro',1)"></button>
+        </div>
+      </div>
+            <div class="m-info">
+        <div class="m-brand">H&M · Polo Loose Fit</div>
+        <h2 class="m-title">Buzo Polo H&M Negro</h2>
+        <p class="m-desc">Loose fit. Diseño cómodo y moderno con cuello polo que lo distingue.</p>
+        <div class="m-price">$45.000 ARS</div>
+        <div class="sz-label">Seleccioná tu talle</div>
+        <div class="sz-row" data-modal="mBuzoPoloNegro">
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoPoloNegro')">XS</div>
+          <div class="sz-btn on" onclick="selectSz(this,'mBuzoPoloNegro')">S<span class="sq">1 unid.</span></div>
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoPoloNegro')">M</div>
+          <div class="sz-btn on" onclick="selectSz(this,'mBuzoPoloNegro')">L<span class="sq">2 unid.</span></div>
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoPoloNegro')">XL</div>
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoPoloNegro')">XXL</div>
+        </div>
+        <button class="m-atc" id="atc-mBuzoPoloNegro" disabled onclick="addToCart('mBuzoPoloNegro','Buzo Polo HandM Negro','HandM · Polo Loose Fit',45000,'https://i.imgur.com/qYiVZa5.png')">
+          <i class="fas fa-shopping-bag"></i> Agregar al carrito
+        </button>
+        <a class="m-wa" href="https://wa.me/541164890594?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20el%20Buzo%20Polo%20H%26M%20Negro%20en%20talle%20___." target="_blank"><i class="fab fa-whatsapp"></i> Consultar por WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sweater H&M Polo Gris -->
+<div class="modal-bg" id="mSweaterGris">
+  <div class="modal-box">
+    <button class="m-close" onclick="closeM('mSweaterGris')"><i class="fas fa-times"></i></button>
+    <div class="m-grid">
+      <div class="m-carousel">
+        <div class="m-carousel-track" id="car-mSweaterGris">
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/4tDnp2o.png" alt="Sweater Polo Gris 1"/></div>
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/lEiRkvV.png" alt="Sweater Polo Gris 2"/></div>
+        </div>
+        <button class="carousel-prev" onclick="carPrev('mSweaterGris')"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-next" onclick="carNext('mSweaterGris')"><i class="fas fa-chevron-right"></i></button>
+        <div class="carousel-dots" id="dots-mSweaterGris">
+          <button class="c-dot active" onclick="carGo('mSweaterGris',0)"></button>
+          <button class="c-dot" onclick="carGo('mSweaterGris',1)"></button>
+        </div>
+      </div>
+            <div class="m-info">
+        <div class="m-brand">H&M · Polo Slim Fit</div>
+        <h2 class="m-title">Sweater H&M Polo Gris</h2>
+        <p class="m-desc">Slim fit. Diseño elegante, ideal para media estación o eventos casuales.</p>
+        <div class="m-price">$45.000 ARS</div>
+        <div class="sz-label">Seleccioná tu talle</div>
+        <div class="sz-row" data-modal="mSweaterGris">
+          <div class="sz-btn" onclick="selectSz(this,'mSweaterGris')">XS</div>
+          <div class="sz-btn on" onclick="selectSz(this,'mSweaterGris')">S<span class="sq">2 unid.</span></div>
+          <div class="sz-btn" onclick="selectSz(this,'mSweaterGris')">M</div>
+          <div class="sz-btn" onclick="selectSz(this,'mSweaterGris')">L</div>
+          <div class="sz-btn" onclick="selectSz(this,'mSweaterGris')">XL</div>
+          <div class="sz-btn on" onclick="selectSz(this,'mSweaterGris')">XXL<span class="sq">1 unid.</span></div>
+        </div>
+        <button class="m-atc" id="atc-mSweaterGris" disabled onclick="addToCart('mSweaterGris','Sweater HandM Polo Gris','HandM · Polo Slim Fit',45000,'https://i.imgur.com/4tDnp2o.png')">
+          <i class="fas fa-shopping-bag"></i> Agregar al carrito
+        </button>
+        <a class="m-wa" href="https://wa.me/541164890594?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20el%20Sweater%20H%26M%20Polo%20Gris%20en%20talle%20___." target="_blank"><i class="fab fa-whatsapp"></i> Consultar por WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Buzo H&M Verde -->
+<div class="modal-bg" id="mBuzoVerde">
+  <div class="modal-box">
+    <button class="m-close" onclick="closeM('mBuzoVerde')"><i class="fas fa-times"></i></button>
+    <div class="m-grid">
+      <div class="m-carousel">
+        <div class="m-carousel-track" id="car-mBuzoVerde">
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/H72Aagu.png" alt="Buzo H&M Verde 1"/></div>
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/7mlR4hy.png" alt="Buzo H&M Verde 2"/></div>
+        </div>
+        <button class="carousel-prev" onclick="carPrev('mBuzoVerde')"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-next" onclick="carNext('mBuzoVerde')"><i class="fas fa-chevron-right"></i></button>
+        <div class="carousel-dots" id="dots-mBuzoVerde">
+          <button class="c-dot active" onclick="carGo('mBuzoVerde',0)"></button>
+          <button class="c-dot" onclick="carGo('mBuzoVerde',1)"></button>
+        </div>
+      </div>
+            <div class="m-info">
+        <div class="m-brand">H&M · Loose Fit</div>
+        <h2 class="m-title">Buzo H&M Verde</h2>
+        <p class="m-desc">Loose fit. Estilo relajado, ideal para todo el día. Color verde profundo muy tendencia.</p>
+        <div class="m-price">$40.000 ARS</div>
+        <div class="sz-label">Seleccioná tu talle</div>
+        <div class="sz-row" data-modal="mBuzoVerde">
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoVerde')">XS</div>
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoVerde')">S</div>
+          <div class="sz-btn on" onclick="selectSz(this,'mBuzoVerde')">M<span class="sq">1 unid.</span></div>
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoVerde')">L</div>
+          <div class="sz-btn on" onclick="selectSz(this,'mBuzoVerde')">XL<span class="sq">1 unid.</span></div>
+          <div class="sz-btn" onclick="selectSz(this,'mBuzoVerde')">XXL</div>
+        </div>
+        <button class="m-atc" id="atc-mBuzoVerde" disabled onclick="addToCart('mBuzoVerde','Buzo HandM Verde','HandM · Loose Fit',40000,'https://i.imgur.com/H72Aagu.png')">
+          <i class="fas fa-shopping-bag"></i> Agregar al carrito
+        </button>
+        <a class="m-wa" href="https://wa.me/541164890594?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20el%20Buzo%20H%26M%20Verde%20en%20talle%20___." target="_blank"><i class="fab fa-whatsapp"></i> Consultar por WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Remera Negra -->
+<div class="modal-bg" id="mRemeraNegra">
+  <div class="modal-box">
+    <button class="m-close" onclick="closeM('mRemeraNegra')"><i class="fas fa-times"></i></button>
+    <div class="m-grid">
+      <div class="m-carousel">
+        <div class="m-carousel-track" id="car-mRemeraNegra">
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/AubO6xY.jpeg" alt="Remera Negra 1"/></div>
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/YqwxGbs.jpeg" alt="Remera Negra 2"/></div>
+        </div>
+        <button class="carousel-prev" onclick="carPrev('mRemeraNegra')"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-next" onclick="carNext('mRemeraNegra')"><i class="fas fa-chevron-right"></i></button>
+        <div class="carousel-dots" id="dots-mRemeraNegra">
+          <button class="c-dot active" onclick="carGo('mRemeraNegra',0)"></button>
+          <button class="c-dot" onclick="carGo('mRemeraNegra',1)"></button>
+        </div>
+      </div>
+            <div class="m-info">
+        <div class="m-brand">H&M · Relaxed Fit</div>
+        <h2 class="m-title">Remera Negra</h2>
+        <p class="m-desc">Remera relaxed fit de H&M. Moderna, cómoda y de alta calidad. Básico imprescindible.</p>
+        <div class="m-price">$30.000 ARS</div>
+        <div class="sz-label">Seleccioná tu talle</div>
+        <div class="sz-row" data-modal="mRemeraNegra">
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraNegra')">XS</div>
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraNegra')">S</div>
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraNegra')">M</div>
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraNegra')">L</div>
+          <div class="sz-btn on" onclick="selectSz(this,'mRemeraNegra')">XL<span class="sq">1 unid.</span></div>
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraNegra')">XXL</div>
+        </div>
+        <button class="m-atc" id="atc-mRemeraNegra" disabled onclick="addToCart('mRemeraNegra','Remera Negra','HandM · Relaxed Fit',30000,'https://i.imgur.com/AubO6xY.jpeg')">
+          <i class="fas fa-shopping-bag"></i> Agregar al carrito
+        </button>
+        <a class="m-wa" href="https://wa.me/541164890594?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20la%20Remera%20Negra%20en%20talle%20___." target="_blank"><i class="fab fa-whatsapp"></i> Consultar por WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Remera Rosa -->
+<div class="modal-bg" id="mRemeraRosa">
+  <div class="modal-box">
+    <button class="m-close" onclick="closeM('mRemeraRosa')"><i class="fas fa-times"></i></button>
+    <div class="m-grid">
+      <div class="m-carousel">
+        <div class="m-carousel-track" id="car-mRemeraRosa">
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/uxBvwif.jpeg" alt="Remera Rosa 1"/></div>
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/2lyAja0.jpeg" alt="Remera Rosa 2"/></div>
+        </div>
+        <button class="carousel-prev" onclick="carPrev('mRemeraRosa')"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-next" onclick="carNext('mRemeraRosa')"><i class="fas fa-chevron-right"></i></button>
+        <div class="carousel-dots" id="dots-mRemeraRosa">
+          <button class="c-dot active" onclick="carGo('mRemeraRosa',0)"></button>
+          <button class="c-dot" onclick="carGo('mRemeraRosa',1)"></button>
+        </div>
+      </div>
+            <div class="m-info">
+        <div class="m-brand">H&M · Relaxed Fit</div>
+        <h2 class="m-title">Remera Rosa</h2>
+        <p class="m-desc">Remera relaxed fit de H&M. Moderna, cómoda y de alta calidad.</p>
+        <div class="m-price">$30.000 ARS</div>
+        <div class="sz-label">Seleccioná tu talle</div>
+        <div class="sz-row" data-modal="mRemeraRosa">
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraRosa')">XS</div>
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraRosa')">S</div>
+          <div class="sz-btn on" onclick="selectSz(this,'mRemeraRosa')">M<span class="sq">1 unid.</span></div>
+          <div class="sz-btn on" onclick="selectSz(this,'mRemeraRosa')">L<span class="sq">1 unid.</span></div>
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraRosa')">XL</div>
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraRosa')">XXL</div>
+        </div>
+        <button class="m-atc" id="atc-mRemeraRosa" disabled onclick="addToCart('mRemeraRosa','Remera Rosa','HandM · Relaxed Fit',30000,'https://i.imgur.com/uxBvwif.jpeg')">
+          <i class="fas fa-shopping-bag"></i> Agregar al carrito
+        </button>
+        <a class="m-wa" href="https://wa.me/541164890594?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20la%20Remera%20Rosa%20en%20talle%20___." target="_blank"><i class="fab fa-whatsapp"></i> Consultar por WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Remera Marrón -->
+<div class="modal-bg" id="mRemeraMarron">
+  <div class="modal-box">
+    <button class="m-close" onclick="closeM('mRemeraMarron')"><i class="fas fa-times"></i></button>
+    <div class="m-grid">
+      <div class="m-carousel">
+        <div class="m-carousel-track" id="car-mRemeraMarron">
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/CpI29Ja.jpeg" alt="Remera Marrón 1"/></div>
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/nq9ZKXN.jpeg" alt="Remera Marrón 2"/></div>
+        </div>
+        <button class="carousel-prev" onclick="carPrev('mRemeraMarron')"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-next" onclick="carNext('mRemeraMarron')"><i class="fas fa-chevron-right"></i></button>
+        <div class="carousel-dots" id="dots-mRemeraMarron">
+          <button class="c-dot active" onclick="carGo('mRemeraMarron',0)"></button>
+          <button class="c-dot" onclick="carGo('mRemeraMarron',1)"></button>
+        </div>
+      </div>
+            <div class="m-info">
+        <div class="m-brand">H&M · Relaxed Fit</div>
+        <h2 class="m-title">Remera Marrón</h2>
+        <p class="m-desc">Remera relaxed fit de H&M. Moderna, cómoda y de alta calidad.</p>
+        <div class="m-price">$30.000 ARS</div>
+        <div class="sz-label">Seleccioná tu talle</div>
+        <div class="sz-row" data-modal="mRemeraMarron">
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraMarron')">XS</div>
+          <div class="sz-btn on" onclick="selectSz(this,'mRemeraMarron')">S<span class="sq">1 unid.</span></div>
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraMarron')">M</div>
+          <div class="sz-btn on" onclick="selectSz(this,'mRemeraMarron')">L<span class="sq">2 unid.</span></div>
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraMarron')">XL</div>
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraMarron')">XXL</div>
+        </div>
+        <button class="m-atc" id="atc-mRemeraMarron" disabled onclick="addToCart('mRemeraMarron','Remera Marrón','HandM · Relaxed Fit',30000,'https://i.imgur.com/CpI29Ja.jpeg')">
+          <i class="fas fa-shopping-bag"></i> Agregar al carrito
+        </button>
+        <a class="m-wa" href="https://wa.me/541164890594?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20la%20Remera%20Marr%C3%B3n%20en%20talle%20___." target="_blank"><i class="fab fa-whatsapp"></i> Consultar por WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Remera Crema -->
+<div class="modal-bg" id="mRemeraCrema">
+  <div class="modal-box">
+    <button class="m-close" onclick="closeM('mRemeraCrema')"><i class="fas fa-times"></i></button>
+    <div class="m-grid">
+      <div class="m-carousel">
+        <div class="m-carousel-track" id="car-mRemeraCrema">
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/KvWCiCD.jpeg" alt="Remera Crema 1"/></div>
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/uBSr2wy.jpeg" alt="Remera Crema 2"/></div>
+        </div>
+        <button class="carousel-prev" onclick="carPrev('mRemeraCrema')"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-next" onclick="carNext('mRemeraCrema')"><i class="fas fa-chevron-right"></i></button>
+        <div class="carousel-dots" id="dots-mRemeraCrema">
+          <button class="c-dot active" onclick="carGo('mRemeraCrema',0)"></button>
+          <button class="c-dot" onclick="carGo('mRemeraCrema',1)"></button>
+        </div>
+      </div>
+            <div class="m-info">
+        <div class="m-brand">H&M · Relaxed Fit</div>
+        <h2 class="m-title">Remera Crema</h2>
+        <p class="m-desc">Remera relaxed fit de H&M. Moderna, cómoda y de alta calidad.</p>
+        <div class="m-price">$30.000 ARS</div>
+        <div class="sz-label">Seleccioná tu talle</div>
+        <div class="sz-row" data-modal="mRemeraCrema">
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraCrema')">XS</div>
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraCrema')">S</div>
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraCrema')">M</div>
+          <div class="sz-btn on" onclick="selectSz(this,'mRemeraCrema')">L<span class="sq">1 unid.</span></div>
+          <div class="sz-btn on" onclick="selectSz(this,'mRemeraCrema')">XL<span class="sq">1 unid.</span></div>
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraCrema')">XXL</div>
+        </div>
+        <button class="m-atc" id="atc-mRemeraCrema" disabled onclick="addToCart('mRemeraCrema','Remera Crema','HandM · Relaxed Fit',30000,'https://i.imgur.com/KvWCiCD.jpeg')">
+          <i class="fas fa-shopping-bag"></i> Agregar al carrito
+        </button>
+        <a class="m-wa" href="https://wa.me/541164890594?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20la%20Remera%20Crema%20en%20talle%20___." target="_blank"><i class="fab fa-whatsapp"></i> Consultar por WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Remera Marrón Manga Larga -->
+<div class="modal-bg" id="mRemeraMarronML">
+  <div class="modal-box">
+    <button class="m-close" onclick="closeM('mRemeraMarronML')"><i class="fas fa-times"></i></button>
+    <div class="m-grid">
+      <div class="m-carousel">
+        <div class="m-carousel-track" id="car-mRemeraMarronML">
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/ZikUv4E.png" alt="Remera Marrón ML 1"/></div>
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/TgQviE3.png" alt="Remera Marrón ML 2"/></div>
+        </div>
+        <button class="carousel-prev" onclick="carPrev('mRemeraMarronML')"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-next" onclick="carNext('mRemeraMarronML')"><i class="fas fa-chevron-right"></i></button>
+        <div class="carousel-dots" id="dots-mRemeraMarronML">
+          <button class="c-dot active" onclick="carGo('mRemeraMarronML',0)"></button>
+          <button class="c-dot" onclick="carGo('mRemeraMarronML',1)"></button>
+        </div>
+      </div>
+            <div class="m-info">
+        <div class="m-brand">H&M · Loose Fit</div>
+        <h2 class="m-title">Remera Marrón Manga Larga</h2>
+        <p class="m-desc">Loose fit. Moderna y cómoda para media estación. Perfecta para capas.</p>
+        <div class="m-price">$30.000 ARS</div>
+        <div class="sz-label">Seleccioná tu talle</div>
+        <div class="sz-row" data-modal="mRemeraMarronML">
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraMarronML')">XS</div>
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraMarronML')">S</div>
+          <div class="sz-btn on" onclick="selectSz(this,'mRemeraMarronML')">M<span class="sq">1 unid.</span></div>
+          <div class="sz-btn on" onclick="selectSz(this,'mRemeraMarronML')">L<span class="sq">1 unid.</span></div>
+          <div class="sz-btn on" onclick="selectSz(this,'mRemeraMarronML')">XL<span class="sq">1 unid.</span></div>
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraMarronML')">XXL</div>
+        </div>
+        <button class="m-atc" id="atc-mRemeraMarronML" disabled onclick="addToCart('mRemeraMarronML','Remera Marrón Manga Larga','HandM · Loose Fit',30000,'https://i.imgur.com/ZikUv4E.png')">
+          <i class="fas fa-shopping-bag"></i> Agregar al carrito
+        </button>
+        <a class="m-wa" href="https://wa.me/541164890594?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20la%20Remera%20Marr%C3%B3n%20Manga%20Larga%20en%20talle%20___." target="_blank"><i class="fab fa-whatsapp"></i> Consultar por WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Remera Wednesday -->
+<div class="modal-bg" id="mRemeraWednesday">
+  <div class="modal-box">
+    <button class="m-close" onclick="closeM('mRemeraWednesday')"><i class="fas fa-times"></i></button>
+    <div class="m-grid">
+      <div class="m-carousel">
+        <div class="m-carousel-track" id="car-mRemeraWednesday">
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/IJqQXL2.png" alt="Remera Wednesday 1"/></div>
+          <div class="m-carousel-slide"><img src="https://i.imgur.com/X9sWVvB.jpeg" alt="Remera Wednesday 2"/></div>
+        </div>
+        <button class="carousel-prev" onclick="carPrev('mRemeraWednesday')"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-next" onclick="carNext('mRemeraWednesday')"><i class="fas fa-chevron-right"></i></button>
+        <div class="carousel-dots" id="dots-mRemeraWednesday">
+          <button class="c-dot active" onclick="carGo('mRemeraWednesday',0)"></button>
+          <button class="c-dot" onclick="carGo('mRemeraWednesday',1)"></button>
+        </div>
+      </div>
+            <div class="m-info">
+        <div class="m-brand">Regular Fit · Exclusivo</div>
+        <h2 class="m-title">Remera Manga Larga Wednesday</h2>
+        <p class="m-desc">Regular fit. Diseño exclusivo y estilo original inspirado en Wednesday. Única en su tipo.</p>
+        <div class="m-price">$30.000 ARS</div>
+        <div class="sz-label">Seleccioná tu talle</div>
+        <div class="sz-row" data-modal="mRemeraWednesday">
+          <div class="sz-btn on" onclick="selectSz(this,'mRemeraWednesday')">XS<span class="sq">2 unid.</span></div>
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraWednesday')">S</div>
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraWednesday')">M</div>
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraWednesday')">L</div>
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraWednesday')">XL</div>
+          <div class="sz-btn" onclick="selectSz(this,'mRemeraWednesday')">XXL</div>
+        </div>
+        <button class="m-atc" id="atc-mRemeraWednesday" disabled onclick="addToCart('mRemeraWednesday','Remera Manga Larga Wednesday','Regular Fit · Exclusivo',30000,'https://i.imgur.com/IJqQXL2.png')">
+          <i class="fas fa-shopping-bag"></i> Agregar al carrito
+        </button>
+        <a class="m-wa" href="https://wa.me/541164890594?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20la%20Remera%20Wednesday%20en%20talle%20___." target="_blank"><i class="fab fa-whatsapp"></i> Consultar por WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ── MOBILE MENU ── */
+document.getElementById('mob-btn').addEventListener('click',()=>{
+  const m=document.getElementById('mob-menu');
+  m.style.display=m.style.display==='flex'?'none':'flex';
+});
+
+/* ── HEADER SHADOW ON SCROLL ── */
+window.addEventListener('scroll',()=>{
+  document.getElementById('main-header').classList.toggle('scrolled',window.scrollY>10);
+});
+
+/* ── MODAL OPEN/CLOSE ── */
+function openM(id){
+  const el=document.getElementById(id);
+  el.classList.add('open');
+  document.body.style.overflow='hidden';
+  // reset carousel
+  carGo(id,0);
+}
+function closeM(id){
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow='';
+}
+document.querySelectorAll('.modal-bg').forEach(bg=>{
+  bg.addEventListener('click',e=>{if(e.target===bg)closeM(bg.id);});
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape')document.querySelectorAll('.modal-bg.open').forEach(m=>closeM(m.id));
+});
+
+/* ── CAROUSEL ── */
+const carState={};
+function carGo(id,idx){
+  const track=document.getElementById('car-'+id);
+  if(!track)return;
+  const slides=track.querySelectorAll('.m-carousel-slide');
+  const total=slides.length;
+  if(idx<0)idx=total-1;
+  if(idx>=total)idx=0;
+  carState[id]=idx;
+  track.style.transform=`translateX(-${idx*100}%)`;
+  // dots
+  const dots=document.getElementById('dots-'+id);
+  if(dots){
+    dots.querySelectorAll('.c-dot').forEach((d,i)=>{
+      d.classList.toggle('active',i===idx);
     });
-  </script>
-
-<!-- MODAL: Buzo Hoodie Crema -->
-<div id="modalBuzoCrema" class="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center p-4 overflow-y-auto hidden">
-  <div class="bg-white p-6 rounded-lg max-w-4xl w-full shadow-lg relative overflow-y-auto max-h-[90vh]">
-    <button onclick="cerrarModal('modalBuzoCrema')" class="absolute top-3 right-4 text-gray-600 hover:text-red-600 text-2xl font-bold">&times;</button>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div>
-        <img src="https://i.imgur.com/SqNxpHu.png" alt="Buzo crema - vista principal" class="w-full rounded-md mb-4" />
-        <img src="https://i.imgur.com/mfF9UGx.png" alt="Buzo crema - vista secundaria" class="w-full rounded-md" />
-      </div>
-      <div>
-        <h2 class="text-2xl font-bold text-green-700 mb-4">Buzo Hoodie Crema</h2>
-        <p class="text-gray-700 mb-4">Buzo de H&amp;M con capucha. Suave, abrigado y con estilo relajado.</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$50,000 ARS</p>
-        <div class="mt-4">
-          <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
-          <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
-            <div class="py-2 text-gray-400 bg-gray-100">XS</div>
-            <div class="py-2 text-gray-400 bg-gray-100">S</div>
-            <div class="py-2 text-gray-400 bg-gray-100">M</div>
-            <div class="py-2 text-gray-400 bg-gray-100">L</div>
-            <div class="py-2 text-gray-400 bg-gray-100">XL</div>
-            <div class="py-2 text-gray-400 bg-gray-100">XXL</div>
-          </div>
-        </div>
-<a href="https://wa.me/541164890594?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20el%20buzo%20hoodie%20crema%20en%20talle%20___." 
-  target="_blank" 
-   class="inline-block mt-6 bg-green-700 text-white px-6 py-3 rounded hover:bg-green-800 transition font-semibold">
-Consultar por WhatsApp</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-<!-- MODAL: Buzo Hoodie Gris -->
-<div id="modalBuzoGris" class="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center p-4 overflow-y-auto hidden">
-  <div class="bg-white p-6 rounded-lg max-w-4xl w-full shadow-lg relative overflow-y-auto max-h-[90vh]">
-    <button onclick="cerrarModal('modalBuzoGris')" class="absolute top-3 right-4 text-gray-600 hover:text-red-600 text-2xl font-bold">&times;</button>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div>
-        <img src="https://i.imgur.com/CK4ae0T.png" alt="Buzo Hoodie Gris - vista 1" class="w-full rounded-md mb-4" />
-        <img src="https://i.imgur.com/g4sKD6E.png" alt="Buzo Hoodie Gris - vista 2" class="w-full rounded-md" />
-      </div>
-      <div>
-        <h2 class="text-2xl font-bold text-green-700 mb-4">Buzo Hoodie Gris</h2>
-        <p class="text-gray-700 mb-4">Buzo de H&amp;M. Suave, abrigado y con estilo relajado.</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$50,000 ARS</p>
-        <div class="mt-4">
-          <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
-          <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
-            <div class="py-2 text-gray-400 bg-gray-100">XS</div>
-            <div class="py-2 text-gray-400 bg-gray-100">S</div>
-            <div class="py-2 text-gray-400 bg-gray-100">M</div>
-            <div class="py-2 text-gray-400 bg-gray-100">L</div>
-            <div class="py-2 border-r border-gray-300 bg-white font-bold">XL (1) </div>
-            <div class="py-2 text-gray-400 bg-gray-100">XXL</div>
-          </div>
-        </div>
-<a href="https://wa.me/541164890594?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20el%20buzo%20hoodie%20gris%20en%20talle%20___."    
-target="_blank" 
-   class="inline-block mt-6 bg-green-700 text-white px-6 py-3 rounded hover:bg-green-800 transition font-semibold">
-Consultar por WhatsApp</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- MODAL: Buzo Organic Marrón -->
-<div id="modalBuzoMarron" class="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center p-4 overflow-y-auto hidden">
-  <div class="bg-white p-6 rounded-lg max-w-4xl w-full shadow-lg relative overflow-y-auto max-h-[90vh]">
-    <button onclick="cerrarModal('modalBuzoMarron')" class="absolute top-3 right-4 text-gray-600 hover:text-red-600 text-2xl font-bold">&times;</button>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div>
-        <img src="https://i.imgur.com/lbH7o8S.png" alt="Buzo marrón vista 1" class="w-full rounded-md mb-4" />
-        <img src="https://i.imgur.com/icJ32pF.png" alt="Buzo marrón vista 2" class="w-full rounded-md" />
-      </div>
-      <div>
-        <h2 class="text-2xl font-bold text-green-700 mb-4">Buzo Organic Marrón</h2>
-        <p class="text-gray-700 mb-4">Buzo de H&amp;M, diseño cómodo y abrigado</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$45,000 ARS</p>
-        <div class="mt-4">
-          <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
-          <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
-            <div class="py-2 text-gray-400 bg-gray-100">XS</div>
-             <div class="py-2 text-gray-400 bg-gray-100">S</div>
-            <div class="py-2 text-gray-400 bg-gray-100">M</div>
-            <div class="py-2 text-gray-400 bg-gray-100">L</div>
-            <div class="py-2 border-r border-gray-300 bg-white font-bold">XL (1) </div>
-            <div class="py-2 text-gray-400 bg-gray-100">XXL</div>
-          </div>
-        </div>
-<a href="https://wa.me/541164890594?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20el%20buzo%20organic%20en%20talle%20___."    
- target="_blank" 
-   class="inline-block mt-6 bg-green-700 text-white px-6 py-3 rounded hover:bg-green-800 transition font-semibold">
-   Consultar por WhatsApp</a>
-     </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- MODAL: Buzo Jack & Jones -->
-<div id="modalBuzoJack" class="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center p-4 overflow-y-auto hidden">
-  <div class="bg-white p-6 rounded-lg max-w-4xl w-full shadow-lg relative overflow-y-auto max-h-[90vh]">
-    <button onclick="cerrarModal('modalBuzoJack')" class="absolute top-3 right-4 text-gray-600 hover:text-red-600 text-2xl font-bold">&times;</button>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div>
-        <img src="https://i.imgur.com/cxJ97XX.png" alt="Buzo Jack & Jones vista 1" class="w-full rounded-md mb-4" />
-        <img src="https://i.imgur.com/kFl9sIN.png" alt="Buzo Jack & Jones vista 2" class="w-full rounded-md" />
-      </div>
-      <div>
-        <h2 class="text-2xl font-bold text-green-700 mb-4">Buzo Gris Jack & Jones</h2>
-        <p class="text-gray-700 mb-4">Buzo de Jack & Jones. Diseño moderno, abrigado</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$50,000 ARS</p>
-        <div class="mt-4">
-          <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
-          <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
-            <div class="py-2 text-gray-400 bg-gray-100">XS</div>
-            <div class="py-2 text-gray-400 bg-gray-100">S</div>
-            <div class="py-2 text-gray-400 bg-gray-100">M</div>
-            <div class="py-2 border-r border-gray-300 bg-white font-bold">L (1) </div>
-            <div class="py-2 text-gray-400 bg-gray-100">XL</div>
-            <div class="py-2 text-gray-400 bg-gray-100">XXL</div>
-          </div>
-        </div>
-<a href="https://wa.me/541164890594?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20el%20buzo%20jack%20&amp%20jones%%20en%20talle%20___."    
-target="_blank" 
-   class="inline-block mt-6 bg-green-700 text-white px-6 py-3 rounded hover:bg-green-800 transition font-semibold">
-Consultar por WhatsApp</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- Modal Buzo Polo H&M Negro -->
-<div id="modalBuzoPoloNegro" class="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center p-4 overflow-y-auto hidden">
-  <div class="bg-white p-6 rounded-lg max-w-4xl w-full shadow-lg relative overflow-y-auto max-h-[90vh]">
-    <button onclick="cerrarModal('modalBuzoPoloNegro')" class="absolute top-3 right-4 text-gray-600 hover:text-red-600 text-2xl font-bold">&times;</button>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div>
-        <img src="https://i.imgur.com/qYiVZa5.png" alt="Buzo Polo Negro - vista 1" class="w-full rounded-md mb-4" />
-        <img src="https://i.imgur.com/wj0S4cf.png" alt="Buzo Polo Negro - vista 2" class="w-full rounded-md" />
-      </div>
-      <div>
-        <h2 class="text-2xl font-bold text-green-700 mb-4">Buzo Polo H&amp;M Negro</h2>
-        <p class="text-gray-700 mb-4">Loose fit. Diseño cómodo y moderno. .</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$45,000 ARS</p>
-        <div class="mt-4">
-          <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
-          <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
-            <div class="py-2 text-gray-400 bg-gray-100">XS</div>
-            <div class="py-2 border-r border-gray-300 bg-white font-bold">S (1) </div>
-            <div class="py-2 text-gray-400 bg-gray-100">M</div>
-            <div class="py-2 border-r border-gray-300 bg-white font-bold">L (2) </div>
-            <div class="py-2 text-gray-400 bg-gray-100">XL</div>
-            <div class="py-2 text-gray-400 bg-gray-100">XXL</div>
-          </div>
-        </div>
-<a href="https://wa.me/541164890594?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20el%20buzo%20polo%20negro%20en%20talle%20___." 
-   target="_blank" 
-   class="inline-block mt-6 bg-green-700 text-white px-6 py-3 rounded hover:bg-green-800 transition font-semibold">
-   Consultar por WhatsApp
-</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- Modal Sweater H&M Polo Gris -->
-<div id="modalSweaterGris" class="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center p-4 overflow-y-auto hidden">
-  <div class="bg-white p-6 rounded-lg max-w-4xl w-full shadow-lg relative overflow-y-auto max-h-[90vh]">
-    <button onclick="cerrarModal('modalSweaterGris')" class="absolute top-3 right-4 text-gray-600 hover:text-red-600 text-2xl font-bold">&times;</button>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div>
-        <img src="https://i.imgur.com/4tDnp2o.png" alt="Sweater Polo Gris - vista 1" class="w-full rounded-md mb-4" />
-        <img src="https://i.imgur.com/lEiRkvV.png" alt="Sweater Polo Gris - vista 2" class="w-full rounded-md" />
-      </div>
-      <div>
-        <h2 class="text-2xl font-bold text-green-700 mb-4">Sweater H&amp;M Polo Gris</h2>
-        <p class="text-gray-700 mb-4">Slim fit. Diseño elegante, ideal para media estación o eventos casuales.</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$45,000 ARS</p>
-        <div class="mt-4">
-          <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
-          <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
-            <div class="py-2 text-gray-400 bg-gray-100">XS</div>
-            <div class="py-2 text-gray-400 bg-gray-100">M</div>
-            <div class="py-2 text-gray-400 bg-gray-100">L</div>
-            <div class="py-2 border-r border-gray-300 bg-white font-bold">S (2)</div>
-            <div class="py-2 text-gray-400 bg-gray-100">XL</div>
-            <div class="py-2 border-r border-gray-300 bg-white font-bold">XXL (1) </div>
-          </div>
-        </div>
-<a href="https://wa.me/541164890594?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20el%20Sweater%20H%26M%20Polo%20Gris%20en%20talle%20___." 
-   target="_blank" 
-   class="inline-block mt-6 bg-green-700 text-white px-6 py-3 rounded hover:bg-green-800 transition font-semibold">
-   Consultar por WhatsApp
-</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL: Buzo H&M Verde -->
-<div id="modalBuzoVerde" class="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center p-4 overflow-y-auto hidden">
-  <div class="bg-white p-6 rounded-lg max-w-4xl w-full shadow-lg relative overflow-y-auto max-h-[90vh]">
-    <button onclick="cerrarModal('modalBuzoVerde')" class="absolute top-3 right-4 text-gray-600 hover:text-red-600 text-2xl font-bold">&times;</button>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div>
-        <img src="https://i.imgur.com/H72Aagu.png" alt="Buzo verde - vista 1" class="w-full rounded-md mb-4" />
-        <img src="https://i.imgur.com/7mlR4hy.png" alt="Buzo verde - vista 2" class="w-full rounded-md" />
-      </div>
-      <div>
-        <h2 class="text-2xl font-bold text-green-700 mb-4">Buzo H&amp;M Verde</h2>
-        <p class="text-gray-700 mb-4">Loose fit. Estilo relajado, ideal para todo el día.</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$40,000 ARS</p>
-        <div class="mt-4">
-          <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
-          <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
-            <div class="py-2 text-gray-400 bg-gray-100">XS</div>
-            <div class="py-2 text-gray-400 bg-gray-100">S</div>
-            <div class="py-2 border-r border-gray-300 bg-white font-bold">M (1) </div>
-            <div class="py-2 text-gray-400 bg-gray-100">L</div>
-            <div class="py-2 border-r border-gray-300 bg-white font-bold">XL (1) </div>
-            <div class="py-2 text-gray-400 bg-gray-100">XXL</div>
-          </div>
-        </div>
-<a href="https://wa.me/541164890594?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20el%20buzo%20verde%20en%20talle%20___."target="_blank" 
-   class="inline-block mt-6 bg-green-700 text-white px-6 py-3 rounded hover:bg-green-800 transition font-semibold">
-   Consultar por WhatsApp
-</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-<!-- MODAL: Remera Negra -->
-<div id="modalRemeraNegra" class="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center p-4 overflow-y-auto hidden">
-  <div class="bg-white p-6 rounded-lg max-w-4xl w-full shadow-lg relative overflow-y-auto max-h-[90vh]">
-    <button onclick="cerrarModal('modalRemeraNegra')" class="absolute top-3 right-4 text-gray-600 hover:text-red-600 text-2xl font-bold">&times;</button>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div>
-        <img src="https://i.imgur.com/AubO6xY.jpeg" alt="Remera negra - vista principal" class="w-full rounded-md mb-4" />
-        <img src="https://i.imgur.com/YqwxGbs.jpeg" alt="Remera negra - vista secundaria" class="w-full rounded-md" />
-      </div>
-      <div>
-        <h2 class="text-2xl font-bold text-green-700 mb-4">Remera Negra</h2>
-        <p class="text-gray-700 mb-4">Remera relaxed fit de H&amp;M. Moderna, cómoda y de alta calidad.</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$30,000 ARS</p>
-        <div class="mt-4">
-          <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
-          <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
-            <div class="py-2 text-gray-400 bg-gray-100">XS</div>
-            <div class="py-2 text-gray-400 bg-gray-100">S</div>
-            <div class="py-2 text-gray-400 bg-gray-100">M</div>
-            <div class="py-2 text-gray-400 bg-gray-100">L</div>
-            <div class="py-2 border-r border-gray-300 bg-white font-bold">XL (1)</div>
-            <div class="py-2 text-gray-400 bg-gray-100">XXL</div>
-          </div>
-        </div>
-        <a href="https://wa.me/541164890594" target="_blank" class="inline-block mt-6 bg-green-700 text-white px-6 py-3 rounded hover:bg-green-800 transition font-semibold">Consultar por WhatsApp</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL: Remera Rosa -->
-<div id="modalRemeraRosa" class="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center p-4 overflow-y-auto hidden">
-  <div class="bg-white p-6 rounded-lg max-w-4xl w-full shadow-lg relative overflow-y-auto max-h-[90vh]">
-    <button onclick="cerrarModal('modalRemeraRosa')" class="absolute top-3 right-4 text-gray-600 hover:text-red-600 text-2xl font-bold">&times;</button>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div>
-        <img src="https://i.imgur.com/uxBvwif.jpeg" alt="Remera rosa - vista principal" class="w-full rounded-md mb-4" />
-        <img src="https://i.imgur.com/2lyAja0.jpeg" alt="Remera rosa - vista secundaria" class="w-full rounded-md" />
-      </div>
-      <div>
-        <h2 class="text-2xl font-bold text-green-700 mb-4">Remera Rosa</h2>
-        <p class="text-gray-700 mb-4">Remera relaxed fit de H&amp;M. Moderna, cómoda y de alta calidad.</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$30,000 ARS</p>
-        <div class="mt-4">
-          <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
-          <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
-            <div class="py-2 text-gray-400 bg-gray-100">XS</div>
-            <div class="py-2 text-gray-400 bg-gray-100">S</div>
-            <div class="py-2 border-r border-gray-300 bg-white font-bold">M (1)</div>
-            <div class="py-2 border-r border-gray-300 bg-white font-bold">L (1)</div>
-            <div class="py-2 text-gray-400 bg-gray-100">XL</div>
-            <div class="py-2 text-gray-400 bg-gray-100">XXL</div>
-          </div>
-        </div>
-        <a href="https://wa.me/541164890594" target="_blank" class="inline-block mt-6 bg-green-700 text-white px-6 py-3 rounded hover:bg-green-800 transition font-semibold">Consultar por WhatsApp</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- MODAL: Remera Marrón -->
-<div id="modalRemeraMarron" class="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center p-4 overflow-y-auto hidden">
-  <div class="bg-white p-6 rounded-lg max-w-4xl w-full shadow-lg relative overflow-y-auto max-h-[90vh]">
-    <button onclick="cerrarModal('modalRemeraMarron')" class="absolute top-3 right-4 text-gray-600 hover:text-red-600 text-2xl font-bold">&times;</button>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div>
-        <img src="https://i.imgur.com/CpI29Ja.jpeg" alt="Remera marrón - vista principal" class="w-full rounded-md mb-4" />
-        <img src="https://i.imgur.com/nq9ZKXN.jpeg" alt="Remera marrón - vista secundaria" class="w-full rounded-md" />
-      </div>
-      <div>
-        <h2 class="text-2xl font-bold text-green-700 mb-4">Remera Marrón</h2>
-        <p class="text-gray-700 mb-4">Remera relaxed fit de H&amp;M. Moderna, cómoda y de alta calidad.</p>
-      <p class="text-xl font-bold text-green-700 mb-2">$30,000 ARS</p>
-        <div class="mt-4">
-          <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
-          <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
-            <div class="py-2 text-gray-400 bg-gray-100">XS</div>
-            <div class="py-2 text-gray-400 bg-gray-100">M</div>
-            <div class="py-2 border-r border-gray-300 bg-white font-bold">L (2)</div>
-            <div class="py-2 border-r border-gray-300 bg-white font-bold">S (1)</div>
-            <div class="py-2 text-gray-400 bg-gray-100">XL</div>
-            <div class="py-2 text-gray-400 bg-gray-100">XXL</div>
-          </div>
-        </div>
-        <a href="https://wa.me/541164890594" target="_blank" class="inline-block mt-6 bg-green-700 text-white px-6 py-3 rounded hover:bg-green-800 transition font-semibold">Consultar por WhatsApp</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL: Remera Crema -->
-<div id="modalRemeraCrema" class="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center p-4 overflow-y-auto hidden">
-  <div class="bg-white p-6 rounded-lg max-w-4xl w-full shadow-lg relative overflow-y-auto max-h-[90vh]">
-    <button onclick="cerrarModal('modalRemeraCrema')" class="absolute top-3 right-4 text-gray-600 hover:text-red-600 text-2xl font-bold">&times;</button>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div>
-        <img src="https://i.imgur.com/KvWCiCD.jpeg" alt="Remera crema - vista principal" class="w-full rounded-md mb-4" />
-        <img src="https://i.imgur.com/uBSr2wy.jpeg" alt="Remera crema - vista secundaria" class="w-full rounded-md" />
-      </div>
-      <div>
-        <h2 class="text-2xl font-bold text-green-700 mb-4">Remera Crema</h2>
-        <p class="text-gray-700 mb-4">Remera relaxed fit de H&amp;M. Moderna, cómoda y de alta calidad.</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$30,000 ARS</p>
-        <div class="mt-4">
-          <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
-          <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
-            <div class="py-2 text-gray-400 bg-gray-100">XS</div>
-            <div class="py-2 text-gray-400 bg-gray-100">S</div>
-            <div class="py-2 text-gray-400 bg-gray-100">M</div>
-            <div class="py-2 border-r border-gray-300 bg-white font-bold">L (1)</div>
-            <div class="py-2 border-r border-gray-300 bg-white font-bold">XL (1)</div>
-            <div class="py-2 text-gray-400 bg-gray-100">XXL</div>
-          </div>
-        </div>
-        <a href="https://wa.me/541164890594" target="_blank" class="inline-block mt-6 bg-green-700 text-white px-6 py-3 rounded hover:bg-green-800 transition font-semibold">Consultar por WhatsApp</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-<!-- MODAL: Remera Marrón Manga Larga -->
-<div id="modalRemeraMarronML" class="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center p-4 overflow-y-auto hidden">
-  <div class="bg-white p-6 rounded-lg max-w-4xl w-full shadow-lg relative overflow-y-auto max-h-[90vh]">
-    <button onclick="cerrarModal('modalRemeraMarronML')" class="absolute top-3 right-4 text-gray-600 hover:text-red-600 text-2xl font-bold">&times;</button>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div>
-        <img src="https://i.imgur.com/ZikUv4E.png" alt="Remera marrón vista 1" class="w-full rounded-md mb-4" />
-        <img src="https://i.imgur.com/TgQviE3.png" alt="Remera marrón vista 2" class="w-full rounded-md" />
-      </div>
-      <div>
-        <h2 class="text-2xl font-bold text-green-700 mb-4">Remera Marrón Manga Larga</h2>
-        <p class="text-gray-700 mb-4">Loose fit. Moderna y cómoda para media estación.</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$30,000 ARS</p>
-        <div class="mt-4">
-          <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
-          <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
-            <div class="py-2 text-gray-400 bg-gray-100">XS</div>
-            <div class="py-2 text-gray-400 bg-gray-100">S</div>
-            <div class="py-2 border-r border-gray-300 bg-white font-bold">M (1)</div>
-            <div class="py-2 border-r border-gray-300 bg-white font-bold">L (1)</div>
-            <div class="py-2 border-r border-gray-300 bg-white font-bold">XL (1)</div>
-            <div class="py-2 text-gray-400 bg-gray-100">XXL</div>
-          </div>
-        </div>
-        <a href="https://wa.me/541164890594" target="_blank" class="inline-block mt-6 bg-green-700 text-white px-6 py-3 rounded hover:bg-green-800 transition font-semibold">Consultar por WhatsApp</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-<!-- MODAL: Remera Wednesday -->
-<div id="modalRemeraWednesday" class="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center p-4 overflow-y-auto hidden">
-  <div class="bg-white p-6 rounded-lg max-w-4xl w-full shadow-lg relative overflow-y-auto max-h-[90vh]">
-    <button onclick="cerrarModal('modalRemeraWednesday')" class="absolute top-3 right-4 text-gray-600 hover:text-red-600 text-2xl font-bold">&times;</button>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div>
-        <img src="https://i.imgur.com/IJqQXL2.png" alt="Wednesday vista 1" class="w-full rounded-md mb-4" />
-        <img src="https://i.imgur.com/X9sWVvB.jpeg" alt="Wednesday vista 2" class="w-full rounded-md" />
-      </div>
-      <div>
-        <h2 class="text-2xl font-bold text-green-700 mb-4">Remera Manga Larga Wednesday</h2>
-        <p class="text-gray-700 mb-4">Regular fit. Diseño exclusivo y estilo original inspirado en Wednesday.</p>
-        <p class="text-xl font-bold text-green-700 mb-2">$30,000 ARS</p>
-        <div class="mt-4">
-          <p class="text-sm text-gray-700 font-semibold mb-2">Talla Hombre:</p>
-          <div class="grid grid-cols-6 gap-1 text-center text-gray-800 border border-gray-300 rounded overflow-hidden text-sm">
-            <div class="py-2 border-r border-gray-300 bg-white font-bold">XS (2)</div>
-            <div class="py-2 text-gray-400 bg-gray-100">S</div>
-            <div class="py-2 text-gray-400 bg-gray-100">M</div>
-            <div class="py-2 text-gray-400 bg-gray-100">L</div>
-            <div class="py-2 text-gray-400 bg-gray-100">XL</div>
-            <div class="py-2 text-gray-400 bg-gray-100">XXL</div>
-          </div>
-        </div>
-        <a href="https://wa.me/541164890594" target="_blank" class="inline-block mt-6 bg-green-700 text-white px-6 py-3 rounded hover:bg-green-800 transition font-semibold">Consultar por WhatsApp</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-<!-- JavaScript para abrir/cerrar modales -->
-<script>
-  function abrirModal(id) {
-    document.getElementById(id).classList.remove('hidden')
   }
-  function cerrarModal(id) {
-    document.getElementById(id).classList.add('hidden')
+}
+function carNext(id){carGo(id,(carState[id]||0)+1);}
+function carPrev(id){carGo(id,(carState[id]||0)-1);}
+
+/* Touch/swipe for carousel */
+document.querySelectorAll('.m-carousel').forEach(car=>{
+  let sx=0;
+  car.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;},{passive:true});
+  car.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-sx;
+    const id=car.closest('.modal-bg').id;
+    if(Math.abs(dx)>40){dx<0?carNext(id):carPrev(id);}
+  },{passive:true});
+});
+
+/* ── SIZE FILTER ── */
+document.querySelectorAll('.filter-bar').forEach(bar=>{
+  const isRemera=bar.id==='remeraFilter';
+  const gridId=isRemera?'remeraGrid':'buzoGrid';
+
+  bar.querySelectorAll('.filter-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      bar.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const size=btn.dataset.size;
+      const grid=document.getElementById(gridId);
+      grid.querySelectorAll('.card').forEach(card=>{
+        const sizes=(card.dataset.sizes||'').split(' ');
+        if(size==='all'||sizes.includes(size)){
+          card.style.display='';
+        } else {
+          card.style.display='none';
+        }
+      });
+    });
+  });
+});
+
+/* ── SCROLL REVEAL ── */
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('visible');
+  });
+},{threshold:0.06,rootMargin:'0px 0px -30px 0px'});
+
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+/* ════════════════════════════════════════
+   CART SYSTEM
+   ════════════════════════════════════════ */
+let cart = JSON.parse(localStorage.getItem('id_cart')||'[]');
+let selectedPayMethod = 'mp';
+
+// ─── Stock disponible por producto (id → {talle: unidades})
+const STOCK = {
+  mBuzoCrema:      {XS:1,S:1,M:1,L:1,XL:1,XXL:1},  // consultar = sin límite fijo
+  mBuzoGris:       {},                                // sin stock
+  mBuzoMarron:     {XL:1},
+  mBuzoJack:       {L:1},
+  mBuzoPoloNegro:  {S:1,L:2},
+  mSweaterGris:    {S:2,XXL:1},
+  mBuzoVerde:      {M:1,XL:1},
+  mRemeraNegra:    {XL:1},
+  mRemeraRosa:     {M:1,L:1},
+  mRemeraMarron:   {S:1,L:2},
+  mRemeraCrema:    {L:1,XL:1},
+  mRemeraMarronML: {M:1,L:1,XL:1},
+  mRemeraWednesday:{XS:2},
+};
+
+function stockDisponible(modalId, size){
+  const s = STOCK[modalId]||{};
+  const enCarrito = cart.filter(i=>i.id===modalId && i.size===size).reduce((a,i)=>a+i.qty,0);
+  return (s[size]||0) - enCarrito;
+}
+
+function saveCart(){ localStorage.setItem('id_cart', JSON.stringify(cart)); }
+
+// ─── Toast notification
+function showToast(msg, color='#2A6044'){
+  const t=document.createElement('div');
+  t.style.cssText=`position:fixed;top:1.4rem;left:50%;transform:translateX(-50%) translateY(-10px);
+    background:${color};color:#fff;padding:.7rem 1.6rem;border-radius:100px;
+    font-weight:700;font-size:.85rem;z-index:9999;
+    box-shadow:0 8px 30px rgba(0,0,0,.2);
+    transition:all .3s;white-space:nowrap;`;
+  t.innerHTML=msg;
+  document.body.appendChild(t);
+  requestAnimationFrame(()=>{ t.style.transform='translateX(-50%) translateY(0)'; });
+  setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(-10px)'; setTimeout(()=>t.remove(),350); },2800);
+}
+
+function updateCartUI(){
+  const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const count = cart.reduce((s,i)=>s+i.qty,0);
+  // Badge
+  const badge = document.getElementById('cartBadge');
+  if(count > 0){ badge.style.display='flex'; badge.textContent=count; }
+  else { badge.style.display='none'; }
+  // Cart total
+  document.getElementById('cartTotal').textContent = '$'+total.toLocaleString('es-AR');
+  // Cart items list
+  const container = document.getElementById('cartItems');
+  const emptyEl   = document.getElementById('cartEmpty');
+  const footEl    = document.getElementById('cartFoot');
+
+  if(cart.length===0){
+    container.innerHTML='';
+    emptyEl.style.display='flex';
+    container.appendChild(emptyEl);
+    footEl.style.display='none';
+    return;
   }
+  emptyEl.style.display='none';
+  footEl.style.display='block';
+
+  // ── Render EVERY item individually (no grouping)
+  let html='';
+  cart.forEach((item,idx)=>{
+    html+=`
+    <div class="cart-item" id="cart-item-${idx}">
+      <img class="cart-item-img" src="${item.img}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/72x72?text=img'"/>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-sub">${item.brand} · Talle: <strong>${item.size}</strong></div>
+        <div class="cart-item-price">$${(item.price).toLocaleString('es-AR')}</div>
+      </div>
+      <button class="cart-item-remove" onclick="removeFromCart(${idx})" title="Eliminar">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>`;
+  });
+  container.innerHTML=html;
+  // Re-append empty (hidden) so it's always in DOM
+  container.appendChild(emptyEl);
+}
+
+function openCart(){
+  document.getElementById('cartOverlay').classList.add('open');
+  document.getElementById('cartDrawer').classList.add('open');
+  document.body.style.overflow='hidden';
+  updateCartUI();
+}
+
+function closeCart(){
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.getElementById('cartDrawer').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function removeFromCart(idx){
+  const removed = cart[idx];
+  cart.splice(idx,1);
+  saveCart();
+  updateCartUI();
+  // Re-enable any disabled size button for this product
+  refreshSzButtons(removed.id);
+  showToast(`<i class="fas fa-trash-alt"></i> ${removed.name} · ${removed.size} eliminado`, '#D95F2B');
+}
+
+// ─── Size selection in modal
+function selectSz(btn, modalId){
+  const row = btn.closest('.sz-row');
+  row.querySelectorAll('.sz-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const size = btn.textContent.replace(/\d.*$/,'').trim();
+  const atcBtn = document.getElementById('atc-'+modalId);
+  if(!atcBtn) return;
+  // Check stock
+  const disponible = stockDisponible(modalId, size);
+  const stockTotal = (STOCK[modalId]||{})[size]||0;
+  if(stockTotal===0){
+    // No stock at all — consultar mode, always allow
+    atcBtn.disabled=false;
+  } else if(disponible <= 0){
+    atcBtn.disabled=true;
+    atcBtn.innerHTML='<i class="fas fa-times-circle"></i> Sin stock disponible';
+  } else {
+    atcBtn.disabled=false;
+    atcBtn.innerHTML='<i class="fas fa-shopping-bag"></i> Agregar al carrito';
+  }
+}
+
+// Refresh size buttons after cart changes
+function refreshSzButtons(modalId){
+  const row = document.querySelector(`.sz-row[data-modal="${modalId}"]`);
+  if(!row) return;
+  row.querySelectorAll('.sz-btn').forEach(btn=>{
+    const size = btn.textContent.replace(/\d.*$/,'').trim();
+    const stockTotal = (STOCK[modalId]||{})[size]||0;
+    if(stockTotal===0) return; // consultar — siempre habilitado
+    const disp = stockDisponible(modalId, size);
+    if(disp<=0){
+      btn.style.opacity='.4';
+      btn.style.pointerEvents='none';
+      btn.title='Sin stock';
+    } else {
+      btn.style.opacity='';
+      btn.style.pointerEvents='';
+      btn.title='';
+    }
+  });
+}
+
+// ─── Add to cart
+function addToCart(modalId, name, brand, price, img){
+  const row = document.querySelector(`.sz-row[data-modal="${modalId}"]`);
+  const selected = row ? row.querySelector('.sz-btn.selected') : null;
+  if(!selected){ showToast('<i class="fas fa-exclamation"></i> Por favor seleccioná un talle', '#E8A030'); return; }
+  const size = selected.textContent.replace(/\d.*$/,'').trim();
+
+  // Stock check
+  const stockTotal = (STOCK[modalId]||{})[size]||0;
+  if(stockTotal > 0){
+    const disp = stockDisponible(modalId, size);
+    if(disp <= 0){
+      showToast('<i class="fas fa-times-circle"></i> ¡Última unidad ya en tu carrito!', '#D95F2B');
+      return;
+    }
+  }
+
+  // Each click adds a NEW individual item (not grouped qty)
+  cart.push({id:modalId, name, brand, price, img, size, qty:1});
+  saveCart();
+  updateCartUI();
+  refreshSzButtons(modalId);
+
+  // Animate badge
+  const badge=document.getElementById('cartBadge');
+  badge.classList.add('bump');
+  setTimeout(()=>badge.classList.remove('bump'),350);
+
+  // Toast
+  showToast(`<i class="fas fa-check"></i> ¡${name} · ${size} agregado al carrito!`);
+
+  // Close modal and open cart
+  closeM(modalId);
+  setTimeout(openCart,250);
+}
+
+/* ════════════════════════════════════════
+   CHECKOUT
+   ════════════════════════════════════════ */
+function openCheckout(){
+  if(cart.length===0) return;
+  closeCart();
+  // Populate summary — show every item
+  const sumItems = document.getElementById('ckSumItems');
+  let html='';
+  cart.forEach(item=>{
+    html+=`<div class="ck-sum-item">
+      <img class="ck-sum-img" src="${item.img}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/48?text=img'"/>
+      <div class="ck-sum-name">${item.name}<br/><small style="color:var(--muted);font-weight:400">${item.brand} · Talle: ${item.size}</small></div>
+      <div class="ck-sum-price">$${(item.price).toLocaleString('es-AR')}</div>
+    </div>`;
+  });
+  sumItems.innerHTML=html;
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  document.getElementById('ckTotalPrice').textContent='$'+total.toLocaleString('es-AR');
+  // Reset form state
+  document.getElementById('ckForm').style.display='block';
+  document.getElementById('ckSuccess').classList.remove('show');
+  // Reset pay button
+  document.getElementById('ckPayBtn').className='ck-pay-btn mp';
+  document.getElementById('ckPayBtn').innerHTML='<i class="fas fa-lock"></i> Pagar con Mercado Pago';
+  // Open
+  document.getElementById('ckBg').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeCk(){
+  document.getElementById('ckBg').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function selectPay(label, method){
+  document.querySelectorAll('.pay-method').forEach(l=>l.classList.remove('selected'));
+  label.classList.add('selected');
+  selectedPayMethod=method;
+  const btn=document.getElementById('ckPayBtn');
+  const labels={mp:'Pagar con Mercado Pago',card:'Pagar con Tarjeta',cash:'Confirmar pedido (efectivo)'};
+  btn.innerHTML=`<i class="fas fa-lock"></i> ${labels[method]}`;
+  btn.className='ck-pay-btn '+method;
+}
+
+async function procesarPago(){
+  const nombre=document.getElementById('ckNombre').value.trim();
+  const email=document.getElementById('ckEmail').value.trim();
+  const tel=document.getElementById('ckTel').value.trim();
+  const calle=document.getElementById('ckCalle').value.trim();
+  const barrio=document.getElementById('ckBarrio').value.trim();
+  if(!nombre||!email||!tel||!calle||!barrio){
+    showToast('<i class="fas fa-exclamation-triangle"></i> Completá todos los campos', '#E8A030');
+    return;
+  }
+  const btn=document.getElementById('ckPayBtn');
+  btn.disabled=true;
+  btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Procesando...';
+
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const order={
+    id:'ORD-'+Date.now(),
+    date:new Date().toLocaleString('es-AR'),
+    status:selectedPayMethod==='mp'?'Pendiente MP':selectedPayMethod==='card'?'Pendiente tarjeta':'Efectivo / Acordar',
+    payMethod:selectedPayMethod,
+    customer:{nombre,email,tel},
+    address:{calle,depto:document.getElementById('ckDepto').value.trim(),cp:document.getElementById('ckCp').value.trim(),barrio},
+    items:[...cart],
+    total
+  };
+
+  if(selectedPayMethod==='mp'){
+    try{
+      const res=await fetch('/api/create-preference',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({items:cart,orderId:order.id,payer:{name:nombre,email}})
+      });
+      if(res.ok){
+        const data=await res.json();
+        saveOrder(order);
+        // Guardar el carrito antes de redirigir
+        localStorage.setItem('id_pending_order', JSON.stringify(order));
+        window.location.href=data.init_point;
+        return;
+      } else {
+        console.warn('MP API error:', await res.text());
+      }
+    }catch(e){
+      console.warn('MP API no configurada aún:', e.message);
+    }
+  }
+
+  // Cash / card / MP demo → mostrar éxito
+  saveOrder(order);
+  cart=[];
+  saveCart();
+  updateCartUI();
+  document.getElementById('ckForm').style.display='none';
+  document.getElementById('ckSuccess').classList.add('show');
+  document.getElementById('successOrderNum').textContent='#'+order.id.split('-')[1];
+  btn.disabled=false;
+}
+
+/* ════════════════════════════════════════
+   ORDERS
+   ════════════════════════════════════════ */
+function saveOrder(order){
+  const orders=JSON.parse(localStorage.getItem('id_orders')||'[]');
+  orders.unshift(order);
+  localStorage.setItem('id_orders',JSON.stringify(orders));
+}
+
+function openOrders(){
+  const orders=JSON.parse(localStorage.getItem('id_orders')||'[]');
+  const body=document.getElementById('opBody');
+  if(orders.length===0){
+    body.innerHTML='<div class="op-empty"><i class="fas fa-receipt"></i>No hay órdenes todavía.</div>';
+  } else {
+    const payLabels={mp:'Mercado Pago',card:'Tarjeta',cash:'Efectivo'};
+    body.innerHTML=orders.map(o=>{
+      const statusClass=o.payMethod==='cash'?'status-cash':o.status.includes('Pendiente')?'status-pending':'status-paid';
+      const itemsHtml=o.items.map(i=>`
+        <div class="order-product">
+          <img src="${i.img}" alt="${i.name}" onerror="this.src='https://via.placeholder.com/40?text=img'"/>
+          <span class="order-product-name">${i.name} · Talle: ${i.size}</span>
+          <span class="order-product-price">$${(i.price).toLocaleString('es-AR')}</span>
+        </div>`).join('');
+      return `
+      <div class="order-card">
+        <div class="order-card-head">
+          <span class="order-num-label">${o.id}</span>
+          <span class="order-date">${o.date}</span>
+          <span class="order-status ${statusClass}">${o.status}</span>
+        </div>
+        <div class="order-card-body">
+          <div class="order-info-grid">
+            <div class="order-info-item"><strong>Cliente</strong><span>${o.customer.nombre}</span></div>
+            <div class="order-info-item"><strong>Email</strong><span>${o.customer.email}</span></div>
+            <div class="order-info-item"><strong>Teléfono</strong><span>${o.customer.tel}</span></div>
+            <div class="order-info-item"><strong>Pago</strong><span>${payLabels[o.payMethod]||o.payMethod}</span></div>
+            <div class="order-info-item" style="grid-column:1/-1"><strong>Dirección</strong><span>${o.address.calle}${o.address.depto?' '+o.address.depto:''}, ${o.address.barrio}${o.address.cp?' (CP: '+o.address.cp+')':''}</span></div>
+          </div>
+          <div class="order-products">${itemsHtml}</div>
+          <div class="order-total-row">
+            <span class="order-total-label">Total</span>
+            <span class="order-total-price">$${o.total.toLocaleString('es-AR')}</span>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  document.getElementById('ordersPanelBg').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeOrders(){
+  document.getElementById('ordersPanelBg').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+// ─── Check MP return after payment
+(function checkMPReturn(){
+  const params=new URLSearchParams(window.location.search);
+  const status=params.get('status')||params.get('collection_status');
+  if(status==='approved'){
+    // Recover pending order if exists
+    const pending=localStorage.getItem('id_pending_order');
+    if(pending){
+      const o=JSON.parse(pending);
+      o.status='Pago aprobado ✓';
+      saveOrder(o);
+      localStorage.removeItem('id_pending_order');
+    }
+    cart=[]; saveCart(); updateCartUI();
+    showToast('<i class="fas fa-check"></i> ¡Pago aprobado! Gracias por tu compra.');
+  } else if(status==='failure'){
+    showToast('<i class="fas fa-times"></i> El pago fue rechazado. Intentá de nuevo.','#D95F2B');
+  } else if(status==='pending'){
+    showToast('<i class="fas fa-clock"></i> Pago pendiente. Te avisaremos cuando se acredite.','#E8A030');
+  }
+})();
+
+// Init
+updateCartUI();
 </script>
- </body>
+</body>
 </html>
