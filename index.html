@@ -6,6 +6,8 @@
   <title>Importado Devoto — Ropa Importada</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+  <script src="https://sdk.mercadopago.com/js/v2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
     :root {
       --bg:     #F7F4EF;
@@ -154,13 +156,7 @@
     .feat-txt strong{display:block;font-weight:700;font-size:.88rem;margin-bottom:.12rem;}
     .feat-txt span{font-size:.78rem;color:rgba(255,255,255,.45);}
 
-    /* ══ TESTIMONIAL STRIP ══ */
-    .testi-wrap{max-width:1380px;margin:0 auto 1rem;padding:0 2rem;}
-    .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;}
-    .testi-card{background:var(--card);border-radius:18px;padding:1.5rem;box-shadow:0 2px 10px rgba(0,0,0,.05);}
-    .testi-stars{color:var(--amber);font-size:.8rem;margin-bottom:.7rem;letter-spacing:.05em;}
-    .testi-text{font-size:.88rem;color:var(--dark);line-height:1.7;margin-bottom:.9rem;font-style:italic;}
-    .testi-author{font-weight:700;font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;}
+
 
     /* ══ CONTACT ══ */
     .ct-wrap{max-width:1380px;margin:0 auto 4rem;padding:0 2rem;}
@@ -410,7 +406,7 @@
       .m-carousel{border-radius:26px 26px 0 0;}
       .m-carousel-slide img{min-height:300px;}
       .sec-top{flex-direction:column;align-items:flex-start;}
-      .testi-grid{grid-template-columns:1fr;}
+      .testi-grid{display:none;}
       .brand-strip-inner{justify-content:center;}
       #mob-btn{display:block;}
       .desktop-nav{display:none;}
@@ -427,6 +423,39 @@
       .ck-summary-side{border-radius:0 0 24px 24px;}
       .order-info-grid{grid-template-columns:1fr;}
     }
+
+    /* ══ ADMIN PASSWORD MODAL ══ */
+    .admin-pw-bg{position:fixed;inset:0;z-index:960;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
+    .admin-pw-bg.open{opacity:1;pointer-events:all;}
+    .admin-pw-box{background:#fff;border-radius:20px;padding:2rem;width:min(380px,92vw);box-shadow:0 30px 80px rgba(0,0,0,.3);text-align:center;}
+    .admin-pw-box h3{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.04em;margin-bottom:.4rem;}
+    .admin-pw-box p{font-size:.82rem;color:var(--muted);margin-bottom:1.2rem;}
+    .admin-pw-input{width:100%;padding:.8rem 1rem;border:1.5px solid var(--border);border-radius:10px;font-family:'Outfit',sans-serif;font-size:.95rem;text-align:center;letter-spacing:.1em;outline:none;margin-bottom:.8rem;transition:border-color .2s;}
+    .admin-pw-input:focus{border-color:var(--green2);}
+    .admin-pw-btn{width:100%;background:var(--dark);color:#fff;border:none;padding:.85rem;border-radius:100px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;transition:background .2s;}
+    .admin-pw-btn:hover{background:var(--green);}
+    .admin-pw-err{color:var(--rust);font-size:.78rem;margin-top:.5rem;display:none;}
+
+    /* ══ ORDER DELETE BTN ══ */
+    .order-del-btn{background:rgba(217,95,43,.08);color:var(--rust);border:none;padding:.3rem .75rem;border-radius:100px;font-size:.7rem;font-weight:700;cursor:pointer;transition:background .2s;display:flex;align-items:center;gap:.3rem;}
+    .order-del-btn:hover{background:rgba(217,95,43,.18);}
+
+    /* ══ MP QR MODAL ══ */
+    .mp-modal-bg{position:fixed;inset:0;z-index:910;background:rgba(0,0,0,.8);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .3s;}
+    .mp-modal-bg.open{opacity:1;pointer-events:all;}
+    .mp-modal-box{background:#fff;border-radius:22px;width:min(440px,94vw);padding:2rem;text-align:center;box-shadow:0 36px 90px rgba(0,0,0,.3);position:relative;transform:scale(.95);transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
+    .mp-modal-bg.open .mp-modal-box{transform:scale(1);}
+    .mp-close-btn{position:absolute;top:.9rem;right:1rem;background:rgba(0,0,0,.07);border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+    .mp-close-btn:hover{background:rgba(0,0,0,.14);}
+    .mp-logo{width:120px;margin-bottom:1rem;}
+    .mp-modal-box h3{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.03em;margin-bottom:.4rem;}
+    .mp-modal-box p{font-size:.84rem;color:var(--muted);margin-bottom:1.2rem;line-height:1.5;}
+    .mp-pay-link{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;background:#009EE3;color:#fff;font-weight:700;font-size:.92rem;padding:.9rem 2rem;border-radius:100px;text-decoration:none;width:100%;margin-bottom:.7rem;transition:background .2s,transform .2s;box-shadow:0 4px 18px rgba(0,158,227,.3);}
+    .mp-pay-link:hover{background:#0087c4;transform:translateY(-1px);}
+    .mp-order-info{background:#f8f8f8;border-radius:12px;padding:.9rem 1.2rem;font-size:.8rem;color:var(--muted);margin-top:.8rem;line-height:1.6;text-align:left;}
+    .mp-spinner{display:flex;flex-direction:column;align-items:center;gap:1rem;padding:1.5rem 0;}
+    .mp-spinner i{font-size:2.2rem;color:#009EE3;animation:spin 1s linear infinite;}
+    @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
   </style>
 </head>
 <body>
@@ -742,33 +771,8 @@
   </div>
 </div>
 
-<!-- ══ TESTIMONIALS ══ -->
-<div class="testi-wrap reveal" id="nosotros">
-  <div style="margin-bottom:1.5rem;">
-    <span class="sec-label">Clientes</span>
-    <h2 class="sec-title">Lo que dicen de nosotros</h2>
-  </div>
-  <div class="testi-grid">
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">"Excelente calidad, el buzo llegó en perfecto estado. La atención por WhatsApp fue muy rápida. Lo recomiendo al 100%."</p>
-      <span class="testi-author">— Martín G., Palermo</span>
-    </div>
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">"Compré la remera crema y es idéntica a la foto. La tela es muy suave y el envío llegó en 2 días. ¡Volvería a comprar!"</p>
-      <span class="testi-author">— Valentina R., Flores</span>
-    </div>
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">"El sweater polo gris es una joya. No encontrás esos precios en ningún lado. Súper recomendable para ropa de marca."</p>
-      <span class="testi-author">— Lucas P., Belgrano</span>
-    </div>
-  </div>
-</div>
-
 <!-- ══ NOSOTROS ══ -->
-<div class="info-wrap reveal">
+<div class="info-wrap reveal" id="nosotros">
   <div class="info-dark">
     <div>
       <span class="info-tag">Quiénes somos</span>
@@ -793,7 +797,7 @@
       <p class="ct-sub">¿Tenés una consulta? Escribinos, te respondemos rápido.</p>
       <div class="ct-items">
         <a class="ct-item" href="tel:+541164890594"><div class="ct-ico"><i class="fas fa-phone"></i></div><div class="ct-itxt"><strong>Teléfono</strong><span>+54 11 6489 0594</span></div></a>
-        <a class="ct-item" href="/cdn-cgi/l/email-protection#7f16120f100d0b1e1b101b1a09100b104e4d3f18121e1613511c1012"><div class="ct-ico"><i class="fas fa-envelope"></i></div><div class="ct-itxt"><strong>Email</strong><span><span class="__cf_email__" data-cfemail="573e3a27382523363338333221382338666517303a363e3b7934383a">[email&#160;protected]</span></span></div></a>
+        <a class="ct-item" href="/cdn-cgi/l/email-protection#7f16120f100d0b1e1b101b1a09100b104e4d3f18121e1613511c1012"><div class="ct-ico"><i class="fas fa-envelope"></i></div><div class="ct-itxt"><strong>Email</strong><span><span class="__cf_email__" data-cfemail="0c65617c637e786d686368697a6378633d3e4c6b616d6560226f6361">[email&#160;protected]</span></span></div></a>
         <a class="ct-item" href="https://www.instagram.com/importado.devoto/" target="_blank"><div class="ct-ico"><i class="fab fa-instagram"></i></div><div class="ct-itxt"><strong>Instagram</strong><span>@importado.devoto</span></div></a>
         <div class="ct-item"><div class="ct-ico"><i class="fas fa-map-marker-alt"></i></div><div class="ct-itxt"><strong>Ubicación</strong><span>Villa Devoto, Buenos Aires</span></div></div>
       </div>
@@ -861,9 +865,9 @@
     <div class="ck-success" id="ckSuccess">
       <div class="ck-success-icon"><i class="fas fa-check"></i></div>
       <h2>¡Pedido recibido!</h2>
-      <p>Tu orden fue registrada. Te contactaremos pronto para coordinar el envío.</p>
+      <p>Tu orden fue registrada. Te contactaremos pronto por WhatsApp para coordinar el envío.</p>
       <div class="order-num" id="successOrderNum">#000000</div>
-      <p style="font-size:.8rem;color:var(--muted);margin-top:.5rem;">Guardamos tu pedido en el historial de esta sesión.</p>
+      <p style="font-size:.8rem;color:var(--muted);margin-top:.4rem;line-height:1.6;" id="successEmailMsg"></p>
       <button class="cart-checkout-btn" style="max-width:280px;margin-top:1.5rem;" onclick="closeCk();closeCart();">
         <i class="fas fa-check"></i> Cerrar
       </button>
@@ -970,7 +974,12 @@
   <div class="orders-panel">
     <div class="op-head">
       <span class="op-title">Historial de Órdenes</span>
-      <button class="op-close" onclick="closeOrders()"><i class="fas fa-times"></i></button>
+      <div style="display:flex;gap:.6rem;align-items:center;">
+        <button onclick="clearAllOrders()" style="background:rgba(217,95,43,.1);color:#D95F2B;border:none;padding:.38rem .9rem;border-radius:100px;font-weight:700;font-size:.72rem;cursor:pointer;display:flex;align-items:center;gap:.35rem;transition:background .2s;" onmouseover="this.style.background='rgba(217,95,43,.2)'" onmouseout="this.style.background='rgba(217,95,43,.1)'">
+          <i class="fas fa-trash-alt"></i> Limpiar todo
+        </button>
+        <button class="op-close" onclick="closeOrders()"><i class="fas fa-times"></i></button>
+      </div>
     </div>
     <div class="op-body" id="opBody">
       <div class="op-empty"><i class="fas fa-receipt"></i>No hay órdenes todavía.</div>
@@ -978,10 +987,32 @@
   </div>
 </div>
 
-<!-- Admin button -->
-<button class="admin-link" onclick="openOrders()">
+<!-- Admin button (password protected) -->
+<button class="admin-link" onclick="openOrdersAdmin()">
   <i class="fas fa-receipt"></i> Ver órdenes
 </button>
+
+<!-- ══ ADMIN PASSWORD MODAL ══ -->
+<div class="admin-pw-bg" id="adminPwBg">
+  <div class="admin-pw-box">
+    <h3>Área de administración</h3>
+    <p>Ingresá la contraseña para ver las órdenes</p>
+    <input class="admin-pw-input" id="adminPwInput" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkAdminPw()"/>
+    <button class="admin-pw-btn" onclick="checkAdminPw()"><i class="fas fa-unlock-alt"></i> Ingresar</button>
+    <div class="admin-pw-err" id="adminPwErr">Contraseña incorrecta</div>
+    <button onclick="document.getElementById('adminPwBg').classList.remove('open');document.body.style.overflow=''" style="background:none;border:none;color:var(--muted);font-size:.78rem;cursor:pointer;margin-top:.8rem;text-decoration:underline;">Cancelar</button>
+  </div>
+</div>
+
+<!-- ══ MP CHECKOUT QR MODAL ══ -->
+<div class="mp-modal-bg" id="mpModalBg">
+  <div class="mp-modal-box">
+    <button class="mp-close-btn" onclick="closeMpModal()"><i class="fas fa-times"></i></button>
+    <div id="mpModalContent">
+      <div class="mp-spinner"><i class="fas fa-circle-notch"></i><span style="font-size:.88rem;color:var(--muted)">Generando link de pago...</span></div>
+    </div>
+  </div>
+</div>
 
 <!-- ══════════════ MODALS ══════════════ -->
 
@@ -1501,7 +1532,7 @@
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ── MOBILE MENU ── */
 document.getElementById('mob-btn').addEventListener('click',()=>{
   const m=document.getElementById('mob-menu');
@@ -1598,15 +1629,24 @@ const observer=new IntersectionObserver((entries)=>{
 document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 
 /* ════════════════════════════════════════
+   CONFIG
+   ════════════════════════════════════════ */
+const MP_PUBLIC_KEY  = 'APP_USR-aaa2045f-68f9-4d67-9d75-08b184de6966';
+const STORE_EMAIL    = 'santinooypi@gmail.com';
+const ADMIN_PASSWORD = 'devoto2024';  // ← cambiá esta contraseña
+
+// EmailJS (opcional — ver INSTRUCCIONES.md para activarlo)
+// emailjs.init('TU_PUBLIC_KEY_EMAILJS');
+
+/* ════════════════════════════════════════
    CART SYSTEM
    ════════════════════════════════════════ */
 let cart = JSON.parse(localStorage.getItem('id_cart')||'[]');
 let selectedPayMethod = 'mp';
 
-// ─── Stock disponible por producto (id → {talle: unidades})
 const STOCK = {
-  mBuzoCrema:      {XS:1,S:1,M:1,L:1,XL:1,XXL:1},  // consultar = sin límite fijo
-  mBuzoGris:       {},                                // sin stock
+  mBuzoCrema:      {XS:1,S:1,M:1,L:1,XL:1,XXL:1},
+  mBuzoGris:       {},
   mBuzoMarron:     {XL:1},
   mBuzoJack:       {L:1},
   mBuzoPoloNegro:  {S:1,L:2},
@@ -1628,14 +1668,12 @@ function stockDisponible(modalId, size){
 
 function saveCart(){ localStorage.setItem('id_cart', JSON.stringify(cart)); }
 
-// ─── Toast notification
 function showToast(msg, color='#2A6044'){
   const t=document.createElement('div');
   t.style.cssText=`position:fixed;top:1.4rem;left:50%;transform:translateX(-50%) translateY(-10px);
     background:${color};color:#fff;padding:.7rem 1.6rem;border-radius:100px;
     font-weight:700;font-size:.85rem;z-index:9999;
-    box-shadow:0 8px 30px rgba(0,0,0,.2);
-    transition:all .3s;white-space:nowrap;`;
+    box-shadow:0 8px 30px rgba(0,0,0,.2);transition:all .3s;white-space:nowrap;`;
   t.innerHTML=msg;
   document.body.appendChild(t);
   requestAnimationFrame(()=>{ t.style.transform='translateX(-50%) translateY(0)'; });
@@ -1645,17 +1683,13 @@ function showToast(msg, color='#2A6044'){
 function updateCartUI(){
   const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
   const count = cart.reduce((s,i)=>s+i.qty,0);
-  // Badge
   const badge = document.getElementById('cartBadge');
-  if(count > 0){ badge.style.display='flex'; badge.textContent=count; }
+  if(count>0){ badge.style.display='flex'; badge.textContent=count; }
   else { badge.style.display='none'; }
-  // Cart total
   document.getElementById('cartTotal').textContent = '$'+total.toLocaleString('es-AR');
-  // Cart items list
   const container = document.getElementById('cartItems');
   const emptyEl   = document.getElementById('cartEmpty');
   const footEl    = document.getElementById('cartFoot');
-
   if(cart.length===0){
     container.innerHTML='';
     emptyEl.style.display='flex';
@@ -1665,8 +1699,6 @@ function updateCartUI(){
   }
   emptyEl.style.display='none';
   footEl.style.display='block';
-
-  // ── Render EVERY item individually (no grouping)
   let html='';
   cart.forEach((item,idx)=>{
     html+=`
@@ -1683,7 +1715,6 @@ function updateCartUI(){
     </div>`;
   });
   container.innerHTML=html;
-  // Re-append empty (hidden) so it's always in DOM
   container.appendChild(emptyEl);
 }
 
@@ -1693,24 +1724,20 @@ function openCart(){
   document.body.style.overflow='hidden';
   updateCartUI();
 }
-
 function closeCart(){
   document.getElementById('cartOverlay').classList.remove('open');
   document.getElementById('cartDrawer').classList.remove('open');
   document.body.style.overflow='';
 }
-
 function removeFromCart(idx){
   const removed = cart[idx];
   cart.splice(idx,1);
   saveCart();
   updateCartUI();
-  // Re-enable any disabled size button for this product
   refreshSzButtons(removed.id);
   showToast(`<i class="fas fa-trash-alt"></i> ${removed.name} · ${removed.size} eliminado`, '#D95F2B');
 }
 
-// ─── Size selection in modal
 function selectSz(btn, modalId){
   const row = btn.closest('.sz-row');
   row.querySelectorAll('.sz-btn').forEach(b=>b.classList.remove('selected'));
@@ -1718,13 +1745,11 @@ function selectSz(btn, modalId){
   const size = btn.textContent.replace(/\d.*$/,'').trim();
   const atcBtn = document.getElementById('atc-'+modalId);
   if(!atcBtn) return;
-  // Check stock
-  const disponible = stockDisponible(modalId, size);
   const stockTotal = (STOCK[modalId]||{})[size]||0;
   if(stockTotal===0){
-    // No stock at all — consultar mode, always allow
     atcBtn.disabled=false;
-  } else if(disponible <= 0){
+    atcBtn.innerHTML='<i class="fas fa-shopping-bag"></i> Agregar al carrito';
+  } else if(stockDisponible(modalId, size)<=0){
     atcBtn.disabled=true;
     atcBtn.innerHTML='<i class="fas fa-times-circle"></i> Sin stock disponible';
   } else {
@@ -1733,59 +1758,36 @@ function selectSz(btn, modalId){
   }
 }
 
-// Refresh size buttons after cart changes
 function refreshSzButtons(modalId){
   const row = document.querySelector(`.sz-row[data-modal="${modalId}"]`);
   if(!row) return;
   row.querySelectorAll('.sz-btn').forEach(btn=>{
     const size = btn.textContent.replace(/\d.*$/,'').trim();
     const stockTotal = (STOCK[modalId]||{})[size]||0;
-    if(stockTotal===0) return; // consultar — siempre habilitado
+    if(stockTotal===0) return;
     const disp = stockDisponible(modalId, size);
-    if(disp<=0){
-      btn.style.opacity='.4';
-      btn.style.pointerEvents='none';
-      btn.title='Sin stock';
-    } else {
-      btn.style.opacity='';
-      btn.style.pointerEvents='';
-      btn.title='';
-    }
+    btn.style.opacity = disp<=0 ? '.35' : '';
+    btn.style.pointerEvents = disp<=0 ? 'none' : '';
   });
 }
 
-// ─── Add to cart
 function addToCart(modalId, name, brand, price, img){
   const row = document.querySelector(`.sz-row[data-modal="${modalId}"]`);
   const selected = row ? row.querySelector('.sz-btn.selected') : null;
-  if(!selected){ showToast('<i class="fas fa-exclamation"></i> Por favor seleccioná un talle', '#E8A030'); return; }
+  if(!selected){ showToast('<i class="fas fa-exclamation"></i> Seleccioná un talle', '#E8A030'); return; }
   const size = selected.textContent.replace(/\d.*$/,'').trim();
-
-  // Stock check
   const stockTotal = (STOCK[modalId]||{})[size]||0;
-  if(stockTotal > 0){
-    const disp = stockDisponible(modalId, size);
-    if(disp <= 0){
-      showToast('<i class="fas fa-times-circle"></i> ¡Última unidad ya en tu carrito!', '#D95F2B');
-      return;
-    }
+  if(stockTotal>0 && stockDisponible(modalId,size)<=0){
+    showToast('<i class="fas fa-times-circle"></i> ¡Última unidad ya en tu carrito!', '#D95F2B'); return;
   }
-
-  // Each click adds a NEW individual item (not grouped qty)
   cart.push({id:modalId, name, brand, price, img, size, qty:1});
   saveCart();
   updateCartUI();
   refreshSzButtons(modalId);
-
-  // Animate badge
   const badge=document.getElementById('cartBadge');
   badge.classList.add('bump');
   setTimeout(()=>badge.classList.remove('bump'),350);
-
-  // Toast
   showToast(`<i class="fas fa-check"></i> ¡${name} · ${size} agregado al carrito!`);
-
-  // Close modal and open cart
   closeM(modalId);
   setTimeout(openCart,250);
 }
@@ -1796,7 +1798,6 @@ function addToCart(modalId, name, brand, price, img){
 function openCheckout(){
   if(cart.length===0) return;
   closeCart();
-  // Populate summary — show every item
   const sumItems = document.getElementById('ckSumItems');
   let html='';
   cart.forEach(item=>{
@@ -1809,22 +1810,17 @@ function openCheckout(){
   sumItems.innerHTML=html;
   const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
   document.getElementById('ckTotalPrice').textContent='$'+total.toLocaleString('es-AR');
-  // Reset form state
   document.getElementById('ckForm').style.display='block';
   document.getElementById('ckSuccess').classList.remove('show');
-  // Reset pay button
   document.getElementById('ckPayBtn').className='ck-pay-btn mp';
   document.getElementById('ckPayBtn').innerHTML='<i class="fas fa-lock"></i> Pagar con Mercado Pago';
-  // Open
   document.getElementById('ckBg').classList.add('open');
   document.body.style.overflow='hidden';
 }
-
 function closeCk(){
   document.getElementById('ckBg').classList.remove('open');
   document.body.style.overflow='';
 }
-
 function selectPay(label, method){
   document.querySelectorAll('.pay-method').forEach(l=>l.classList.remove('selected'));
   label.classList.add('selected');
@@ -1842,18 +1838,16 @@ async function procesarPago(){
   const calle=document.getElementById('ckCalle').value.trim();
   const barrio=document.getElementById('ckBarrio').value.trim();
   if(!nombre||!email||!tel||!calle||!barrio){
-    showToast('<i class="fas fa-exclamation-triangle"></i> Completá todos los campos', '#E8A030');
-    return;
+    showToast('<i class="fas fa-exclamation-triangle"></i> Completá todos los campos', '#E8A030'); return;
   }
   const btn=document.getElementById('ckPayBtn');
   btn.disabled=true;
   btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Procesando...';
-
   const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
   const order={
     id:'ORD-'+Date.now(),
     date:new Date().toLocaleString('es-AR'),
-    status:selectedPayMethod==='mp'?'Pendiente MP':selectedPayMethod==='card'?'Pendiente tarjeta':'Efectivo / Acordar',
+    status:selectedPayMethod==='mp'?'Pendiente pago MP':selectedPayMethod==='card'?'Pendiente tarjeta':'Efectivo / Acordar',
     payMethod:selectedPayMethod,
     customer:{nombre,email,tel},
     address:{calle,depto:document.getElementById('ckDepto').value.trim(),cp:document.getElementById('ckCp').value.trim(),barrio},
@@ -1862,32 +1856,18 @@ async function procesarPago(){
   };
 
   if(selectedPayMethod==='mp'){
-    try{
-      const res=await fetch('/api/create-preference',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({items:cart,orderId:order.id,payer:{name:nombre,email}})
-      });
-      if(res.ok){
-        const data=await res.json();
-        saveOrder(order);
-        // Guardar el carrito antes de redirigir
-        localStorage.setItem('id_pending_order', JSON.stringify(order));
-        window.location.href=data.init_point;
-        return;
-      } else {
-        console.warn('MP API error:', await res.text());
-      }
-    }catch(e){
-      console.warn('MP API no configurada aún:', e.message);
-    }
+    closeCk();
+    openMpModal(order, nombre, email);
+    btn.disabled=false;
+    btn.innerHTML='<i class="fas fa-lock"></i> Pagar con Mercado Pago';
+    return;
   }
 
-  // Cash / card / MP demo → mostrar éxito
+  // Cash / card
   saveOrder(order);
-  cart=[];
-  saveCart();
-  updateCartUI();
+  saveMyOrder(order);
+  sendEmailsViaNetlify(order);
+  cart=[]; saveCart(); updateCartUI();
   document.getElementById('ckForm').style.display='none';
   document.getElementById('ckSuccess').classList.add('show');
   document.getElementById('successOrderNum').textContent='#'+order.id.split('-')[1];
@@ -1895,55 +1875,240 @@ async function procesarPago(){
 }
 
 /* ════════════════════════════════════════
-   ORDERS
+   MERCADO PAGO CHECKOUT PRO
+   ════════════════════════════════════════ */
+let currentMpOrder = null;
+
+async function openMpModal(order, nombre, email){
+  currentMpOrder = order;
+  const bg = document.getElementById('mpModalBg');
+  bg.classList.add('open');
+  document.body.style.overflow='hidden';
+  document.getElementById('mpModalContent').innerHTML=`
+    <div class="mp-spinner"><i class="fas fa-circle-notch"></i><span style="font-size:.88rem;color:var(--muted)">Generando link de pago...</span></div>`;
+  // Detect local file — Netlify function won't work
+  const isLocal = window.location.protocol === 'file:';
+  if(isLocal){
+    const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+    document.getElementById('mpModalContent').innerHTML=`
+      <div style="text-align:center;padding:.5rem 0;">
+        <div style="width:56px;height:56px;background:rgba(232,160,48,.12);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-bottom:1rem;font-size:1.5rem;color:var(--amber);">
+          <i class="fas fa-laptop-code"></i>
+        </div>
+        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.03em;margin-bottom:.4rem;">Modo local</h3>
+        <p style="font-size:.82rem;color:var(--muted);line-height:1.6;margin-bottom:1.2rem;">
+          El pago con Mercado Pago funciona solo en<br/>
+          <strong>importadodevoto.com.ar</strong>.<br/>
+          Subí el archivo a Netlify para probarlo en vivo.
+        </p>
+        <a href="https://wa.me/541164890594?text=Hola%2C%20quiero%20coordinar%20el%20pago%20por%20%24${total.toLocaleString('es-AR')}"
+           target="_blank" class="mp-pay-link">
+          <i class="fab fa-whatsapp"></i> Coordinar pago por WhatsApp
+        </a>
+      </div>`;
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/create-preference', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({items:cart, orderId:order.id, payer:{name:nombre, email}})
+    });
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+    const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+    const itemsList = cart.map(i=>`
+      <div style="display:flex;justify-content:space-between;font-size:.82rem;padding:.2rem 0;">
+        <span>${i.name} · ${i.size}</span>
+        <span style="font-weight:700;">$${i.price.toLocaleString('es-AR')}</span>
+      </div>`).join('');
+    document.getElementById('mpModalContent').innerHTML=`
+      <img src="https://imgmp.mlstatic.com/org-img/mp/api/logos/logo_MP_W.png"
+           onerror="this.src='https://i.imgur.com/EsYzTC3.png'"
+           style="height:32px;margin-bottom:1rem;display:block;margin-left:auto;margin-right:auto;" alt="Mercado Pago"/>
+      <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.03em;margin-bottom:.3rem;">¡Tu pago está listo!</h3>
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:1.2rem;line-height:1.5;">
+        Pagá con tarjeta, débito, QR de Mercado Pago,<br/>Rapipago o Pago Fácil.
+      </p>
+      <a class="mp-pay-link" href="${data.init_point}" target="_blank" onclick="onMpLinkClick()">
+        <i class="fas fa-lock"></i> Ir a pagar — $${total.toLocaleString('es-AR')}
+      </a>
+      <div class="mp-order-info" style="margin-top:.9rem;">
+        <strong style="display:block;margin-bottom:.5rem;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;">Resumen</strong>
+        ${itemsList}
+        <div style="display:flex;justify-content:space-between;margin-top:.5rem;padding-top:.5rem;border-top:1px solid #eee;font-weight:700;font-size:.88rem;">
+          <span>Total</span><span>$${total.toLocaleString('es-AR')}</span>
+        </div>
+        <div style="margin-top:.4rem;color:#aaa;font-size:.72rem;">Orden: ${order.id}</div>
+      </div>
+      <p style="font-size:.7rem;color:#ccc;margin-top:.8rem;">🔒 Pago procesado por Mercado Pago. Tus datos están protegidos.</p>`;
+    saveOrder(order);
+    saveMyOrder(order);
+    sendEmailsViaNetlify(order);
+  } catch(e) {
+    console.error('MP error:', e);
+    const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+    document.getElementById('mpModalContent').innerHTML=`
+      <div style="text-align:center;padding:.5rem 0;">
+        <div style="width:56px;height:56px;background:rgba(217,95,43,.1);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-bottom:1rem;font-size:1.5rem;color:var(--rust);">
+          <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.03em;margin-bottom:.4rem;">Error al conectar</h3>
+        <p style="font-size:.82rem;color:var(--muted);line-height:1.6;margin-bottom:1.2rem;">
+          No se pudo conectar con Mercado Pago.<br/>
+          Coordiná el pago por WhatsApp.
+        </p>
+        <a href="https://wa.me/541164890594?text=Hola%2C%20quiero%20pagar%20mi%20pedido%20${order.id}%20por%20%24${total.toLocaleString('es-AR')}"
+           target="_blank" class="mp-pay-link">
+          <i class="fab fa-whatsapp"></i> Coordinar pago por WhatsApp
+        </a>
+      </div>`;
+  }
+}
+
+function onMpLinkClick(){
+  // User clicked the MP payment link — save pending order
+  localStorage.setItem('id_pending_order', JSON.stringify(currentMpOrder));
+  cart=[]; saveCart(); updateCartUI();
+  setTimeout(()=>closeMpModal(),300);
+}
+
+function closeMpModal(){
+  document.getElementById('mpModalBg').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+/* ════════════════════════════════════════
+   EMAILS VIA NETLIFY FUNCTION
+   ════════════════════════════════════════ */
+async function sendEmailsViaNetlify(order){
+  const isLocal = window.location.protocol === 'file:';
+  if(isLocal){ console.log('Emails: modo local, no se envían.'); return; }
+  try {
+    await fetch('/api/send-email', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ order, storeEmail:'santinooypi@gmail.com' })
+    });
+    console.log('Emails enviados');
+  } catch(e){ console.warn('send-email error:', e.message); }
+}
+// Alias for backwards compatibility
+async function sendConfirmationEmail(order){ await sendEmailsViaNetlify(order); }
+
+/* ════════════════════════════════════════
+   ORDERS — ADMIN (password protected)
    ════════════════════════════════════════ */
 function saveOrder(order){
   const orders=JSON.parse(localStorage.getItem('id_orders')||'[]');
-  orders.unshift(order);
+  // Avoid duplicates
+  const exists = orders.find(o=>o.id===order.id);
+  if(!exists) orders.unshift(order);
   localStorage.setItem('id_orders',JSON.stringify(orders));
+}
+
+// Save a copy for the CUSTOMER (separate key)
+function saveMyOrder(order){
+  const mine=JSON.parse(localStorage.getItem('id_my_orders')||'[]');
+  const exists=mine.find(o=>o.id===order.id);
+  if(!exists) mine.unshift(order);
+  localStorage.setItem('id_my_orders',JSON.stringify(mine));
+}
+
+function openOrdersAdmin(){
+  document.getElementById('adminPwBg').classList.add('open');
+  document.getElementById('adminPwInput').value='';
+  document.getElementById('adminPwErr').style.display='none';
+  document.body.style.overflow='hidden';
+  setTimeout(()=>document.getElementById('adminPwInput').focus(),200);
+}
+
+function checkAdminPw(){
+  const val = document.getElementById('adminPwInput').value;
+  if(val===ADMIN_PASSWORD){
+    document.getElementById('adminPwBg').classList.remove('open');
+    openOrders();
+  } else {
+    document.getElementById('adminPwErr').style.display='block';
+    document.getElementById('adminPwInput').value='';
+    document.getElementById('adminPwInput').focus();
+  }
 }
 
 function openOrders(){
   const orders=JSON.parse(localStorage.getItem('id_orders')||'[]');
-  const body=document.getElementById('opBody');
-  if(orders.length===0){
-    body.innerHTML='<div class="op-empty"><i class="fas fa-receipt"></i>No hay órdenes todavía.</div>';
-  } else {
-    const payLabels={mp:'Mercado Pago',card:'Tarjeta',cash:'Efectivo'};
-    body.innerHTML=orders.map(o=>{
-      const statusClass=o.payMethod==='cash'?'status-cash':o.status.includes('Pendiente')?'status-pending':'status-paid';
-      const itemsHtml=o.items.map(i=>`
-        <div class="order-product">
-          <img src="${i.img}" alt="${i.name}" onerror="this.src='https://via.placeholder.com/40?text=img'"/>
-          <span class="order-product-name">${i.name} · Talle: ${i.size}</span>
-          <span class="order-product-price">$${(i.price).toLocaleString('es-AR')}</span>
-        </div>`).join('');
-      return `
-      <div class="order-card">
-        <div class="order-card-head">
-          <span class="order-num-label">${o.id}</span>
-          <span class="order-date">${o.date}</span>
-          <span class="order-status ${statusClass}">${o.status}</span>
-        </div>
-        <div class="order-card-body">
-          <div class="order-info-grid">
-            <div class="order-info-item"><strong>Cliente</strong><span>${o.customer.nombre}</span></div>
-            <div class="order-info-item"><strong>Email</strong><span>${o.customer.email}</span></div>
-            <div class="order-info-item"><strong>Teléfono</strong><span>${o.customer.tel}</span></div>
-            <div class="order-info-item"><strong>Pago</strong><span>${payLabels[o.payMethod]||o.payMethod}</span></div>
-            <div class="order-info-item" style="grid-column:1/-1"><strong>Dirección</strong><span>${o.address.calle}${o.address.depto?' '+o.address.depto:''}, ${o.address.barrio}${o.address.cp?' (CP: '+o.address.cp+')':''}</span></div>
-          </div>
-          <div class="order-products">${itemsHtml}</div>
-          <div class="order-total-row">
-            <span class="order-total-label">Total</span>
-            <span class="order-total-price">$${o.total.toLocaleString('es-AR')}</span>
-          </div>
-        </div>
-      </div>`;
-    }).join('');
-  }
+  renderOrdersPanel(orders);
   document.getElementById('ordersPanelBg').classList.add('open');
   document.body.style.overflow='hidden';
+}
+
+function renderOrdersPanel(orders){
+  const body=document.getElementById('opBody');
+  if(orders.length===0){
+    body.innerHTML='<div class="op-empty"><i class="fas fa-receipt"></i><p>No hay órdenes todavía.</p></div>';
+    return;
+  }
+  const payLabels={mp:'Mercado Pago',card:'Tarjeta',cash:'Efectivo'};
+  body.innerHTML=orders.map((o,idx)=>{
+    const statusClass=o.payMethod==='cash'?'status-cash':o.status.toLowerCase().includes('aprobado')?'status-paid':'status-pending';
+    const itemsHtml=o.items.map(i=>`
+      <div class="order-product">
+        <img src="${i.img}" alt="${i.name}" onerror="this.src='https://via.placeholder.com/40?text=img'"/>
+        <span class="order-product-name">${i.name} · Talle: ${i.size}</span>
+        <span class="order-product-price">$${(i.price).toLocaleString('es-AR')}</span>
+      </div>`).join('');
+    return `
+    <div class="order-card" id="order-card-${idx}">
+      <div class="order-card-head">
+        <span class="order-num-label">${o.id}</span>
+        <span class="order-date">${o.date}</span>
+        <div style="display:flex;align-items:center;gap:.6rem;">
+          <span class="order-status ${statusClass}">${o.status}</span>
+          <button class="order-del-btn" onclick="deleteOrder(${idx})"><i class="fas fa-trash-alt"></i> Eliminar</button>
+        </div>
+      </div>
+      <div class="order-card-body">
+        <div class="order-info-grid">
+          <div class="order-info-item"><strong>Cliente</strong><span>${o.customer.nombre}</span></div>
+          <div class="order-info-item"><strong>Email</strong><span>${o.customer.email}</span></div>
+          <div class="order-info-item"><strong>Teléfono</strong><span>${o.customer.tel}</span></div>
+          <div class="order-info-item"><strong>Pago</strong><span>${payLabels[o.payMethod]||o.payMethod}</span></div>
+          <div class="order-info-item" style="grid-column:1/-1"><strong>Dirección</strong><span>${o.address.calle}${o.address.depto?' '+o.address.depto:''}, ${o.address.barrio}${o.address.cp?' (CP: '+o.address.cp+')':''}</span></div>
+        </div>
+        <div class="order-products">${itemsHtml}</div>
+        <div class="order-total-row">
+          <span class="order-total-label">Total</span>
+          <span class="order-total-price">$${o.total.toLocaleString('es-AR')}</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function deleteOrder(idx){
+  if(!confirm('¿Eliminar esta orden? También se restaurará el stock.')) return;
+  const orders=JSON.parse(localStorage.getItem('id_orders')||'[]');
+  const deleted = orders[idx];
+  // Restore stock
+  if(deleted && deleted.items){
+    deleted.items.forEach(item=>{
+      if(STOCK[item.id] && STOCK[item.id][item.size] !== undefined){
+        STOCK[item.id][item.size] = (STOCK[item.id][item.size]||0) + item.qty;
+      }
+    });
+  }
+  orders.splice(idx,1);
+  localStorage.setItem('id_orders',JSON.stringify(orders));
+  renderOrdersPanel(orders);
+  showToast('<i class="fas fa-check"></i> Orden eliminada y stock restaurado');
+}
+
+function clearAllOrders(){
+  if(!confirm('¿Eliminar TODAS las órdenes? Esta acción no se puede deshacer.')) return;
+  localStorage.removeItem('id_orders');
+  renderOrdersPanel([]);
+  showToast('<i class="fas fa-trash-alt"></i> Historial borrado', '#D95F2B');
 }
 
 function closeOrders(){
@@ -1951,29 +2116,31 @@ function closeOrders(){
   document.body.style.overflow='';
 }
 
-// ─── Check MP return after payment
+/* ════════════════════════════════════════
+   MP RETURN HANDLER
+   ════════════════════════════════════════ */
 (function checkMPReturn(){
   const params=new URLSearchParams(window.location.search);
   const status=params.get('status')||params.get('collection_status');
+  if(!status) return;
+  const pending=localStorage.getItem('id_pending_order');
   if(status==='approved'){
-    // Recover pending order if exists
-    const pending=localStorage.getItem('id_pending_order');
     if(pending){
       const o=JSON.parse(pending);
       o.status='Pago aprobado ✓';
       saveOrder(o);
+      saveMyOrder(o);
+      sendEmailsViaNetlify(o);
       localStorage.removeItem('id_pending_order');
     }
     cart=[]; saveCart(); updateCartUI();
-    showToast('<i class="fas fa-check"></i> ¡Pago aprobado! Gracias por tu compra.');
-  } else if(status==='failure'){
-    showToast('<i class="fas fa-times"></i> El pago fue rechazado. Intentá de nuevo.','#D95F2B');
-  } else if(status==='pending'){
-    showToast('<i class="fas fa-clock"></i> Pago pendiente. Te avisaremos cuando se acredite.','#E8A030');
+    showToast('<i class="fas fa-clock"></i> Pago pendiente de acreditación.','#E8A030');
   }
+  window.history.replaceState({},'',window.location.pathname);
 })();
 
-// Init
+// ── INIT
+document.body.style.overflow='';
 updateCartUI();
 </script>
 </body>
