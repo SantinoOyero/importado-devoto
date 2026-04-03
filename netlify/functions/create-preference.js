@@ -1,4 +1,4 @@
-const ACCESS_TOKEN = 'TU_ACCESS_TOKEN_AQUI';
+const ACCESS_TOKEN = 'APP_USR-4957780749221652-040314-3ff008a79049b6e9ca78877e0d050c99-3311074099';
 const REDIRECT_URL = 'https://importadodevoto.com.ar';
 
 exports.handler = async function(event) {
