@@ -254,6 +254,94 @@
     .m-wa{display:flex;align-items:center;justify-content:center;gap:.65rem;background:#25D366;color:#fff;font-weight:700;font-size:.88rem;padding:.9rem 2rem;border-radius:100px;text-decoration:none;width:100%;margin-top:auto;transition:background .2s,transform .2s,box-shadow .2s;box-shadow:0 4px 18px rgba(37,211,102,.24);}
     .m-wa:hover{background:#1cb254;transform:translateY(-2px);box-shadow:0 8px 28px rgba(37,211,102,.32);}
 
+
+    /* ══ CARD FORM (estilo premium) ══ */
+    .card-form-wrap{display:none;margin-top:1rem;}
+    .card-form-wrap.show{display:block;}
+
+    /* 3D card preview */
+    .card-3d{
+      perspective:1000px;
+      margin-bottom:1.2rem;
+      height:160px;
+    }
+    .card-3d-inner{
+      position:relative;width:100%;height:100%;
+      transition:transform .6s;transform-style:preserve-3d;
+    }
+    .card-3d.flipped .card-3d-inner{transform:rotateY(180deg);}
+    .card-front,.card-back{
+      position:absolute;inset:0;border-radius:14px;
+      backface-visibility:hidden;
+      padding:1.2rem 1.4rem;color:#fff;
+      background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);
+      box-shadow:0 8px 32px rgba(0,0,0,.25);
+      overflow:hidden;
+    }
+    .card-front::before{
+      content:'';position:absolute;top:-40px;right:-40px;
+      width:160px;height:160px;border-radius:50%;
+      background:rgba(255,255,255,.04);
+    }
+    .card-front::after{
+      content:'';position:absolute;bottom:-60px;left:-20px;
+      width:200px;height:200px;border-radius:50%;
+      background:rgba(255,255,255,.03);
+    }
+    .card-back{transform:rotateY(180deg);}
+    .card-back::before{
+      content:'';position:absolute;top:40px;left:0;right:0;
+      height:40px;background:rgba(0,0,0,.5);
+    }
+    .card-back::after{
+      content:'';position:absolute;top:100px;right:1.4rem;left:1.4rem;
+      height:36px;background:#fff;border-radius:4px;
+      display:flex;align-items:center;
+    }
+    .card-cvv-label{
+      position:absolute;top:100px;right:1.4rem;
+      width:80px;height:36px;background:#f0f0f0;border-radius:4px;
+      display:flex;align-items:center;justify-content:flex-end;
+      padding-right:.7rem;font-family:monospace;font-size:.95rem;
+      color:#333;letter-spacing:.1em;font-weight:700;
+    }
+    .card-chip{
+      width:36px;height:28px;
+      background:linear-gradient(135deg,#d4af37,#f0e68c);
+      border-radius:5px;margin-bottom:.9rem;
+    }
+    .card-num-disp{
+      font-family:'Courier New',monospace;
+      font-size:1.1rem;letter-spacing:.18em;margin-bottom:.8rem;
+      opacity:.9;word-spacing:.3em;
+    }
+    .card-row-disp{display:flex;justify-content:space-between;align-items:flex-end;}
+    .card-lbl{font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;opacity:.6;margin-bottom:.15rem;}
+    .card-val{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
+    .card-network-disp{
+      position:absolute;top:1rem;right:1.2rem;
+      font-size:.6rem;font-weight:900;letter-spacing:.12em;
+      text-transform:uppercase;opacity:.7;
+    }
+
+    /* Input fields */
+    .card-fields{display:flex;flex-direction:column;gap:.7rem;}
+    .cf-label{font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:.28rem;color:var(--dark);}
+    .cf-input{
+      width:100%;padding:.75rem 1rem;
+      border:1.5px solid var(--border);border-radius:10px;
+      font-family:'Outfit',sans-serif;font-size:.92rem;
+      color:var(--dark);background:#fff;outline:none;
+      transition:border-color .2s,box-shadow .2s;
+    }
+    .cf-input:focus{border-color:var(--dark);box-shadow:0 0 0 3px rgba(20,20,20,.08);}
+    .cf-input.valid{border-color:var(--green2);}
+    .cf-input.error{border-color:var(--rust);}
+    .cf-row{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;}
+
+    /* ══ MP MODAL IMPROVED ══ */
+    .mp-modal-box{max-width:480px;}
+
     /* ══ ANIMATIONS ══ */
     @keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
     .reveal{opacity:0;transform:translateY(30px);transition:opacity .65s ease,transform .65s ease;}
@@ -925,7 +1013,7 @@
               <div class="pay-method-icon pmi-mp"><i class="fas fa-wallet"></i></div>
               <div class="pay-method-info">
                 <strong>Mercado Pago</strong>
-                <span>Tarjeta, débito, billetera virtual</span>
+                <span>Tarjeta, débito, QR, billetera virtual</span>
               </div>
             </label>
             <label class="pay-method" onclick="selectPay(this,'card')">
@@ -944,6 +1032,70 @@
                 <span>Rapipago · Pago Fácil · En mano</span>
               </div>
             </label>
+          </div>
+
+          <!-- ══ CARD FORM ══ -->
+          <div class="card-form-wrap" id="cardFormWrap">
+            <!-- 3D Card Preview -->
+            <div class="card-3d" id="card3d">
+              <div class="card-3d-inner">
+                <!-- Front -->
+                <div class="card-front">
+                  <div class="card-chip"></div>
+                  <div class="card-num-disp" id="cardNumDisp">•••• •••• •••• ••••</div>
+                  <div class="card-row-disp">
+                    <div>
+                      <div class="card-lbl">Titular</div>
+                      <div class="card-val" id="cardHolderDisp">NOMBRE APELLIDO</div>
+                    </div>
+                    <div>
+                      <div class="card-lbl">Vence</div>
+                      <div class="card-val" id="cardExpDisp">MM/AA</div>
+                    </div>
+                  </div>
+                  <div class="card-network-disp" id="cardNetworkDisp"></div>
+                </div>
+                <!-- Back -->
+                <div class="card-back">
+                  <div class="card-cvv-label" id="cardCvvDisp">•••</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fields -->
+            <div class="card-fields">
+              <div>
+                <label class="cf-label">Número de tarjeta</label>
+                <input class="cf-input" id="cfNum" type="tel" maxlength="19"
+                       placeholder="1234 5678 9012 3456"
+                       oninput="onCardNum(this)"
+                       onfocus="flipCard(false)"/>
+              </div>
+              <div>
+                <label class="cf-label">Nombre en la tarjeta</label>
+                <input class="cf-input" id="cfHolder" type="text"
+                       placeholder="JUAN GARCIA"
+                       oninput="onCardHolder(this)"
+                       onfocus="flipCard(false)"/>
+              </div>
+              <div class="cf-row">
+                <div>
+                  <label class="cf-label">Vencimiento</label>
+                  <input class="cf-input" id="cfExp" type="tel" maxlength="5"
+                         placeholder="MM/AA"
+                         oninput="onCardExp(this)"
+                         onfocus="flipCard(false)"/>
+                </div>
+                <div>
+                  <label class="cf-label">CVV</label>
+                  <input class="cf-input" id="cfCvv" type="tel" maxlength="4"
+                         placeholder="123"
+                         onfocus="flipCard(true)"
+                         onblur="flipCard(false)"
+                         oninput="onCardCvv(this)"/>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1910,7 +2062,7 @@ async function openMpModal(order, nombre, email){
   }
 
   try {
-    const res = await fetch('/api/create-preference', {
+    const res = await fetch('/.netlify/functions/create-preference', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify({items:cart, orderId:order.id, payer:{name:nombre, email}})
@@ -1986,7 +2138,7 @@ async function sendEmailsViaNetlify(order){
   const isLocal = window.location.protocol === 'file:';
   if(isLocal){ console.log('Emails: modo local, no se envían.'); return; }
   try {
-    await fetch('/api/send-email', {
+    await fetch('/.netlify/functions/send-email', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ order, storeEmail:'santinooypi@gmail.com' })
@@ -2144,4 +2296,576 @@ document.body.style.overflow='';
 updateCartUI();
 </script>
 </body>
-</html>
+</html<script>
+/* ══════════════════════════════════════════
+   CONFIG
+══════════════════════════════════════════ */
+const MP_PUBLIC_KEY = 'APP_USR-aaa2045f-68f9-4d67-9d75-08b184de6966';
+const ADMIN_PASSWORD = 'devoto2024';
+const STORE_EMAIL    = '<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8cffede2f8e5e2e3e3f5fce5ccebe1ede5e0a2efe3e1">[email&#160;protected]</a>';
+
+/* ══════════════════════════════════════════
+   STOCK
+══════════════════════════════════════════ */
+const STOCK = {
+  mBuzoCrema:      {XS:1,S:1,M:1,L:1,XL:1,XXL:1},
+  mBuzoGris:       {},
+  mBuzoMarron:     {XL:1},
+  mBuzoJack:       {L:1},
+  mBuzoPoloNegro:  {S:1,L:2},
+  mSweaterGris:    {S:2,XXL:1},
+  mBuzoVerde:      {M:1,XL:1},
+  mRemeraNegra:    {XL:1},
+  mRemeraRosa:     {M:1,L:1},
+  mRemeraMarron:   {S:1,L:2},
+  mRemeraCrema:    {L:1,XL:1},
+  mRemeraMarronML: {M:1,L:1,XL:1},
+  mRemeraWednesday:{XS:2},
+};
+
+/* ══════════════════════════════════════════
+   CART
+══════════════════════════════════════════ */
+let cart = JSON.parse(localStorage.getItem('id_cart')||'[]');
+let selectedPayMethod = 'mp';
+
+function stockDisponible(id,size){
+  const s=STOCK[id]||{};
+  const used=cart.filter(i=>i.id===id&&i.size===size).reduce((a,i)=>a+i.qty,0);
+  return (s[size]||0)-used;
+}
+function saveCart(){ localStorage.setItem('id_cart',JSON.stringify(cart)); }
+
+function showToast(msg,color='#2A6044'){
+  const t=document.createElement('div');
+  t.style.cssText=`position:fixed;top:1.4rem;left:50%;transform:translateX(-50%) translateY(-12px);
+    background:${color};color:#fff;padding:.7rem 1.6rem;border-radius:100px;
+    font-weight:700;font-size:.85rem;z-index:9999;
+    box-shadow:0 8px 30px rgba(0,0,0,.2);transition:all .3s;white-space:nowrap;`;
+  t.innerHTML=msg;
+  document.body.appendChild(t);
+  requestAnimationFrame(()=>{t.style.transform='translateX(-50%) translateY(0)';});
+  setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(-50%) translateY(-12px)';setTimeout(()=>t.remove(),350);},3000);
+}
+
+function updateCartUI(){
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const count=cart.reduce((s,i)=>s+i.qty,0);
+  const badge=document.getElementById('cartBadge');
+  if(count>0){badge.style.display='flex';badge.textContent=count;}
+  else{badge.style.display='none';}
+  document.getElementById('cartTotal').textContent='$'+total.toLocaleString('es-AR');
+  const container=document.getElementById('cartItems');
+  const emptyEl=document.getElementById('cartEmpty');
+  const footEl=document.getElementById('cartFoot');
+  if(cart.length===0){
+    container.innerHTML='';emptyEl.style.display='flex';
+    container.appendChild(emptyEl);footEl.style.display='none';return;
+  }
+  emptyEl.style.display='none';footEl.style.display='block';
+  container.innerHTML=cart.map((item,idx)=>`
+    <div class="cart-item">
+      <img class="cart-item-img" src="${item.img}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/72'"/>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-sub">${item.brand} · Talle: <strong>${item.size}</strong></div>
+        <div class="cart-item-price">$${item.price.toLocaleString('es-AR')}</div>
+      </div>
+      <button class="cart-item-remove" onclick="removeFromCart(${idx})"><i class="fas fa-trash-alt"></i></button>
+    </div>`).join('');
+  container.appendChild(emptyEl);
+}
+
+function openCart(){
+  document.getElementById('cartOverlay').classList.add('open');
+  document.getElementById('cartDrawer').classList.add('open');
+  document.body.style.overflow='hidden';
+  updateCartUI();
+}
+function closeCart(){
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.getElementById('cartDrawer').classList.remove('open');
+  document.body.style.overflow='';
+}
+function removeFromCart(idx){
+  const r=cart[idx];
+  cart.splice(idx,1);saveCart();updateCartUI();refreshSzButtons(r.id);
+  showToast(`<i class="fas fa-trash-alt"></i> ${r.name} · ${r.size} eliminado`,'#D95F2B');
+}
+
+function selectSz(btn,modalId){
+  btn.closest('.sz-row').querySelectorAll('.sz-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const size=btn.textContent.replace(/\d.*$/,'').trim();
+  const atcBtn=document.getElementById('atc-'+modalId);
+  if(!atcBtn)return;
+  const st=(STOCK[modalId]||{})[size]||0;
+  if(st===0||stockDisponible(modalId,size)>0){
+    atcBtn.disabled=false;atcBtn.innerHTML='<i class="fas fa-shopping-bag"></i> Agregar al carrito';
+  }else{
+    atcBtn.disabled=true;atcBtn.innerHTML='<i class="fas fa-times-circle"></i> Sin stock disponible';
+  }
+}
+function refreshSzButtons(modalId){
+  const row=document.querySelector(`.sz-row[data-modal="${modalId}"]`);
+  if(!row)return;
+  row.querySelectorAll('.sz-btn').forEach(btn=>{
+    const size=btn.textContent.replace(/\d.*$/,'').trim();
+    const st=(STOCK[modalId]||{})[size]||0;
+    if(st===0)return;
+    const d=stockDisponible(modalId,size);
+    btn.style.opacity=d<=0?'.35':'';btn.style.pointerEvents=d<=0?'none':'';
+  });
+}
+function addToCart(modalId,name,brand,price,img){
+  const row=document.querySelector(`.sz-row[data-modal="${modalId}"]`);
+  const sel=row?row.querySelector('.sz-btn.selected'):null;
+  if(!sel){showToast('<i class="fas fa-exclamation"></i> Seleccioná un talle','#E8A030');return;}
+  const size=sel.textContent.replace(/\d.*$/,'').trim();
+  const st=(STOCK[modalId]||{})[size]||0;
+  if(st>0&&stockDisponible(modalId,size)<=0){
+    showToast('<i class="fas fa-times-circle"></i> ¡Ya tenés la última unidad!','#D95F2B');return;
+  }
+  cart.push({id:modalId,name,brand,price,img,size,qty:1});
+  saveCart();updateCartUI();refreshSzButtons(modalId);
+  const badge=document.getElementById('cartBadge');
+  badge.classList.add('bump');setTimeout(()=>badge.classList.remove('bump'),350);
+  showToast(`<i class="fas fa-check"></i> ¡${name} · ${size} agregado!`);
+  closeM(modalId);setTimeout(openCart,250);
+}
+
+/* ══════════════════════════════════════════
+   CHECKOUT
+══════════════════════════════════════════ */
+function openCheckout(){
+  if(cart.length===0)return;
+  closeCart();
+  document.getElementById('ckSumItems').innerHTML=cart.map(item=>`
+    <div class="ck-sum-item">
+      <img class="ck-sum-img" src="${item.img}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/48'"/>
+      <div class="ck-sum-name">${item.name}<br/><small style="color:var(--muted);font-weight:400">${item.brand} · Talle: ${item.size}</small></div>
+      <div class="ck-sum-price">$${item.price.toLocaleString('es-AR')}</div>
+    </div>`).join('');
+  document.getElementById('ckTotalPrice').textContent='$'+cart.reduce((s,i)=>s+i.price*i.qty,0).toLocaleString('es-AR');
+  document.getElementById('ckForm').style.display='block';
+  document.getElementById('ckSuccess').classList.remove('show');
+  document.getElementById('ckPayBtn').className='ck-pay-btn mp';
+  document.getElementById('ckPayBtn').innerHTML='<i class="fas fa-lock"></i> Pagar con Mercado Pago';
+  if(document.getElementById('cardFormWrap'))
+    document.getElementById('cardFormWrap').classList.remove('show');
+  document.getElementById('ckBg').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeCk(){
+  document.getElementById('ckBg').classList.remove('open');
+  document.body.style.overflow='';
+}
+function selectPay(label,method){
+  document.querySelectorAll('.pay-method').forEach(l=>l.classList.remove('selected'));
+  label.classList.add('selected');
+  selectedPayMethod=method;
+  const btn=document.getElementById('ckPayBtn');
+  const labels={mp:'Pagar con Mercado Pago',card:'Confirmar y pagar con tarjeta',cash:'Confirmar pedido (efectivo)'};
+  btn.innerHTML=`<i class="fas fa-lock"></i> ${labels[method]}`;
+  btn.className='ck-pay-btn '+method;
+  const cf=document.getElementById('cardFormWrap');
+  if(cf) cf.classList.toggle('show',method==='card');
+}
+
+/* ══════════════════════════════════════════
+   CARD FORM — 3D INTERACTIONS
+══════════════════════════════════════════ */
+function flipCard(toBack){
+  const c=document.getElementById('card3d');
+  if(c) c.classList.toggle('flipped',toBack);
+}
+function onCardNum(inp){
+  let v=inp.value.replace(/\D/g,'').substring(0,16);
+  inp.value=v.replace(/(\d{4})(?=\d)/g,'$1 ');
+  const disp=document.getElementById('cardNumDisp');
+  if(disp){
+    const padded=v.padEnd(16,'•');
+    disp.textContent=padded.replace(/(\d{4}|•{4})/g,'$1 ').trim();
+  }
+  const net=document.getElementById('cardNetworkDisp');
+  if(net){
+    if(v.startsWith('4'))net.textContent='VISA';
+    else if(/^5[1-5]/.test(v)||/^2[2-7]/.test(v))net.textContent='MASTERCARD';
+    else if(/^3[47]/.test(v))net.textContent='AMEX';
+    else net.textContent='';
+  }
+  inp.classList.toggle('valid',v.length>=15);
+}
+function onCardHolder(inp){
+  const disp=document.getElementById('cardHolderDisp');
+  if(disp)disp.textContent=inp.value.toUpperCase()||'NOMBRE APELLIDO';
+}
+function onCardExp(inp){
+  let v=inp.value.replace(/\D/g,'').substring(0,4);
+  if(v.length>=3)v=v.slice(0,2)+'/'+v.slice(2);
+  inp.value=v;
+  const disp=document.getElementById('cardExpDisp');
+  if(disp)disp.textContent=v||'MM/AA';
+  inp.classList.toggle('valid',v.length===5);
+}
+function onCardCvv(inp){
+  const disp=document.getElementById('cardCvvDisp');
+  if(disp)disp.textContent=inp.value.replace(/\D/g,'')||'•••';
+}
+
+/* ══════════════════════════════════════════
+   PROCESO DE PAGO
+══════════════════════════════════════════ */
+async function procesarPago(){
+  const nombre=document.getElementById('ckNombre').value.trim();
+  const email=document.getElementById('ckEmail').value.trim();
+  const tel=document.getElementById('ckTel').value.trim();
+  const calle=document.getElementById('ckCalle').value.trim();
+  const barrio=document.getElementById('ckBarrio').value.trim();
+  if(!nombre||!email||!tel||!calle||!barrio){
+    showToast('<i class="fas fa-exclamation-triangle"></i> Completá todos los campos','#E8A030');return;
+  }
+  // Validate card fields if card selected
+  if(selectedPayMethod==='card'){
+    const num=document.getElementById('cfNum')?document.getElementById('cfNum').value.replace(/\s/g,''):'';
+    const holder=document.getElementById('cfHolder')?document.getElementById('cfHolder').value.trim():'';
+    const exp=document.getElementById('cfExp')?document.getElementById('cfExp').value:'';
+    const cvv=document.getElementById('cfCvv')?document.getElementById('cfCvv').value:'';
+    if(num.length<15||!holder||exp.length<5||cvv.length<3){
+      showToast('<i class="fas fa-credit-card"></i> Completá todos los datos de la tarjeta','#E8A030');return;
+    }
+  }
+  const btn=document.getElementById('ckPayBtn');
+  btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Procesando...';
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const order={
+    id:'ORD-'+Date.now(),
+    date:new Date().toLocaleString('es-AR'),
+    status:selectedPayMethod==='mp'?'Pendiente MP':selectedPayMethod==='card'?'Pendiente tarjeta':'Efectivo / Acordar',
+    payMethod:selectedPayMethod,
+    customer:{nombre,email,tel},
+    address:{calle,depto:document.getElementById('ckDepto').value.trim(),cp:document.getElementById('ckCp').value.trim(),barrio},
+    items:[...cart],
+    total
+  };
+  if(selectedPayMethod==='card'){
+    order.cardLast4=document.getElementById('cfNum')?document.getElementById('cfNum').value.replace(/\s/g,'').slice(-4):'';
+  }
+
+  if(selectedPayMethod==='mp'){
+    closeCk();
+    btn.disabled=false;
+    btn.innerHTML='<i class="fas fa-lock"></i> Pagar con Mercado Pago';
+    openMpModal(order,nombre,email);
+    return;
+  }
+
+  // Card / Cash → save & show success
+  saveOrder(order);saveMyOrder(order);
+  sendEmailsViaNetlify(order);
+  cart=[];saveCart();updateCartUI();
+  document.getElementById('ckForm').style.display='none';
+  document.getElementById('ckSuccess').classList.add('show');
+  document.getElementById('successOrderNum').textContent='#'+order.id.split('-')[1];
+  document.getElementById('successEmailMsg').textContent=
+    `Te enviamos un resumen a ${email}. Te contactaremos por WhatsApp para coordinar el envío.`;
+  btn.disabled=false;
+}
+
+/* ══════════════════════════════════════════
+   MERCADO PAGO CHECKOUT PRO
+══════════════════════════════════════════ */
+let currentMpOrder=null;
+
+async function openMpModal(order,nombre,email){
+  currentMpOrder=order;
+  const bg=document.getElementById('mpModalBg');
+  bg.classList.add('open');
+  document.body.style.overflow='hidden';
+  document.getElementById('mpModalContent').innerHTML=`
+    <div class="mp-spinner">
+      <i class="fas fa-circle-notch"></i>
+      <p style="font-size:.85rem;color:var(--muted);margin:.4rem 0 0">Generando link de pago seguro...</p>
+    </div>`;
+
+  try{
+    const res=await fetch('/.netlify/functions/create-preference',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({items:cart,orderId:order.id,payer:{name:nombre,email}})
+    });
+    if(!res.ok){
+      const err=await res.json().catch(()=>({}));
+      throw new Error(err.error||'HTTP '+res.status);
+    }
+    const data=await res.json();
+    const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+    const itemsHtml=cart.map(i=>`
+      <div style="display:flex;justify-content:space-between;font-size:.8rem;padding:.22rem 0;border-bottom:1px solid #f5f5f5;">
+        <span style="color:#444;">${i.name} · <strong>${i.size}</strong></span>
+        <span style="font-weight:700;">$${i.price.toLocaleString('es-AR')}</span>
+      </div>`).join('');
+
+    document.getElementById('mpModalContent').innerHTML=`
+      <div style="text-align:center;margin-bottom:1rem;">
+        <div style="display:inline-flex;align-items:center;gap:.5rem;background:#009EE3;color:#fff;padding:.5rem 1.2rem;border-radius:100px;font-weight:700;font-size:.85rem;">
+          <i class="fas fa-shield-alt"></i> Pago seguro con Mercado Pago
+        </div>
+      </div>
+      <div style="background:#f8f9fa;border-radius:12px;padding:1rem 1.1rem;margin-bottom:1rem;">
+        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#aaa;margin-bottom:.6rem;">Resumen</div>
+        ${itemsHtml}
+        <div style="display:flex;justify-content:space-between;padding-top:.6rem;margin-top:.2rem;font-weight:800;font-size:.95rem;">
+          <span>Total</span><span style="color:#2A6044;">$${total.toLocaleString('es-AR')}</span>
+        </div>
+      </div>
+      <a class="mp-pay-link" href="${data.init_point}" target="_blank" onclick="onMpLinkClick()">
+        <i class="fas fa-lock"></i> &nbsp;Ir a pagar $${total.toLocaleString('es-AR')}
+      </a>
+      <div style="text-align:center;margin-top:.8rem;font-size:.72rem;color:#ccc;">
+        🔒 Podés pagar con tarjeta, débito, QR, Rapipago o Pago Fácil
+      </div>`;
+
+    saveOrder(order);saveMyOrder(order);
+    sendEmailsViaNetlify(order);
+
+  }catch(e){
+    console.error('MP error:',e);
+    const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+    document.getElementById('mpModalContent').innerHTML=`
+      <div style="text-align:center;padding:.5rem 0;">
+        <div style="width:56px;height:56px;background:rgba(217,95,43,.1);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-bottom:.8rem;font-size:1.5rem;color:var(--rust);"><i class="fas fa-exclamation-triangle"></i></div>
+        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.03em;margin-bottom:.4rem;">Error al conectar</h3>
+        <p style="font-size:.82rem;color:var(--muted);line-height:1.6;margin-bottom:1.2rem;">
+          No se pudo generar el pago.<br/>
+          <small style="color:#bbb;">Detalle: ${e.message}</small>
+        </p>
+        <a href="https://wa.me/541164890594?text=Hola%2C%20quiero%20pagar%20mi%20pedido%20${order.id}%20por%20%24${total.toLocaleString('es-AR')}"
+           target="_blank" class="mp-pay-link"><i class="fab fa-whatsapp"></i> Coordinar pago por WhatsApp</a>
+      </div>`;
+  }
+}
+
+function onMpLinkClick(){
+  localStorage.setItem('id_pending_order',JSON.stringify(currentMpOrder));
+  cart=[];saveCart();updateCartUI();
+  setTimeout(closeMpModal,400);
+}
+function closeMpModal(){
+  document.getElementById('mpModalBg').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+/* ══════════════════════════════════════════
+   EMAILS VIA NETLIFY
+══════════════════════════════════════════ */
+async function sendEmailsViaNetlify(order){
+  if(window.location.protocol==='file:'){console.log('Emails: modo local, skip');return;}
+  try{
+    await fetch('/.netlify/functions/send-email',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({order,storeEmail:STORE_EMAIL})
+    });
+  }catch(e){console.warn('send-email:',e.message);}
+}
+
+/* ══════════════════════════════════════════
+   ORDERS — ADMIN
+══════════════════════════════════════════ */
+function saveOrder(order){
+  const orders=JSON.parse(localStorage.getItem('id_orders')||'[]');
+  if(!orders.find(o=>o.id===order.id))orders.unshift(order);
+  localStorage.setItem('id_orders',JSON.stringify(orders));
+}
+function saveMyOrder(order){
+  const mine=JSON.parse(localStorage.getItem('id_my_orders')||'[]');
+  if(!mine.find(o=>o.id===order.id))mine.unshift(order);
+  localStorage.setItem('id_my_orders',JSON.stringify(mine));
+}
+function openOrdersAdmin(){
+  document.getElementById('adminPwBg').classList.add('open');
+  document.getElementById('adminPwInput').value='';
+  document.getElementById('adminPwErr').style.display='none';
+  document.body.style.overflow='hidden';
+  setTimeout(()=>document.getElementById('adminPwInput').focus(),200);
+}
+function checkAdminPw(){
+  if(document.getElementById('adminPwInput').value===ADMIN_PASSWORD){
+    document.getElementById('adminPwBg').classList.remove('open');
+    openOrders();
+  }else{
+    document.getElementById('adminPwErr').style.display='block';
+    document.getElementById('adminPwInput').value='';
+    document.getElementById('adminPwInput').focus();
+  }
+}
+function openOrders(){
+  renderOrdersPanel(JSON.parse(localStorage.getItem('id_orders')||'[]'));
+  document.getElementById('ordersPanelBg').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function renderOrdersPanel(orders){
+  const body=document.getElementById('opBody');
+  if(orders.length===0){body.innerHTML='<div class="op-empty"><i class="fas fa-receipt"></i><p>No hay órdenes todavía.</p></div>';return;}
+  const pl={mp:'Mercado Pago',card:'Tarjeta',cash:'Efectivo'};
+  body.innerHTML=orders.map((o,idx)=>{
+    const sc=o.payMethod==='cash'?'status-cash':o.status.toLowerCase().includes('aprobado')?'status-paid':'status-pending';
+    const iHtml=o.items.map(i=>`
+      <div class="order-product">
+        <img src="${i.img}" onerror="this.src='https://via.placeholder.com/40'"/>
+        <span class="order-product-name">${i.name} · ${i.size}</span>
+        <span class="order-product-price">$${i.price.toLocaleString('es-AR')}</span>
+      </div>`).join('');
+    const cardInfo=o.cardLast4?`<div class="order-info-item"><strong>Tarjeta</strong><span>•••• ${o.cardLast4}</span></div>`:'';
+    return `
+    <div class="order-card">
+      <div class="order-card-head">
+        <span class="order-num-label">${o.id}</span>
+        <span class="order-date">${o.date}</span>
+        <div style="display:flex;align-items:center;gap:.6rem;">
+          <span class="order-status ${sc}">${o.status}</span>
+          <button class="order-del-btn" onclick="deleteOrder(${idx})"><i class="fas fa-trash-alt"></i> Eliminar</button>
+        </div>
+      </div>
+      <div class="order-card-body">
+        <div class="order-info-grid">
+          <div class="order-info-item"><strong>Cliente</strong><span>${o.customer.nombre}</span></div>
+          <div class="order-info-item"><strong>Email</strong><span>${o.customer.email}</span></div>
+          <div class="order-info-item"><strong>Teléfono</strong><span>${o.customer.tel}</span></div>
+          <div class="order-info-item"><strong>Pago</strong><span>${pl[o.payMethod]||o.payMethod}</span></div>
+          ${cardInfo}
+          <div class="order-info-item" style="grid-column:1/-1"><strong>Dirección</strong><span>${o.address.calle}${o.address.depto?' '+o.address.depto:''}, ${o.address.barrio}${o.address.cp?' (CP:'+o.address.cp+')':''}</span></div>
+        </div>
+        <div class="order-products">${iHtml}</div>
+        <div class="order-total-row">
+          <span class="order-total-label">Total</span>
+          <span class="order-total-price">$${o.total.toLocaleString('es-AR')}</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function deleteOrder(idx){
+  if(!confirm('¿Eliminar esta orden?'))return;
+  const orders=JSON.parse(localStorage.getItem('id_orders')||'[]');
+  const d=orders[idx];
+  if(d?.items)d.items.forEach(item=>{
+    if(STOCK[item.id]&&STOCK[item.id][item.size]!==undefined)
+      STOCK[item.id][item.size]=(STOCK[item.id][item.size]||0)+item.qty;
+  });
+  orders.splice(idx,1);
+  localStorage.setItem('id_orders',JSON.stringify(orders));
+  renderOrdersPanel(orders);
+  showToast('<i class="fas fa-check"></i> Orden eliminada y stock restaurado');
+}
+function clearAllOrders(){
+  if(!confirm('¿Eliminar TODAS las órdenes?'))return;
+  localStorage.removeItem('id_orders');
+  renderOrdersPanel([]);
+  showToast('<i class="fas fa-trash-alt"></i> Historial borrado','#D95F2B');
+}
+function closeOrders(){
+  document.getElementById('ordersPanelBg').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+/* ══════════════════════════════════════════
+   MP RETURN HANDLER
+══════════════════════════════════════════ */
+(function checkMPReturn(){
+  const p=new URLSearchParams(window.location.search);
+  const status=p.get('status')||p.get('collection_status');
+  if(!status)return;
+  const pending=localStorage.getItem('id_pending_order');
+  if(status==='approved'){
+    if(pending){
+      const o=JSON.parse(pending);o.status='Pago aprobado ✓';
+      saveOrder(o);saveMyOrder(o);sendEmailsViaNetlify(o);
+      localStorage.removeItem('id_pending_order');
+    }
+    cart=[];saveCart();updateCartUI();
+    showToast('<i class="fas fa-check"></i> ¡Pago aprobado! Gracias por tu compra.');
+  }else if(status==='failure'){
+    showToast('<i class="fas fa-times"></i> El pago fue rechazado. Intentá de nuevo.','#D95F2B');
+  }else if(status==='pending'){
+    if(pending){
+      const o=JSON.parse(pending);o.status='Pago pendiente...';
+      saveOrder(o);saveMyOrder(o);localStorage.removeItem('id_pending_order');
+    }
+    showToast('<i class="fas fa-clock"></i> Pago pendiente de acreditación.','#E8A030');
+  }
+  window.history.replaceState({},'',window.location.pathname);
+})();
+
+/* ══════════════════════════════════════════
+   NAV / MODALS / CAROUSEL / FILTER / REVEAL
+══════════════════════════════════════════ */
+document.getElementById('mob-btn').addEventListener('click',()=>{
+  const m=document.getElementById('mob-menu');
+  m.style.display=m.style.display==='flex'?'none':'flex';
+});
+window.addEventListener('scroll',()=>{
+  document.getElementById('main-header').classList.toggle('scrolled',window.scrollY>10);
+});
+function openM(id){
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow='hidden';
+  carGo(id,0);
+}
+function closeM(id){
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow='';
+}
+document.querySelectorAll('.modal-bg').forEach(bg=>{
+  bg.addEventListener('click',e=>{if(e.target===bg)closeM(bg.id);});
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    document.querySelectorAll('.modal-bg.open').forEach(m=>closeM(m.id));
+    ['mpModalBg','ckBg','adminPwBg','ordersPanelBg'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el&&el.classList.contains('open')){el.classList.remove('open');document.body.style.overflow='';}
+    });
+  }
+});
+const carState={};
+function carGo(id,idx){
+  const track=document.getElementById('car-'+id);
+  if(!track)return;
+  const slides=track.querySelectorAll('.m-carousel-slide');
+  if(idx<0)idx=slides.length-1;if(idx>=slides.length)idx=0;
+  carState[id]=idx;
+  track.style.transform=`translateX(-${idx*100}%)`;
+  const dots=document.getElementById('dots-'+id);
+  if(dots)dots.querySelectorAll('.c-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
+}
+function carNext(id){carGo(id,(carState[id]||0)+1);}
+function carPrev(id){carGo(id,(carState[id]||0)-1);}
+document.querySelectorAll('.m-carousel').forEach(car=>{
+  let sx=0;
+  car.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;},{passive:true});
+  car.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-sx;
+    const id=car.closest('.modal-bg').id;
+    if(Math.abs(dx)>40){dx<0?carNext(id):carPrev(id);}
+  },{passive:true});
+});
+document.querySelectorAll('.filter-bar').forEach(bar=>{
+  const isR=bar.id==='remeraFilter';
+  const gId=isR?'remeraGrid':'buzoGrid';
+  bar.querySelectorAll('.filter-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      bar.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const sz=btn.dataset.size;
+      document.getElementById(gId).querySelectorAll('.card').forEach(card=>{
+        const szs=(card.dataset.sizes||'').split(' ');
+        card.style.display=(sz==='all'||szs.includes(sz))?'':'none';
+      });
+    });
+  });
+});
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:0.06,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>observer
