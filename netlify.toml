@@ -1,0 +1,16 @@
+# ============================================================
+#  Importado Devoto — Configuración Netlify
+# ============================================================
+
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+# Redirect /api/* → /.netlify/functions/* (por si acaso)
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
