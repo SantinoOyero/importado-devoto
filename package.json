@@ -1,8 +1,6 @@
 {
   "name": "importado-devoto-api",
   "version": "1.0.0",
-  "description": "API para cobros con Mercado Pago",
-  "main": "index.js",
   "dependencies": {
     "node-fetch": "^2.6.7"
   }
