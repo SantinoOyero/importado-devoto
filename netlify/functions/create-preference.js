@@ -3,7 +3,7 @@
 // ============================================================
 
 const ACCESS_TOKEN = 'APP_USR-4957780749221652-040314-3ff008a79049b6e9ca78877e0d050c99-3311074099';
-const REDIRECT_URL = 'https://importadodevoto.com.ar';
+const REDIRECT_URL = 'https://lucky-melba-fe122d.netlify.app';
 
 exports.handler = async function(event) {
   // CORS preflight
